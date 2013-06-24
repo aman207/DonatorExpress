@@ -1,0 +1,64 @@
+name: DonatorExpress
+main: net.targetcraft.donatorexpress.Main
+version: 0.4
+description: DonatorExpress
+website: http://dev.bukkit.org/bukkit-plugins/donator-express/
+authors: [aman207, AzroWear]
+
+commands:
+    donate:
+     description: General command for all of DonatorExpress's needs
+     aliases: [donator, rank]
+    editrank:
+     description: Edits a rank
+permissions:
+    donexpress.*:
+        description: Gives access to all commands
+        children:
+            donexpress.admin.*: true
+            donexpress.user: true
+        default: op
+    donexpress.admin.*:
+        description: Access to all admin commands
+        default: op
+        children:
+            donexpress.admin.editrank: true
+            donexpress.admin.checkvc: true
+            donexpress.admin.manurank: true
+            donexpress.admin.ranklist: true
+            donexpress.admin.addrank: true
+            donexpress.admin.delrank: true
+            donexpress.admin.dbconnect: true
+            donexpress.admin.addvc: true
+            donexpress.user: true
+    donexpress.admin.basic:
+        description: Basic access to admin commands
+        default: op
+        children:
+            donexpress.admin.checkvc: true 
+            donexpress.admin.ranklist: true
+            donexpress.admin.dbconnect: true
+    donexpress.admin.addrank:
+        description: Adds a rank to the config
+        default: op
+    donexpress.admin.delrank:
+        description: Deletes a rank from the config
+        default: op
+    donexpress.admin.ranklist:
+        description: Checks the current list of ranks
+        default: op
+    donexpress.admin.editrank:
+        description: Edits the amount of virtual currency for each rank
+        default: op
+    donexpress.admin.checkvc:
+        description: Checks the amount of virtual currency that a player has
+        default: op
+    donexpress.admin.addvc:
+        description: Adds virtual currency to a specified user
+        default: op
+    donexpress.admin.dbconnect:
+        description: Manually connects to the database if its not working. 
+        default: op
+    donexpress.user:
+        description: Any commands that a user would use
+        default: op
