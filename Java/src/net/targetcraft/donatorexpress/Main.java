@@ -1,12 +1,11 @@
 package net.targetcraft.donatorexpress;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -18,9 +17,10 @@ public class Main extends JavaPlugin {
 		if (!file.exists())
 		{
 			getLogger().info("[DonatorExpress] Configuration not found. Generating...");
+			this.getConfig().addDefault("metrics", true);
 			this.getConfig().addDefault("db-username", "");
 			this.getConfig().addDefault("db-password", "");
-			this.getConfig().addDefault("db-host", "localhost");
+			this.getConfig().addDefault("db-host", "localhost:3306");
 			this.getConfig().addDefault("db-name", "");
 			this.getConfig().addDefault("ranks", ranks);
 			this.getConfig().addDefault("donate-message", "&2Please thank %player for donating!");
@@ -30,9 +30,23 @@ public class Main extends JavaPlugin {
 			this.saveConfig();
 		}
 		getCommand("donate").setExecutor(new CommandListener(this));
-		Logger.getLogger(ChatColor.RED+"[DonatorExpress] Enabling connection to the database.");
-		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbconnect");
-		getCommand("editrank").setExecutor(new CommandListener(this));
+		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbconnect");		
+		
+		if(this.getConfig().getBoolean("metrics")==true)
+		{
+			try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {
+		    // Failed to submit the stats :-(
+		}
+			
+		}
+		else
+		{
+			
+		}
+		
 	}
 	public void onDisable()
 	{
