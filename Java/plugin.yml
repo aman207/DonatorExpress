@@ -3,7 +3,8 @@ main: net.targetcraft.donatorexpress.Main
 version: 0.5
 description: DonatorExpress
 website: http://dev.bukkit.org/bukkit-plugins/donator-express/
-authors: [aman207, AzroWear]
+author: aman207
+authors: [AzroWear] 
 
 commands:
     donate:

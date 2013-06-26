@@ -154,6 +154,8 @@ public class CommandListener implements Listener, CommandExecutor{
 			{
 				if(sender.hasPermission("donexpress.user"))
 				{
+				if(sender instanceof Player)
+				{
 				String VCName=plugin.getConfig().getString("currency-name");
 			    String website=plugin.getConfig().getString("portal-location");
 				Statement statement=null;
@@ -176,7 +178,7 @@ public class CommandListener implements Listener, CommandExecutor{
 				sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Error. Could not connect to database. Attempting to reconnect. Try your command again");
 				e.printStackTrace();
 			}
-
+				}
 				}
 				else
 				{
@@ -612,6 +614,12 @@ public class CommandListener implements Listener, CommandExecutor{
 				{
 					noPermission(sender);
 				}
+			}
+			else if(args[0].equalsIgnoreCase("reload"))
+			{
+				plugin.saveConfig();
+				plugin.reloadConfig();
+				sender.sendMessage(ChatColor.GREEN+"[DonatorExpress] Reload successful!");
 			}
 			else if(args[0].equalsIgnoreCase("about"))
 			{
