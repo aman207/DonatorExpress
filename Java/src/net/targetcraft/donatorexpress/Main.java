@@ -17,15 +17,15 @@ public class Main extends JavaPlugin {
 		if (!file.exists())
 		{
 			getLogger().info("[DonatorExpress] Configuration not found. Generating...");
-			this.getConfig().addDefault("metrics", true);
+			this.getConfig().addDefault("metrics", "true");
 			this.getConfig().addDefault("db-username", "");
 			this.getConfig().addDefault("db-password", "");
 			this.getConfig().addDefault("db-host", "localhost:3306");
 			this.getConfig().addDefault("db-name", "");
 			this.getConfig().addDefault("ranks", ranks);
-			this.getConfig().addDefault("donate-message", "&2Please thank %player for donating!");
+			this.getConfig().addDefault("donate-message", "&2%player has just spent %amount %currency");
 			this.getConfig().addDefault("portal-location", "www.");
-			this.getConfig().addDefault("currency-name", "tokens");
+			this.getConfig().addDefault("currency-name", "Tokens");
 			this.getConfig().options().copyDefaults(true);
 			this.saveConfig();
 		}

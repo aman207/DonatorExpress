@@ -24,14 +24,15 @@ permissions:
         description: Access to all admin commands
         default: op
         children:
-            donexpress.admin.editrank: true
+            donexpress.admin.edit: true
             donexpress.admin.checkvc: true
-            donexpress.admin.manurank: true
-            donexpress.admin.ranklist: true
-            donexpress.admin.addrank: true
-            donexpress.admin.delrank: true
+            donexpress.admin.add: true
+            donexpress.admin.delete: true
             donexpress.admin.dbconnect: true
             donexpress.admin.addvc: true
+            donexpress.admin.reload: true
+            donexpress.admin.setvc: true
+            donexpress.admin.recent: true
             donexpress.user: true
             donexpress.user.upgrade: true
     donexpress.admin.basic:
@@ -41,16 +42,13 @@ permissions:
             donexpress.admin.checkvc: true 
             donexpress.admin.ranklist: true
             donexpress.admin.dbconnect: true
-    donexpress.admin.addrank:
+    donexpress.admin.add:
         description: Adds a rank to the config
         default: op
-    donexpress.admin.delrank:
+    donexpress.admin.delete:
         description: Deletes a rank from the config
         default: op
-    donexpress.admin.ranklist:
-        description: Checks the current list of ranks
-        default: op
-    donexpress.admin.editrank:
+    donexpress.admin.edit:
         description: Edits the amount of virtual currency for each rank
         default: op
     donexpress.admin.checkvc:
@@ -61,6 +59,15 @@ permissions:
         default: op
     donexpress.admin.dbconnect:
         description: Manually connects to the database if its not working. 
+        default: op
+    donexpress.admin.reload:
+        description: Reloads the config
+        default: op
+    donexpress.admin.setvc:
+        description: Sets the amount of vc for a user. Not add
+        default: op
+    donexpress.admin.recent:
+        description: Lets the player see the 5 most recent transactions
         default: op
     donexpress.user:
         description: Any commands that a user would use
