@@ -6,10 +6,17 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 	Connection con;
+	public static boolean update = false;
+	public static String name = "";
 	public void onEnable()
 	{
 		List<String> ranks = new ArrayList<String>();
@@ -18,6 +25,7 @@ public class Main extends JavaPlugin {
 		{
 			getLogger().info("[DonatorExpress] Configuration not found. Generating...");
 			this.getConfig().addDefault("metrics", "true");
+			this.getConfig().addDefault("auto-update", "true");
 			this.getConfig().addDefault("db-username", "");
 			this.getConfig().addDefault("db-password", "");
 			this.getConfig().addDefault("db-host", "localhost:3306");
@@ -28,6 +36,20 @@ public class Main extends JavaPlugin {
 			this.getConfig().addDefault("currency-name", "Tokens");
 			this.getConfig().options().copyDefaults(true);
 			this.saveConfig();
+		}
+		if(this.getConfig().getBoolean("auto-update")==true)
+		{
+			Updater updater = new Updater(this, "donator-express", this.getFile(), Updater.UpdateType.NO_DOWNLOAD, false);
+			update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE;
+			if(Main.update)
+			{
+				updater = new Updater(this, "donator-express", this.getFile(), Updater.UpdateType.DEFAULT, false);
+			}
+			name = updater.getLatestVersionString();
+		}
+		else
+		{
+			
 		}
 		getCommand("donate").setExecutor(new CommandListener(this));
 		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbconnect");		
@@ -51,5 +73,15 @@ public class Main extends JavaPlugin {
 	public void onDisable()
 	{
 		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbcloseNEVERRUNTHIS");
+	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+	public void playerJoinEvent(PlayerJoinEvent event)
+	{
+		Player player = event.getPlayer();
+		if(player.hasPermission("donexpress.admin.update")&&Main.update)
+		{
+			player.sendMessage(ChatColor.GOLD+"[DonatorExpress] "+Main.name+" for Donator Express is available. Reload/restart the server to finish the update");
+		}
 	}
 }

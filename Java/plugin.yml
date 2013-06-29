@@ -1,6 +1,6 @@
 name: DonatorExpress
 main: net.targetcraft.donatorexpress.Main
-version: 0.5
+version: 0.6
 description: DonatorExpress
 website: http://dev.bukkit.org/bukkit-plugins/donator-express/
 author: aman207
@@ -33,6 +33,7 @@ permissions:
             donexpress.admin.reload: true
             donexpress.admin.setvc: true
             donexpress.admin.recent: true
+            donexpress.admin.update: true
             donexpress.user: true
             donexpress.user.upgrade: true
     donexpress.admin.basic:
@@ -68,6 +69,9 @@ permissions:
         default: op
     donexpress.admin.recent:
         description: Lets the player see the 5 most recent transactions
+        default: op
+    donexpress.admin.update:
+        description: Notifies the user about an update
         default: op
     donexpress.user:
         description: Any commands that a user would use
