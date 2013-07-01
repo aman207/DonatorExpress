@@ -768,6 +768,7 @@ class FGMembersite
                 "username VARCHAR( 16 ) NOT NULL ,".
                 "password VARCHAR( 32 ) NOT NULL ,".
                 "confirmcode VARCHAR(32) ,".
+                "is_admin VARCHAR( 5 ) DEFAULT 'false' ,".
                 "PRIMARY KEY ( id_user )".
                 ")";
                 

@@ -2,6 +2,7 @@
 require_once("./include/membersite_config.php");
 require_once("./include/config.php");
 require_once("./getbal.php");
+require_once("./check_admin.php");
 $getuseremail = $fgmembersite->UserEmail();
 
 if(!$fgmembersite->CheckLogin())
@@ -26,7 +27,7 @@ if(!$fgmembersite->CheckLogin())
 <table border="0" width="100%" cellpadding="1">
 <tr>
 <td><h2><font color="white">Members Area</font></h2></td>
-<td align="right"><u>Account Management</u><br><br><a href='logout.php'>Logout</a><br><a href='change-pwd.php'>Change Password</a></td>
+<td align="right"><u>Account Management</u><br><br><a href='logout.php'>Logout</a><br><a href='change-pwd.php'>Change Password</a><?php if ($is_admin == "true") { echo "<br><a href='admin.php'>Admin Control Panel</a>"; } ?></td>
 </tr>
 </table>
 

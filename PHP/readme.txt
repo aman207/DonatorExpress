@@ -1,3 +1,5 @@
+VERSION: 1.0
+
   _____                    _               ______                              
  |  __ \                  | |             |  ____|                             
  | |  | | ___  _ __   __ _| |_ ___  _ __  | |__  __  ___ __  _ __ ___  ___ ___ 
@@ -11,6 +13,8 @@
 
 For commands, configuration, and installation instructions please visit
 our bukkit developer page at: http://dev.bukkit.org/bukkit-plugins/donator-express/
+
+If this is a fresh install please rename /include/sample_config.php to /include/config.php
 
 Please keep all copyright notices intact which are included in the footer of the web pages.
 You are free to modify the Donator Express Portal files in compliance to our license.

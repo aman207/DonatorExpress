@@ -774,7 +774,6 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				if(sender.hasPermission("donexpress.admin.reload"))
 				{
-				plugin.saveConfig();
 				plugin.reloadConfig();
 				sender.sendMessage(ChatColor.GREEN+"[DonatorExpress] Reload successful!");
 				}

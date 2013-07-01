@@ -33,7 +33,7 @@ if(isset($_POST['submitted']))
 <form id='register' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>
 <fieldset >
 <legend><font color="white">Register an Account</font></legend>
-Register for a secure account on our Donator Express portal to purchase <?php echo $virtual_currency; ?> which can be used gain in-game ranks and items!<br><br>
+Register for a secure account on our Donator Express portal to purchase <?php echo $virtual_currency; ?> which can be used to gain in-game ranks and items!<br><br>
 <input type='hidden' name='submitted' id='submitted' value='1'/>
 
 <input type='text'  class='spmhidip' name='<?php echo $fgmembersite->GetSpamTrapInputName(); ?>' />
