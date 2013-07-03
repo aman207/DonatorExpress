@@ -10,13 +10,13 @@ $mysql_password = "";
 $mysql_database = "donator";
 
 //Provide the email address where you want to get notifications
-$admin_email = "your_email@doaminc.om;
+$admin_email = "your_email@domain.com";
 
-//Provide your site name or server name here
-$website_name = "Minecraft Community";
+//Provite your site name or server name here
+$website_name = "A Minecraft Community";
 
 //Provide the url where Donator Express is installed
-//DO NOT include a trailing slash at the end.
+//DO NOT include a trailing slash at the end
 $dep_url = "http://donate.yourwebsite.com";
 
 // -----------------------------------------------------------------------------------------
