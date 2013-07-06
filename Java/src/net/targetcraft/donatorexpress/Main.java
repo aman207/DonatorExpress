@@ -60,6 +60,10 @@ public class Main extends JavaPlugin {
 				forum.addDefault("db-name", "");
 				forum.options().copyDefaults(true);
 				
+				forum.save(forumConfig);
+				//^ This is just for testing reasons, but it still 
+				//generates the proper config and sets the proper values/string lists
+				
 				ranks=this.getConfig().getStringList("ranks");
 				for(String s:ranks)
 				{
