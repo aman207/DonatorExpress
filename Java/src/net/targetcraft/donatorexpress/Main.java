@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,11 +20,15 @@ public class Main extends JavaPlugin {
 	public static String name = "";
 	public void onEnable()
 	{
+		File forumConfig = new File(getDataFolder()+File.separator, "forumConfig.yml");
+		YamlConfiguration forum = null;
+		
 		List<String> ranks = new ArrayList<String>();
 		File file=new File(getDataFolder()+File.separator+"config.yml");
+		
 		if (!file.exists())
 		{
-			getLogger().info("[DonatorExpress] Configuration not found. Generating...");
+			getLogger().info("Configuration not found. Generating...");
 			this.getConfig().addDefault("metrics", "true");
 			this.getConfig().addDefault("auto-update", "true");
 			this.getConfig().addDefault("db-username", "");
@@ -36,6 +41,36 @@ public class Main extends JavaPlugin {
 			this.getConfig().addDefault("currency-name", "Tokens");
 			this.getConfig().options().copyDefaults(true);
 			this.saveConfig();
+		}
+		
+		if(!forumConfig.exists())
+		{
+			forumConfig.getParentFile().mkdirs();
+	        forum=new YamlConfiguration();
+	        try {
+	        	getLogger().info("Forum Configuration not found. Generating...");
+				forum.addDefault("mybb", "false");
+				forum.addDefault("xenforo", "false");
+				forum.addDefault("ipboard", "false");
+				forum.addDefault("phbb", "false");
+				forum.addDefault("simplemachines", "false");
+				forum.addDefault("db-username", "");
+				forum.addDefault("db-password", "");
+				forum.addDefault("db-host", "localhost:3306");
+				forum.addDefault("db-name", "");
+				forum.options().copyDefaults(true);
+				
+				ranks=this.getConfig().getStringList("ranks");
+				for(String s:ranks)
+				{
+					forum.createSection(s+"-group");
+					forum.set(s+"-group", "0");
+				}
+				
+				forum.save(forumConfig);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		if(this.getConfig().getBoolean("auto-update")==true)
 		{
@@ -54,7 +89,7 @@ public class Main extends JavaPlugin {
 		getCommand("donate").setExecutor(new CommandListener(this));
 		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbconnect");		
 		
-		if(this.getConfig().getBoolean("metrics")==true)
+		if(this.getConfig().getBoolean("metrics"))
 		{
 			try {
 		    Metrics metrics = new Metrics(this);
@@ -74,7 +109,7 @@ public class Main extends JavaPlugin {
 	{
 		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbcloseNEVERRUNTHIS");
 	}
-	
+		
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerJoinEvent(PlayerJoinEvent event)
 	{

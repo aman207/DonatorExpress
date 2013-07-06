@@ -1,5 +1,7 @@
 package net.targetcraft.donatorexpress;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,6 +21,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -59,19 +62,25 @@ public class CommandListener implements Listener, CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {		
 		if(cmd.getName().equalsIgnoreCase("donate"))
 		{
+			File forumConfig = new File(plugin.getDataFolder()+File.separator, "forumConfig.yml");
+			YamlConfiguration forum = null; //I am going to use these later on, so that is why they initialized here. 
+			forum=new YamlConfiguration();
+			
 			try{
 			if(args[0].equalsIgnoreCase("add"))
-			{
-				if(sender.hasPermission("donexpress.admin.add"))
+			{				
+				if(sender.hasPermission("donexpress.admin.add"))//Pardon my formatting errors, I added these last. 
 				{
 				if(!(args[1]==null))
 				{
+				    boolean configAdd=false;
+					boolean forumAdd=false;
 					try{
-					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Attempting to add "+args[1]+"...");
-					List<String>ranks = plugin.getConfig().getStringList("ranks".toLowerCase());			
+					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Attempting to add "+args[1]+"...");//Where args[1] represents the rank name
+					List<String>ranks = plugin.getConfig().getStringList("ranks".toLowerCase());//Gets the current list to see if it already exists
 					List<String>ranks2=new ArrayList<String>(ranks);
 					 
 					 int count = 0;
@@ -87,29 +96,52 @@ public class CommandListener implements Listener, CommandExecutor {
 				     else
 				     {
 				    	 ranks.add(args[1].toLowerCase());
-					     plugin.getConfig().set("ranks",ranks);
+					     plugin.getConfig().set("ranks",ranks);//Adds to the current string list
 					     plugin.getConfig().createSection(args[1].toLowerCase());
 					     plugin.getConfig().createSection(args[1].toLowerCase()+"-commands");
 					     List<String>commands=plugin.getConfig().getStringList(args[1].toLowerCase()+"-commands");
 					     commands.add("putCommandsHere");
-					     plugin.getConfig().set(args[1].toLowerCase()+"-commands",commands);
+					     plugin.getConfig().set(args[1].toLowerCase()+"-commands",commands);//This part works
 					     plugin.getConfig().set(args[1].toLowerCase(), 0);
-						 plugin.saveConfig(); 
-						 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.GREEN+"Successfully added "+args[1]);
-				     }	
-				
+					     configAdd=true;
+						 
+						 forum.createSection(args[1].toLowerCase()+"-group");
+						 forum.set(args[1].toLowerCase()+"-group", 0);//This part does not
+						 forumAdd=true;
+				     }
+				     if(configAdd||forumAdd)
+				     {
+				    	 plugin.saveConfig(); 
+				    	 forum.save(forumConfig);//At this point, this is where it replaces the entire forumConfig.yml 
+				    	 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.GREEN+"Successfully added "+args[1]);
+				     }
+				     				
 				} catch (ArrayIndexOutOfBoundsException e)
 				{
+					configAdd=false;
+					forumAdd=false;
 					sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help for commands");
+				} catch (IOException e) {
+					configAdd=false;
+					forumAdd=false;
+					sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Could not generate the fields in forumConfig.yml. It doesn't exist o.O Reload your server and try again");
+					e.printStackTrace();
 				}
 				}
+				
 				else
 				{
 					noPermission(sender);
 				}
 				}
 			}
-		
+			/**else if(args[0].equalsIgnoreCase("test"))
+			{
+				String testMessage;
+				testMessage=forum.getString("db-host");
+				sender.sendMessage(testMessage);
+			}
+		   */
 			else if (args[0].equalsIgnoreCase("delete"))
 			{
 				if(sender.hasPermission("donexpress.admin.delete"))
@@ -580,7 +612,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				String VCName=plugin.getConfig().getString("currency-name");
 				if(sender.hasPermission("donexpress.user"))
 				{
-				//TODO Add 10 seconds in next update.
+				//TODO Add 10 seconds in next update. Or second one. Whichever I like xD
 				if(sender instanceof Player)
 				{
 				try {
@@ -822,6 +854,10 @@ public class CommandListener implements Listener, CommandExecutor {
 		}
 		}
 		return true;
+	}
+	public void syncForum(CommandSender sender)
+	{
+		
 	}
 
 	public String colourize(String message) {
