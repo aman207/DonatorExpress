@@ -13,7 +13,7 @@ $mysql_database = "donator";
 $admin_email = "your_email@domain.com";
 
 //Provite your site name or server name here
-$website_name = "A Minecraft Community";
+$website_name = "Minecraft Community";
 
 //Provide the url where Donator Express is installed
 //DO NOT include a trailing slash at the end
@@ -39,13 +39,13 @@ $currency_code = "USD";
 //their balance. Specify the price for them below, or leave them if you would like
 //to use the default values.
 
-//Chest One: Input the price below for 10 Tokens
+//Diamond Ore One: Input the price below for 10 Tokens
 $diamond1 = "10";
-//Chest Two: Input the price below for 25 Tokens
+//Diamond Ore Two: Input the price below for 25 Tokens
 $diamond2 = "25";
-//Chest Three: Input the price below for 50 Tokens
+//Diamond Ore Three: Input the price below for 50 Tokens
 $diamond3 = "50";
-//Chest Four: Input the price below for 100 Tokens
+//Diamond Ore Four: Input the price below for 100 Tokens
 $diamond4 = "100";
 
 // -----------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 /* =Structure */
 body {
-	background: url('/img/bg-diamond.png');
+	background: url('../img/bg-diamond.png');
        background-repeat:repeat;
        background-size:cover;
 	color: #bbb;
@@ -28,7 +28,7 @@ a {
 
 /* =General */
 .section {
-	background: url('/img/bg-shadow.png') repeat-x #3c3e41;
+	background: url('../img/bg-shadow.png') repeat-x #3c3e41;
 	border-top: 1px solid #484a4e;
 	border-bottom: 1px solid #2b2d2f;
 	padding: 20px;
@@ -54,20 +54,20 @@ small {
 
 /* =Tabs */
 .tabs {
-	background: url('/img/bg-tabs.png');
+	background: url('../img/bg-tabs.png');
 	height: 40px;
 }
 .tabs.second {
-	background: url('/img/bg-tabs-second.png');
+	background: url('../img/bg-tabs-second.png');
 }
 .tabs.ac {
-	background: url('/img/bg-tabs-13.png');
+	background: url('../img/bg-tabs-13.png');
 }
 .tabs.bc {
-	background: url('/img/bg-tabs-23.png');
+	background: url('../img/bg-tabs-23.png');
 }
 .tabs.cc {
-	background: url('/img/bg-tabs-33.png');
+	background: url('../img/bg-tabs-33.png');
 }
 .tab {
 	float: left;
@@ -112,7 +112,7 @@ ul {
 	list-style: none;
 }
 ul li {
-	background: url('/img/list.png') no-repeat 0 5px;
+	background: url('../img/list.png') no-repeat 0 5px;
 	padding-left: 15px;
 	margin: 8px 0;
 }
@@ -124,7 +124,7 @@ ul small {
 /* =Form */
 input[type="text"],
 input[type="password"] {
-	background: url('/img/bg-input.png');
+	background: url('../img/bg-input.png');
 	border: none;
 	width: 183px;
 	height: 28px;
@@ -136,12 +136,12 @@ input[type="password"] {
 }
 input[type="text"].double,
 input[type="password"].double {
-	background: url('/img/bg-input-double.png');
+	background: url('../img/bg-input-double.png');
 	width: 396px;
 }
 input[type="button"],
 input[type="submit"] {
-	background: url('/img/bg-button.png');
+	background: url('../img/bg-button.png');
 	border: 0;
 	color: #ddd;
 	font-weight: bold;
@@ -161,7 +161,7 @@ input[type="file"] {
 	margin-bottom: 10px;
 }
 textarea {
-	background: url('/img/bg-textarea.png');
+	background: url('../img/bg-textarea.png');
 	border: none;
 	width: 396px;
 	height: 130px;
@@ -176,7 +176,7 @@ textarea {
 	cursor: pointer;
 }
 .checkbox span {
-	background: url('/img/checkbox.png');
+	background: url('../img/checkbox.png');
 	width: 20px;
 	height: 19px;
 	display: inline-block;

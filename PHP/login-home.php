@@ -36,8 +36,8 @@ You currently have <font color="#01DFD7"><?php echo "$getusertoken $virtual_curr
 
 <table border="0" width="100%">
 <tr>
-<td><center><img src="/generate/diamond.php?text=<?php echo $diamond1; ?>"></center></td>
-<td><center><img src="/generate/diamond.php?text=<?php echo $diamond2; ?>"></center></td>
+<td><center><img src="generate/diamond.php?text=<?php echo $diamond1; ?>"></center></td>
+<td><center><img src="generate/diamond.php?text=<?php echo $diamond2; ?>"></center></td>
 </tr>
 <tr>
 <td>
@@ -47,8 +47,8 @@ You currently have <font color="#01DFD7"><?php echo "$getusertoken $virtual_curr
 <input type="hidden" name="item_name" value="Purchase 10 <?php echo $virtual_currency; ?> for account <?php echo $getuseremail; ?>"/>
 <input type="hidden" name="item_number" value="<?php echo $getuseremail; ?>"/>
 <input type="hidden" name="amount" value="<?php echo $diamond1; ?>"/>
-<input type="hidden" name="return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>">
-<input type="hidden" name="cancel_return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>" />
+<input type="hidden" name="return" value="<?php echo $dep_url; ?>/login-home.php">
+<input type="hidden" name="cancel_return" value="<?php echo $dep_url; ?>/login-home.php" />
 <input type="hidden" name="notify_url" value="<?php echo $dep_url; ?>/ipn.php">
 <input type="hidden" name="custom" value="10"/>
 <input type="hidden" name="currency_code" value="<?php echo $currency_code; ?>"/>
@@ -63,8 +63,8 @@ You currently have <font color="#01DFD7"><?php echo "$getusertoken $virtual_curr
 <input type="hidden" name="item_name" value="Purchase 25 <?php echo $virtual_currency; ?> for account <?php echo $getuseremail; ?>"/>
 <input type="hidden" name="item_number" value="<?php echo $getuseremail; ?>"/>
 <input type="hidden" name="amount" value="<?php echo $diamond2; ?>"/>
-<input type="hidden" name="return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>">
-<input type="hidden" name="cancel_return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>" />
+<input type="hidden" name="return" value="<?php echo $dep_url; ?>/login-home.php">
+<input type="hidden" name="cancel_return" value="<?php echo $dep_url; ?>/login-home.php" />
 <input type="hidden" name="notify_url" value="<?php echo $dep_url; ?>/ipn.php">
 <input type="hidden" name="custom" value="25"/>
 <input type="hidden" name="currency_code" value="<?php echo $currency_code; ?>"/>
@@ -74,8 +74,8 @@ You currently have <font color="#01DFD7"><?php echo "$getusertoken $virtual_curr
 </td>
 </tr>
 <tr>
-<td><center><img src="/generate/diamond.php?text=<?php echo $diamond3; ?>"></center></td>
-<td><center><img src="/generate/diamond.php?text=<?php echo $diamond4; ?>"></center></td>
+<td><center><img src="generate/diamond.php?text=<?php echo $diamond3; ?>"></center></td>
+<td><center><img src="generate/diamond.php?text=<?php echo $diamond4; ?>"></center></td>
 </tr>
 <tr>
 <td>
@@ -85,8 +85,8 @@ You currently have <font color="#01DFD7"><?php echo "$getusertoken $virtual_curr
 <input type="hidden" name="item_name" value="Purchase 50 <?php echo $virtual_currency; ?> for account <?php echo $getuseremail; ?>"/>
 <input type="hidden" name="item_number" value="<?php echo $getuseremail; ?>"/>
 <input type="hidden" name="amount" value="<?php echo $diamond3; ?>"/>
-<input type="hidden" name="return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>">
-<input type="hidden" name="cancel_return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>" />
+<input type="hidden" name="return" value="<?php echo $dep_url; ?>/login-home.php">
+<input type="hidden" name="cancel_return" value="<?php echo $dep_url; ?>/login-home.php" />
 <input type="hidden" name="notify_url" value="<?php echo $dep_url; ?>/ipn.php">
 <input type="hidden" name="custom" value="50"/>
 <input type="hidden" name="currency_code" value="<?php echo $currency_code; ?>"/>
@@ -100,8 +100,8 @@ You currently have <font color="#01DFD7"><?php echo "$getusertoken $virtual_curr
 <input type="hidden" name="item_name" value="Purchase 100 <?php echo $virtual_currency; ?> for account <?php echo $getuseremail; ?>"/>
 <input type="hidden" name="item_number" value="<?php echo $getuseremail; ?>"/>
 <input type="hidden" name="amount" value="<?php echo $diamond4; ?>"/>
-<input type="hidden" name="return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>">
-<input type="hidden" name="cancel_return" value="<?php echo $dep_url, $_SERVER["REQUEST_URI"]; ?>" />
+<input type="hidden" name="return" value="<?php echo $dep_url; ?>/login-home.php">
+<input type="hidden" name="cancel_return" value="<?php echo $dep_url; ?>/login-home.php" />
 <input type="hidden" name="notify_url" value="<?php echo $dep_url; ?>/ipn.php">
 <input type="hidden" name="custom" value="100"/>
 <input type="hidden" name="currency_code" value="<?php echo $currency_code; ?>"/>
