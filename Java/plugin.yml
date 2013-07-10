@@ -1,6 +1,6 @@
 name: DonatorExpress
 main: net.targetcraft.donatorexpress.Main
-version: 0.6
+version: 0.6.1
 description: DonatorExpress
 website: http://dev.bukkit.org/bukkit-plugins/donator-express/
 author: aman207
@@ -10,8 +10,6 @@ commands:
     donate:
      description: General command for all of DonatorExpress's needs
      aliases: [donator, rank]
-    editrank:
-     description: Edits a rank
 permissions:
     donexpress.*:
         description: Gives access to all commands

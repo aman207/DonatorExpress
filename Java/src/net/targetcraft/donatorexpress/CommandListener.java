@@ -1,6 +1,7 @@
 package net.targetcraft.donatorexpress;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +22,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -65,22 +68,23 @@ public class CommandListener implements Listener, CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {		
 		if(cmd.getName().equalsIgnoreCase("donate"))
 		{
-			File forumConfig = new File(plugin.getDataFolder()+File.separator, "forumConfig.yml");
-			YamlConfiguration forum = null; //I am going to use these later on, so that is why they initialized here. 
+			File forumGroup = new File(plugin.getDataFolder()+File.separator, "forumGroups.yml");
+			FileConfiguration forum = null;
 			forum=new YamlConfiguration();
 			
 			try{
 			if(args[0].equalsIgnoreCase("add"))
 			{				
-				if(sender.hasPermission("donexpress.admin.add"))//Pardon my formatting errors, I added these last. 
+				if(sender.hasPermission("donexpress.admin.add"))
 				{
 				if(!(args[1]==null))
 				{
 				    boolean configAdd=false;
 					boolean forumAdd=false;
+					File forumConfig = new File(plugin.getDataFolder()+File.separator, "forumConfig.yml");
 					try{
-					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Attempting to add "+args[1]+"...");//Where args[1] represents the rank name
-					List<String>ranks = plugin.getConfig().getStringList("ranks".toLowerCase());//Gets the current list to see if it already exists
+					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Attempting to add "+args[1]+"...");
+					List<String>ranks = plugin.getConfig().getStringList("ranks".toLowerCase());
 					List<String>ranks2=new ArrayList<String>(ranks);
 					 
 					 int count = 0;
@@ -96,23 +100,25 @@ public class CommandListener implements Listener, CommandExecutor {
 				     else
 				     {
 				    	 ranks.add(args[1].toLowerCase());
-					     plugin.getConfig().set("ranks",ranks);//Adds to the current string list
+					     plugin.getConfig().set("ranks",ranks);
 					     plugin.getConfig().createSection(args[1].toLowerCase());
 					     plugin.getConfig().createSection(args[1].toLowerCase()+"-commands");
 					     List<String>commands=plugin.getConfig().getStringList(args[1].toLowerCase()+"-commands");
 					     commands.add("putCommandsHere");
-					     plugin.getConfig().set(args[1].toLowerCase()+"-commands",commands);//This part works
+					     plugin.getConfig().set(args[1].toLowerCase()+"-commands",commands);
 					     plugin.getConfig().set(args[1].toLowerCase(), 0);
 					     configAdd=true;
 						 
 						 forum.createSection(args[1].toLowerCase()+"-group");
-						 forum.set(args[1].toLowerCase()+"-group", 0);//This part does not
+						 forum.set(args[1].toLowerCase()+"-group", "0");
 						 forumAdd=true;
 				     }
 				     if(configAdd||forumAdd)
 				     {
+				    	 forum.load(forumGroup);
+						 forum.save(forumGroup);
 				    	 plugin.saveConfig(); 
-				    	 forum.save(forumConfig);//At this point, this is where it replaces the entire forumConfig.yml 
+				    	 forum.save(forumConfig);
 				    	 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.GREEN+"Successfully added "+args[1]);
 				     }
 				     				
@@ -122,9 +128,9 @@ public class CommandListener implements Listener, CommandExecutor {
 					forumAdd=false;
 					sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help for commands");
 				} catch (IOException e) {
-					configAdd=false;
-					forumAdd=false;
-					sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Could not generate the fields in forumConfig.yml. It doesn't exist o.O Reload your server and try again");
+					sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. forumConfig doesn't exist o.O Try to reload the server and try again");
+					e.printStackTrace();
+				} catch (InvalidConfigurationException e) {
 					e.printStackTrace();
 				}
 				}
@@ -167,12 +173,23 @@ public class CommandListener implements Listener, CommandExecutor {
 				    	 ranks.remove(args[1].toLowerCase());
 					     plugin.getConfig().set("ranks".toLowerCase(),ranks);
 						 plugin.saveConfig(); 
+						 
+						 forum.set(args[1]+"-group",null);
+						 forum.load(forumGroup);
+						 forum.save(forumGroup);
+						 
 						 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.GREEN+"Successfully removed "+args[1]);
 				     }	
 				
 				}catch (ArrayIndexOutOfBoundsException e)
 				{
 					sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InvalidConfigurationException e) {
+					e.printStackTrace();
 				}
 				} 
 				else
@@ -446,10 +463,10 @@ public class CommandListener implements Listener, CommandExecutor {
 								if(result.next())
 								{
 									String tokens=result.getString(1);
-									//String rankLookup=plugin.getConfig().getString(args[1]);
 									int rankInt=Integer.parseInt(plugin.getConfig().getString(datRankName));//Gets the amount of tokens needed for the specific rank
 									int tokensInt=Integer.parseInt(tokens);//Gets the amount of tokens that a user currently has
-									if(!(rankInt>=tokensInt))
+									
+									if(!(rankInt>=tokensInt+1))
 									{
 										String rankSend=args[1];
 										sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"This item costs "+rankInt+" "+VCName+". Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"if you wish to buy this item. To cancel this purchase, type "+ChatColor.GREEN+"/donate cancel");
@@ -553,7 +570,7 @@ public class CommandListener implements Listener, CommandExecutor {
 									int rankAlreadyCheck=rankInt1-rankAlreadyInt;
 									if(rankAlreadyCheck>0)
 									{
-									if(!(rankInt1>=tokensInt))
+									if(!(rankInt1>=tokensInt+1))
 									{
 										String rankSend=args[1];
 										sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"to confirm that you wish to buy this rank. Type "+ChatColor.GREEN+"/donate cancel "+ChatColor.YELLOW+"to cancel the purchase");
@@ -818,7 +835,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				sender.sendMessage(ChatColor.YELLOW+"***************************************");
 				sender.sendMessage(ChatColor.RED+"");
-				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 0.6");
+				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 0.6.1");
 				sender.sendMessage(ChatColor.AQUA+"Plugin developed by: aman207");
 				sender.sendMessage(ChatColor.AQUA+"Webportal developed by: AzroWear");
 				sender.sendMessage(ChatColor.RED+"");
@@ -842,6 +859,10 @@ public class CommandListener implements Listener, CommandExecutor {
 				{
 					closeDatabase();
 				}
+				else
+				{
+					sender.sendMessage(ChatColor.GOLD+"Lol do you want this plugin to implode on its self? How about you don't do that ;)");
+				}
 			}
 			else
 			{
@@ -855,8 +876,86 @@ public class CommandListener implements Listener, CommandExecutor {
 		}
 		return true;
 	}
-	public void syncForum(CommandSender sender)
+	public void syncForum(CommandSender sender, String group)
 	{
+		File forumGroup = new File(plugin.getDataFolder()+File.separator, "forumGroups.yml");
+		File forumConfig = new File(plugin.getDataFolder()+File.separator, "forumConfig.yml");
+		
+		YamlConfiguration forumGroupYaml = null;
+		forumGroupYaml=new YamlConfiguration();
+		YamlConfiguration forumConfigYaml = null;
+		forumConfigYaml=new YamlConfiguration();
+		
+		
+		try {
+				Statement statement=null;
+				Connection forumdb;
+				forumConfigYaml.load(forumConfig);
+				forumGroupYaml.load(forumGroup);
+			
+				String dbUsername = forumConfigYaml.getString("db-username");
+				String dbPassword = forumConfigYaml.getString("db-password");
+				String dbHost = forumConfigYaml.getString("db-host");
+				String dbName = forumConfigYaml.getString("db-name");
+				String dbURL = "jdbc:mysql://" + dbHost + "/" + dbName;
+				forumdb = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+				
+				statement=forumdb.createStatement();
+				
+				if(forumConfigYaml.getBoolean("mybb"))
+				{
+					String groupName=forumGroupYaml.getString(group+"-group");
+					String prefix=forumGroupYaml.getString("db-prefix");
+					String username=sender.toString();
+					if(forumGroupYaml.getBoolean("username-mode"))
+					{
+						statement.executeUpdate("UPDATE "+prefix+"users SET usergroup='"+groupName+"' WHERE username='"+username+"'");
+					}
+					else if(forumConfigYaml.getBoolean("email-mode"))
+					{
+						Statement forumStatement=null;
+						forumStatement=con.createStatement();
+						ResultSet result=forumStatement.executeQuery("SELECT `email`, `username` FROM dep  WHERE username = "+username);
+						String email=result.getString(1);
+						
+						statement.executeUpdate("UPDATE "+prefix+"users SET usergroup='"+groupName+"' WHERE email='"+email+"'");
+					}
+				}
+				else if(forumGroupYaml.getBoolean("xenforo"))
+				{
+					
+				}
+				else if(forumGroupYaml.getBoolean("ipboard"))
+				{
+					
+				}
+				else if(forumGroupYaml.getBoolean("phbb"))
+				{
+					
+				}
+				else if(forumGroupYaml.getBoolean("simplemachines"))
+				{
+					
+				}
+				else
+				{
+					
+				}
+				statement.close();
+				forumdb.close();
+		} catch (SQLException e) {
+			sender.sendMessage(ChatColor.RED+"[DonatorExpress] Uh oh. I could not add you to a forum group. " +
+					"This could be because the server owner has improperly configured DonatorExpress or because you have not signed up on the forums");
+			sender.sendMessage(ChatColor.RED+"Please contact the server owner!");
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 

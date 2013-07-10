@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +24,8 @@ public class Main extends JavaPlugin {
 	{
 		File forumConfig = new File(getDataFolder()+File.separator, "forumConfig.yml");
 		YamlConfiguration forum = null;
+		File forumGroup = new File(getDataFolder()+File.separator, "forumGroups.yml");
+		YamlConfiguration forumGroupYaml = null;
 		
 		List<String> ranks = new ArrayList<String>();
 		File file=new File(getDataFolder()+File.separator+"config.yml");
@@ -43,10 +47,22 @@ public class Main extends JavaPlugin {
 			this.saveConfig();
 		}
 		
+		if(!forumGroup.exists())
+        {
+        	forumGroup.getParentFile().mkdirs();
+	        forumGroupYaml=new YamlConfiguration();
+	        try {
+				forumGroupYaml.save(forumGroup);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+		
 		if(!forumConfig.exists())
 		{
 			forumConfig.getParentFile().mkdirs();
 	        forum=new YamlConfiguration();
+	        
 	        try {
 	        	getLogger().info("Forum Configuration not found. Generating...");
 				forum.addDefault("mybb", "false");
@@ -58,20 +74,15 @@ public class Main extends JavaPlugin {
 				forum.addDefault("db-password", "");
 				forum.addDefault("db-host", "localhost:3306");
 				forum.addDefault("db-name", "");
+				forum.addDefault("db-prefix", "");
 				forum.options().copyDefaults(true);
-				
 				forum.save(forumConfig);
-				//^ This is just for testing reasons, but it still 
-				//generates the proper config and sets the proper values/string lists
 				
 				ranks=this.getConfig().getStringList("ranks");
 				for(String s:ranks)
 				{
-					forum.createSection(s+"-group");
-					forum.set(s+"-group", "0");
+					setForumConfig(s);
 				}
-				
-				forum.save(forumConfig);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -112,6 +123,42 @@ public class Main extends JavaPlugin {
 	public void onDisable()
 	{
 		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbcloseNEVERRUNTHIS");
+	}
+	public void setForumConfig(String s)
+	{
+		File forumConfig = new File(Bukkit.getServer().getPluginManager().getPlugin("DonatorExpress").getDataFolder(), "forumGroups.yml");
+		//File forumConfig = new File(getDataFolder(), "forumConfig.yml");
+		YamlConfiguration forum = null;
+		forum=new YamlConfiguration();
+		
+		if(forumConfig.exists())
+		{
+			forum.createSection(s+"-group");
+			forum.set(s+"-group", "0");
+			try {
+				forum.load(forumConfig);
+				forum.save(forumConfig);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			forumConfig.getParentFile().mkdirs();
+			
+			forum.createSection(s+"-group");
+			forum.set(s+"-group", "0");
+			try {
+				forum.load(forumConfig);
+				forum.save(forumConfig);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 		
 	@EventHandler(priority = EventPriority.LOW)
