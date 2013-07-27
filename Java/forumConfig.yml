@@ -1,0 +1,50 @@
+###############################################
+#                                             #
+#        DonatorExpress Forum Config          #
+#                                             #
+###############################################
+
+# Only enable this if you want users to be added to a forum group after they donate
+# If you have a package that is set to expire, you can derank the user on the forums by setting the correct
+# options in [packageName].yml
+# See the wiki for more info on this
+
+enabled: false
+
+# Make sure you only set one of these to true
+mybb: false
+xenforo: false
+ipboard: false
+simplemachines: false
+vbulletin: false
+
+# Note, do not put information in for your DonatorExpress database. This is for your forum database. 
+# If you are using cpanel, be sure to allow outside connections, otherwise you will get a NullPointerException
+
+db-username: ''
+db-password: ''
+db-host: 'localhost'
+db-name: ''
+
+# For the prefix, on setup of your forum, you should have gotten a choice on what you wanted the prefix to be
+# If you didn't change this, great, if you did, hopefully you remember to what
+# For mybb, the prefix is, mybb_
+# For xenforo the prefix is, xf_
+# For ipboard there was no default prefix. Leave this blank if you decided to not put one in
+# For simplemachines, the prefix is smf_
+# For vbulletin there was no default prefix. Leave this black if you decided to not put one in
+
+db-prefix: ''
+
+# Please only make one of these true. If username mode is enabled, then it will try to match the users ingame name
+# to the one in the database. This means, it needs to be an exact match with the forum database
+# Email mode on the other hand, takes the users email from the webportal and trys to match it with the
+# Forum database. This is most likely a better option. If the user does not have either, unfortunately it will
+# have to be manually done
+
+username-mode: false
+email-mode: false
+
+# Don't change this please
+
+version: 1.5

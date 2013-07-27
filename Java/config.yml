@@ -1,0 +1,43 @@
+###############################################
+#                                             #
+#            DonatorExpress Config            #
+#                                             #
+###############################################
+
+# Want metrics enabled? Great leave it as it. 
+metrics: true
+
+# Database username, password, host, and name of the database go here. 
+# If you are using cpanel, make sure that you have allowed outside connections to the database
+# Otherwise, you will get a NullPointerException
+# If you are using kloxo, you are out of luck. Sorry. kloxo does not allow for outside connections to its
+# databases
+
+db-username: ''
+db-password: ''
+db-host: 'localhost'
+db-name: 'donate'
+
+# When a player runs the /donate confirm command, this is displayed to the entire server.
+# %player represents the player
+# %amount represents the amount of tokens 
+# and %currency represents the currency name
+# Don't want a message? Delete everything here then. 
+
+donate-message: '&2%player has just spent %amount %currency'
+
+# Where is your webportal located? This is used for user prompts
+
+portal-location: 'www.'
+
+# The name of the currency that you are using
+
+currency-name: Tokens
+
+# The prefix that you wish to use. Be sure to put a space at the end
+
+prefix: '&c[DonatorExpress] '
+
+# Don't change this please
+
+version: 1.5

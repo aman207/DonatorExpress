@@ -1,114 +1,97 @@
 package net.targetcraft.donatorexpress;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
-public class Main extends JavaPlugin {
+public class Main extends JavaPlugin implements Listener {
 	Connection con;
-	public static boolean update = false;
-	public static String name = "";
 	public void onEnable()
 	{
-		File forumConfig = new File(getDataFolder()+File.separator, "forumConfig.yml");
-		YamlConfiguration forum = null;
-		File forumGroup = new File(getDataFolder()+File.separator, "forumGroups.yml");
-		YamlConfiguration forumGroupYaml = null;
-		
+		File forumConfig = new File(getDataFolder(), "forumConfig.yml");		
 		List<String> ranks = new ArrayList<String>();
 		File file=new File(getDataFolder()+File.separator+"config.yml");
 		
 		if (!file.exists())
 		{
+			getDataFolder().mkdirs();
+			
 			getLogger().info("Configuration not found. Generating...");
-			this.getConfig().addDefault("metrics", "true");
-			this.getConfig().addDefault("auto-update", "true");
-			this.getConfig().addDefault("db-username", "");
-			this.getConfig().addDefault("db-password", "");
-			this.getConfig().addDefault("db-host", "localhost:3306");
-			this.getConfig().addDefault("db-name", "");
-			this.getConfig().addDefault("ranks", ranks);
-			this.getConfig().addDefault("donate-message", "&2%player has just spent %amount %currency");
-			this.getConfig().addDefault("portal-location", "www.");
-			this.getConfig().addDefault("currency-name", "Tokens");
-			this.getConfig().options().copyDefaults(true);
-			this.saveConfig();
+			this.saveDefaultConfig();
 		}
-		
-		if(!forumGroup.exists())
-        {
-        	forumGroup.getParentFile().mkdirs();
-	        forumGroupYaml=new YamlConfiguration();
-	        try {
-				forumGroupYaml.save(forumGroup);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
 		
 		if(!forumConfig.exists())
 		{
-			forumConfig.getParentFile().mkdirs();
-	        forum=new YamlConfiguration();
-	        
-	        try {
-	        	getLogger().info("Forum Configuration not found. Generating...");
-				forum.addDefault("mybb", "false");
-				forum.addDefault("xenforo", "false");
-				forum.addDefault("ipboard", "false");
-				forum.addDefault("phbb", "false");
-				forum.addDefault("simplemachines", "false");
-				forum.addDefault("db-username", "");
-				forum.addDefault("db-password", "");
-				forum.addDefault("db-host", "localhost:3306");
-				forum.addDefault("db-name", "");
-				forum.addDefault("db-prefix", "");
-				forum.options().copyDefaults(true);
-				forum.save(forumConfig);
-				
-				ranks=this.getConfig().getStringList("ranks");
-				for(String s:ranks)
-				{
-					setForumConfig(s);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if(this.getConfig().getBoolean("auto-update")==true)
-		{
-			Updater updater = new Updater(this, "donator-express", this.getFile(), Updater.UpdateType.NO_DOWNLOAD, false);
-			update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE;
-			if(Main.update)
-			{
-				updater = new Updater(this, "donator-express", this.getFile(), Updater.UpdateType.DEFAULT, false);
-			}
-			name = updater.getLatestVersionString();
-		}
-		else
-		{
+			getLogger().info("Forum Configuration not found. Generating...");
 			
+			try {
+				getDataFolder().mkdirs();
+				ranks=this.getConfig().getStringList("ranks");
+				File existingRanks=new File(this.getDataFolder()+file.separator,"packages.yml");
+				
+				if(!existingRanks.exists())
+				{
+					existingRanks.createNewFile();
+					FileConfiguration existingRanksConfig = null;
+					existingRanksConfig=new YamlConfiguration();
+					existingRanksConfig.load(existingRanks);
+					existingRanksConfig.createSection("packages");
+					existingRanksConfig.set("packages", ranks);
+					existingRanksConfig.save(existingRanks);
+				}
+			} catch (IOException | InvalidConfigurationException e1) {
+				e1.printStackTrace();
+			}
+			//All that junk down there copies the forumConfig.yml from the jar to the folder
+			//I don't even know how it works, it just does. 
+			OutputStream out = null;
+			InputStream defaultStream = this.getResource("forumConfig.yml");
+            try {
+            	out = new FileOutputStream(forumConfig);
+                int read = 0;
+                byte[] bytes = new byte[1024];
+
+				while((read = defaultStream.read(bytes)) != -1) {
+				    out.write(bytes, 0, read);
+				}
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			
+			for(String s:ranks)
+			{
+				setForumConfig(s);
+			}
 		}
 		getCommand("donate").setExecutor(new CommandListener(this));
+		Bukkit.getPluginManager().registerEvents(this, this);
 		getServer().dispatchCommand(getServer().getConsoleSender(), "donate dbconnect");		
 		
-		if(this.getConfig().getBoolean("metrics"))
+		if(this.getConfig().getString("metrics").equals("true"))
 		{
 			try {
-		    Metrics metrics = new Metrics(this);
-		    metrics.start();
+				Metrics metrics = new Metrics(this);
+				metrics.start();
+				Logger.getLogger("").log(Level.INFO, "Metrics Enabled for DonatorExpress");
 		} catch (IOException e) {
 		    // Failed to submit the stats :-(
 		}
@@ -126,33 +109,45 @@ public class Main extends JavaPlugin {
 	}
 	public void setForumConfig(String s)
 	{
-		File forumConfig = new File(Bukkit.getServer().getPluginManager().getPlugin("DonatorExpress").getDataFolder(), "forumGroups.yml");
-		//File forumConfig = new File(getDataFolder(), "forumConfig.yml");
+		File packages = new File(Bukkit.getServer().getPluginManager().getPlugin("DonatorExpress").getDataFolder(), s+".yml");		
 		YamlConfiguration forum = null;
 		forum=new YamlConfiguration();
 		
-		if(forumConfig.exists())
+		if(!packages.exists())
 		{
-			forum.createSection(s+"-group");
-			forum.set(s+"-group", "0");
 			try {
-				forum.load(forumConfig);
-				forum.save(forumConfig);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InvalidConfigurationException e) {
-				e.printStackTrace();
+				packages.createNewFile();
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
-		}
-		else
-		{
-			forumConfig.getParentFile().mkdirs();
+			List<String>commands=this.getConfig().getStringList(s+"-commands");
+			List<String>expireCommands = forum.getStringList("packages");
+			expireCommands.add("putCommandsHere");
+			String price = this.getConfig().getString(s);
+			int priceInt=Integer.parseInt(price);
 			
-			forum.createSection(s+"-group");
-			forum.set(s+"-group", "0");
+			forum.createSection("price");
+			forum.createSection("commands");
+			forum.createSection("forum-group");
+			forum.createSection("forum-expire");
+			forum.createSection("forum-expire-group");
+			forum.createSection("expire");
+			forum.createSection("expire-time");
+			forum.createSection("expire-commands");
+			forum.createSection("expire-message");
+			forum.set("price", priceInt);
+			forum.set("forum-group", 0);
+			forum.set("forum-expire", false);
+			forum.set("forum-expire-group", 0);
+			forum.set("commands", commands);
+			forum.set("expire", false);
+			forum.set("expire-time", 0);
+			forum.set("expire-commands", expireCommands);
+			forum.set("expire-message", "&cYour package has expired. You have been deranked");
+			
 			try {
-				forum.load(forumConfig);
-				forum.save(forumConfig);
+				forum.load(packages);
+				forum.save(packages);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InvalidConfigurationException e) {
@@ -160,14 +155,10 @@ public class Main extends JavaPlugin {
 			}
 		}
 	}
-		
-	@EventHandler(priority = EventPriority.LOW)
-	public void playerJoinEvent(PlayerJoinEvent event)
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerLoginEvent e)
 	{
-		Player player = event.getPlayer();
-		if(player.hasPermission("donexpress.admin.update")&&Main.update)
-		{
-			player.sendMessage(ChatColor.GOLD+"[DonatorExpress] "+Main.name+" for Donator Express is available. Reload/restart the server to finish the update");
-		}
+		BukkitTask task = new Expire(e, this).runTaskLater(this, 20);
 	}
 }
