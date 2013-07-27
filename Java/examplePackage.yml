@@ -1,0 +1,47 @@
+# Here you can find a filled out, example of a package config file. With comments. Just for you
+
+# The price is well, the price
+price: 5
+
+# Put the commands that you want to be ran once a user has confirmed their package
+# %player represents the player
+# Put each command on a new line, with a -
+# Note that player commands can not be executed. Anything that a console can do, you can put down here
+commands:
+- manuadd %player Gold
+- give %player diamond 64
+- xp give %player 500
+- eco give %player 12000
+
+# This is shown if a player types /donate info [name]
+# You can use formatting code syntax here
+description:
+- &6Gold package:
+- &cThis gives you, the rank of &6gold!
+- &c500 XP (not levels)
+- &2$12,000
+- &cA big giant &dhug &cfrom the owner!
+
+# This field is optional and it only used if enabled is set to true in forumConfig.yml
+# See the wiki for more info on forum groups and the forum config
+forum-group: 8
+
+# Set this to true if the selected packages expires and you want the player to be deranked on the forums
+forum-expire: true
+
+# This is the group that the play will be put back to once the package expires
+forum-expire-group: 4
+
+# Does this package expire? 
+expire: true
+
+# How long until it expires, in days
+expire-time: 5
+
+# What commands do you want to be executed once the package expires
+expire-commands:
+- manuadd %player default
+
+# This is the message that is displayed to the user once the package expires
+# Note that the plugin checks to see if the player's time is up once they log in
+expire-message: '&cYour Gold package has expired. You have been deranked'
