@@ -2,7 +2,10 @@ package net.targetcraft.donatorexpress;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -85,6 +88,8 @@ public class CommandListener implements Listener, CommandExecutor {
 					packagesConfig.load(packages);
 					
 				    boolean configAdd=false;
+				    boolean rename=false;
+				    
 				    try{
 					sender.sendMessage(prefix()+ChatColor.YELLOW+"Attempting to add "+args[1]+"...");
 					
@@ -109,47 +114,41 @@ public class CommandListener implements Listener, CommandExecutor {
 				    	 File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");
 				    	 FileConfiguration newFileConfig=null;
 			    		 newFileConfig=new YamlConfiguration();
-			    		 
 				    	 
 				    	 if(!newFile.exists())
 				    	 {
-				    		 newFile.createNewFile();
-				    		 newFileConfig.load(newFile);
 				    		 
-				    		 newFileConfig.createSection("price");
-				    		 newFileConfig.createSection("commands");
-				    		 newFileConfig.createSection("description");
-				    		 newFileConfig.createSection("forum-group");
-				    		 newFileConfig.createSection("forum-expire");
-				    		 newFileConfig.createSection("forum-expire-group");
-				    		 newFileConfig.createSection("expire");
-				    		 newFileConfig.createSection("expire-time");
-				    		 newFileConfig.createSection("expire-commands");
-				    		 newFileConfig.createSection("expire-message");
-				    		 
-				    		 List<String>commands=newFileConfig.getStringList("commands");
-				    		 List<String>expireCommands=newFileConfig.getStringList("expire-commands");
-				    		 List<String>description=newFileConfig.getStringList("description");
-						     commands.add("putCommandsHere");
-						     expireCommands.add("putExpireCommandsHere");
-						     
-						     description.add("You can put");
-						     description.add("Multiple lines here");
-						     description.add("To put your description");
-						     description.add("On more than one line");
-						     description.add("&cEven in colour!");
-						     
-						     newFileConfig.set("commands", commands);
-						     newFileConfig.set("price", 0);
-						     newFileConfig.set("description", description);
-						     newFileConfig.set("forum-group", 0);
-						     newFileConfig.set("forum-expire", false);
-						     newFileConfig.set("forum-expire-group", 0);
-						     newFileConfig.set("expire", false);
-						     newFileConfig.set("expire-time", 0);
-						     newFileConfig.set("expire-commands", expireCommands);	
-						     newFileConfig.set("expire-message", "&cYour package has expired. You have been deranked");
-						     newFileConfig.save(newFile);
+						     OutputStream out = null;
+							 InputStream defaultStream = plugin.getResource("[defaultPackageConfiguration].yml");
+							 File defaultPackage = new File(plugin.getDataFolder()+File.separator, "[defaultPackageConfiguration].yml");
+							 
+
+					         try {
+					            	out = new FileOutputStream(defaultPackage);
+					                int read = 0;
+					                byte[] bytes = new byte[1024];
+
+									while((read = defaultStream.read(bytes)) != -1) {
+									    out.write(bytes, 0, read);
+									}
+								    out.close();
+									if(defaultPackage.renameTo(newFile))
+									{
+										rename=true;
+									}
+									else
+									{
+										rename=false;
+									}
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								} catch (NullPointerException e1)
+								{
+									e1.printStackTrace();
+								} catch (SecurityException e1)
+								{
+									e1.printStackTrace();
+								}
 						     
 						     configAdd=true;
 				    	 }
@@ -158,12 +157,17 @@ public class CommandListener implements Listener, CommandExecutor {
 				    		 sender.sendMessage(prefix()+"Error. File already exists");
 				    	 }  
 				     }
-				     if(configAdd)
+				     if(configAdd||rename)
 				     {
 				    	 
 						 packagesConfig.save(packages);
 						 
 				    	 sender.sendMessage(prefix()+ChatColor.GREEN+"Successfully added "+args[1]);
+				     }
+				     else
+				     {
+				    	 sender.sendMessage(prefix()+ChatColor.DARK_RED+"Major error. If the plugin created a file called, [defaultPackageConfiguration].yml NOTIFY THE DEVELOPER RIGHT AWAY");
+				    	 sender.sendMessage(prefix()+ChatColor.RED+"Otherwise, delete "+args[1]+" in packages.yml, and try again");
 				     }
 				     				
 				} catch (ArrayIndexOutOfBoundsException e)
@@ -172,8 +176,6 @@ public class CommandListener implements Listener, CommandExecutor {
 					sender.sendMessage(prefix()+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help for commands");
 				} catch (IOException e) {
 					sender.sendMessage(prefix()+"Error. forumConfig doesn't exist o.O Try to reload the server and try again");
-					e.printStackTrace();
-				} catch (InvalidConfigurationException e) {
 					e.printStackTrace();
 				}
 				}
@@ -590,77 +592,122 @@ public class CommandListener implements Listener, CommandExecutor {
 				{
 					if(!(args[1]==null))
 					{
+						boolean continuePurchase=true;
 						File packages = new File(plugin.getDataFolder()+File.separator, "packages.yml");
 						FileConfiguration packagesConfig=null;
 						packagesConfig=new YamlConfiguration();
 						packagesConfig.load(packages);
 						
-						File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");				    	FileConfiguration newFileConfig=null;
+						File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");				    	
+						FileConfiguration newFileConfig=null;
 			    		newFileConfig=new YamlConfiguration();
 			    		newFileConfig.load(newFile);
 			    		
-						List<String>rank = packagesConfig.getStringList("packages");
-				        List<String>rankCopy=new ArrayList<String>(rank);
-				        
-				        String datRankName=args[1].toLowerCase();
-						int count = 0;
-					    if(rankCopy.contains(datRankName))
-					    {
-					        rankCopy.remove(datRankName);
-					        count++;
-					    }
-					    if(count==1)
-					    {
-							Statement statement=null;
-							String username="'"+sender.getName()+"'";
-							try {
-								statement=con.createStatement();
-									
-								ResultSet result=statement.executeQuery("SELECT `tokens`, `username` FROM dep  WHERE username = "+username);
-								if(result.next())
-								{
-									String tokens=result.getString(1);
-									int rankInt=Integer.parseInt(newFileConfig.getString("price"));//Gets the amount of tokens needed for the specific rank
-									int tokensInt=Integer.parseInt(tokens);//Gets the amount of tokens that a user currently has
-									
-									if(!(rankInt>=tokensInt+1))
-									{
-										String rankSend=args[1];
-										sender.sendMessage(prefix()+ChatColor.YELLOW+"This item costs "+rankInt+" "+VCName+". Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"if you wish to buy this item. To cancel this purchase, type "+ChatColor.GREEN+"/donate cancel");
+			    		
+			    		File userDataFolder = new File(plugin.getDataFolder()+"/userdata"+File.separator);
+			    		File userData = new File(plugin.getDataFolder()+"userdata"+File.separator, sender.getName().toString().toLowerCase()+".yml");
+			    		FileConfiguration userDataConfig = null;
+			    		userDataConfig = new YamlConfiguration();
+			    		
+			    		if(!userDataFolder.exists())
+			    		{
+			    			userDataFolder.mkdir();
+			    		}
+			    		if(newFileConfig.getBoolean("one-time-purchase"))
+			    		{
+			    			if(userData.exists())
+			    			{
+			    				userDataConfig.load(userData);
+			    				List<String>upgradeCheck = userDataConfig.getStringList("one-time-purchases");
+			    				for(String s:upgradeCheck)
+			    				{
+			    					if(s.equalsIgnoreCase(args[1].toLowerCase()))
+			    					{
+			    						continuePurchase=false;
+			    					}
+			    				}
+			    				
+			    			}
+			    			else
+			    			{
+			    				continuePurchase = true;
+			    			}
+			    		}
+			    		else
+			    		{
+			    			continuePurchase=true;
+			    		}
+			    		if(continuePurchase)
+			    		{
+			    			List<String>rank = packagesConfig.getStringList("packages");
+					        List<String>rankCopy=new ArrayList<String>(rank);
+					        
+					        String datRankName=args[1].toLowerCase();
+							int count = 0;
+						    if(rankCopy.contains(datRankName))
+						    {
+						        rankCopy.remove(datRankName);
+						        count++;
+						    }
+						    if(count==1)
+						    {
+								Statement statement=null;
+								String username="'"+sender.getName()+"'";
+								try {
+									statement=con.createStatement();
 										
-										confirm.put("sender", true);
-										rankIntMap.put("rankInt", rankInt);
-										tokensIntMap.put("tokensInt", tokensInt);
-										rankString.put("rankName", rankSend);
+									ResultSet result=statement.executeQuery("SELECT `tokens`, `username` FROM dep  WHERE username = "+username);
+									if(result.next())
+									{
+										String tokens=result.getString(1);
+										int rankInt=Integer.parseInt(newFileConfig.getString("price"));//Gets the amount of tokens needed for the specific rank
+										int tokensInt=Integer.parseInt(tokens);//Gets the amount of tokens that a user currently has
+										
+										if(!(rankInt>=tokensInt+1))
+										{
+											String rankSend=args[1];
+											sender.sendMessage(prefix()+ChatColor.YELLOW+"This item costs "+rankInt+" "+VCName+". Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"if you wish to buy this item. To cancel this purchase, type "+ChatColor.GREEN+"/donate cancel");
+											
+											confirm.put("sender", true);
+											rankIntMap.put("rankInt", rankInt);
+											tokensIntMap.put("tokensInt", tokensInt);
+											rankString.put("rankName", rankSend);
+										}
+										else
+										{
+											sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have enough "+VCName+" to buy that rank!");
+										}
+										
 									}
 									else
 									{
-										sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have enough "+VCName+" to buy that rank!");
+										sender.sendMessage(prefix()+ChatColor.RED+"Error. You have not registered at "+VCName+", or the Server Owner/Administrator has not correctly set up DonatorExpress");
 									}
-									
-								}
-								else
+									statement.close();
+								} catch (SQLException e) {
+									connectToDatabase();
+									sender.sendMessage(prefix()+ChatColor.YELLOW+"The database returned an error. Please tell an Admin or Owner about this problem so they can investigate further");								
+									e.printStackTrace();
+								} catch (NullPointerException e)
 								{
-									sender.sendMessage(prefix()+ChatColor.RED+"Error. You have not registered at "+VCName+", or the Server Owner/Administrator has not correctly set up DonatorExpress");
+									connectToDatabase();
+									sender.sendMessage(prefix()+"Hm. I can't connect to the database. Your server owner may have incorrectly setup the config. Please let him/her know right now!");
+									e.printStackTrace();
+								} catch (ArrayIndexOutOfBoundsException e)
+								{
+									sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
 								}
-								statement.close();
-							} catch (SQLException e) {
-								connectToDatabase();
-								sender.sendMessage(prefix()+ChatColor.YELLOW+"The database returned an error. Please tell an Admin or Owner about this problem so they can investigate further");								e.printStackTrace();
-							} catch (NullPointerException e)
-							{
-								connectToDatabase();
-								sender.sendMessage(prefix()+"Hm. I can't connect to the database. Your server owner may have incorrectly setup the config. Please let him/her know right now!");
-								e.printStackTrace();
-							} catch (ArrayIndexOutOfBoundsException e)
-							{
-								sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
 							}
-						}
-					    else
-					    {
-					    	 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"I could not find that package. Please try again.");
-					    }				    	 
+						    else
+						    {
+						    	 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"I could not find that package. Please try again.");
+						    }
+			    		}
+			    		else
+			    		{
+			    			sender.sendMessage(prefix()+ChatColor.RED+"Error. You have already purchased this package!");
+			    		}
+										    	 
 					}
 				}
 				else
@@ -676,109 +723,125 @@ public class CommandListener implements Listener, CommandExecutor {
 			}
 			else if(args[0].equalsIgnoreCase("upgrade"))
 			{
-				if(sender.hasPermission("donexpress.user.upgrade"))
+				if(sender.hasPermission("donexpress.user"))
 				{
-				try{
-					String VCName=plugin.getConfig().getString("currency-name");
-					Statement statement=null;
-					statement=con.createStatement();
-					String rankAlready = null;
-				
 					if(sender instanceof Player)
 					{
-						boolean hasPurchased=false;
-						String username="'"+sender.getName()+"'";
-						ResultSet result=statement.executeQuery("SELECT `tokens`, `username` FROM purchases  WHERE username = "+username);
-						if(result.next())
-						{
-							//String tokens=result.getString(1);
-							//int tokensInt=Integer.parseInt(tokens);
-					        hasPurchased=true;
-					        
-					        ResultSet result1=statement.executeQuery("SELECT `rank`, `username` FROM purchases  WHERE username = "+username);
-							if(result1.next())
-							{
-								rankAlready=result1.getString(1);
-							}
-						}
-						if(hasPurchased==true)
-						{
-							List<String>rank = plugin.getConfig().getStringList("ranks".toLowerCase());
-					        List<String>rankCopy=new ArrayList<String>(rank);
-					        String datRankName=args[1].toLowerCase();
-					        
-							int count = 0;
-						    if(rankCopy.contains(datRankName))
-						    {
-						        rankCopy.remove(datRankName);
-						        count++;
-						    }
-						    if(count==1)
-						    {
-								ResultSet result2=statement.executeQuery("SELECT `tokens`, `username` FROM dep  WHERE username = "+username);
-								if(result2.next())
-								{
-									String tokens=result2.getString(1);
-									//String rankLookup=plugin.getConfig().getString(args[1]);
-									int rankAlreadyInt=Integer.parseInt(plugin.getConfig().getString(rankAlready));
-									int rankInt1=Integer.parseInt(plugin.getConfig().getString(datRankName));//Gets the amount of tokens needed for the specific rank
-									int tokensInt=Integer.parseInt(tokens);//Gets the amount of tokens that a user currently has
-									int rankAlreadyCheck=rankInt1-rankAlreadyInt;
-									if(rankAlreadyCheck>0)
+						String VCName=plugin.getConfig().getString("currency-name");
+						File packages = new File(plugin.getDataFolder()+File.separator, "packages.yml");
+						FileConfiguration packagesConfig=null;
+						packagesConfig=new YamlConfiguration();
+						packagesConfig.load(packages);
+			    		
+			    		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString()+".yml");
+			    		FileConfiguration userDataConfig=null;
+			    		userDataConfig=new YamlConfiguration();
+			    		if(userData.exists())
+			    		{
+				    		userDataConfig.load(userData);
+				    		
+				    		String currentRank = userDataConfig.getString("current-package");
+							
+							File oldFile = new File(plugin.getDataFolder()+File.separator ,currentRank+".yml");				    	
+							FileConfiguration oldFileConfig=null;
+				    		oldFileConfig=new YamlConfiguration();
+				    		oldFileConfig.load(oldFile);
+				    		
+				    		String nextRank = oldFileConfig.getString("next-package".toLowerCase());
+				    		if(nextRank.equalsIgnoreCase("null"))
+				    		{
+				    			sender.sendMessage(prefix()+ChatColor.RED+"Error. You have not previously purchased an upgradable package or there is no more packages to upgrade to");
+				    		}
+				    		else
+				    		{
+				    			File newFile = new File(plugin.getDataFolder()+File.separator ,nextRank+".yml");				    	
+								FileConfiguration newFileConfig=null;
+					    		newFileConfig=new YamlConfiguration();
+					    		newFileConfig.load(newFile);
+					    		
+					    		List<String>rank = packagesConfig.getStringList("packages");
+						        List<String>rankCopy=new ArrayList<String>(rank);
+						        
+								int count = 0;
+							    if(rankCopy.contains(nextRank))
+							    {
+							        rankCopy.remove(nextRank);
+							        count++;
+							    }
+							    if(count==1)
+							    {
+									Statement statement=null;
+									String username="'"+sender.getName()+"'";
+									try {
+										statement=con.createStatement();
+											
+										ResultSet result=statement.executeQuery("SELECT `tokens`, `username` FROM dep  WHERE username = "+username);
+										if(result.next())
+										{
+											String tokens=result.getString(1);
+											int rankInt=Integer.parseInt(oldFileConfig.getString("next-package-price"));//Gets the amount of tokens needed for the specific rank
+											int tokensInt=Integer.parseInt(tokens);//Gets the amount of tokens that a user currently has
+											
+											if(!(rankInt>=tokensInt+1))
+											{
+												String rankSend=oldFileConfig.getString("next-package");
+												sender.sendMessage(prefix()+ChatColor.YELLOW+"You are upgrading to: "+rankSend+" which costs: "+rankInt+" "+VCName+". Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"if you wish to buy this item. To cancel this purchase, type "+ChatColor.GREEN+"/donate cancel");
+												
+												confirm.put("sender", true);
+												rankIntMap.put("rankInt", rankInt);
+												tokensIntMap.put("tokensInt", tokensInt);
+												rankString.put("rankName", rankSend);
+											}
+											else
+											{
+												sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have enough "+VCName+" to buy that package!");
+											}
+											
+										}
+										else
+										{
+											sender.sendMessage(prefix()+ChatColor.RED+"Error. You have not registered at "+VCName+", or the Server Owner/Administrator has not correctly set up DonatorExpress");
+										}
+										statement.close();
+									} catch (SQLException e) {
+										connectToDatabase();
+										sender.sendMessage(prefix()+ChatColor.YELLOW+"The database returned an error. Please tell an Admin or Owner about this problem so they can investigate further");								
+										e.printStackTrace();
+									} catch (NullPointerException e)
 									{
-									if(!(rankInt1>=tokensInt+1))
+										connectToDatabase();
+										sender.sendMessage(prefix()+"Hm. I can't connect to the database. Your server owner may have incorrectly setup the config. Please let him/her know right now!");
+										e.printStackTrace();
+									} catch (ArrayIndexOutOfBoundsException e)
 									{
-										String rankSend=args[1];
-										sender.sendMessage(prefix()+ChatColor.YELLOW+"Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"to confirm that you wish to buy this rank. Type "+ChatColor.GREEN+"/donate cancel "+ChatColor.YELLOW+"to cancel the purchase");
-									    
-										confirm.clear();
-									    rankIntMap.clear();
-									    tokensIntMap.clear();
-									    rankString.clear();
-									    
-										confirm.put("sender", true);
-										rankIntMap.put("rankInt", rankInt1);
-										tokensIntMap.put("tokensInt", tokensInt);
-										rankString.put("rankName", rankSend);
-									}
-									else
-									{
-										sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have enough "+VCName+" to buy that rank!");
-									}
-									}
-									else
-									{
-										sender.sendMessage(prefix()+ChatColor.YELLOW+"You are trying to get a package lower than the one that you have already. Or you are tying to get one that you already have. Try again");
+										sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
 									}
 								}
-						      }
-						else
-						{
-							sender.sendMessage(prefix()+ChatColor.YELLOW+"You need to buy a package before you can upgrade!");
-						}
-				
-					}
+							    else
+							    {
+							    	 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"I could not find that package. Please try again.");
+							    }
+				    		}
+				    		
+				    		
+			    		}
+			    		else
+			    		{
+			    			sender.sendMessage(prefix()+ChatColor.RED+"Error. You have not purchased a one time package yet! Ask an Admin/Owner about this problem");
+			    		}
 
 					}
 					else
 					{
-						sender.sendMessage(prefix()+ChatColor.YELLOW+"This command can only be run by a player");
+						sender.sendMessage(prefix()+ChatColor.RED+"Error. You need to be a player to do this command");
 					}
-					statement.close();
-				    }catch(SQLException e)
-				{
-					connectToDatabase();
-					sender.sendMessage(prefix()+ChatColor.YELLOW+"The database returned an error. Please tell an Admin or Owner about this problem so they can investigate further");					e.printStackTrace();
-				} catch (ArrayIndexOutOfBoundsException e)
-				{
-					sender.sendMessage(prefix()+ChatColor.RED+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
-				}
 				}
 				else
 				{
 					noPermission(sender);
 				}
 			}
+			
 			else if(args[0].equalsIgnoreCase("confirm"))
 			{
 				String VCName=plugin.getConfig().getString("currency-name");
@@ -858,6 +921,44 @@ public class CommandListener implements Listener, CommandExecutor {
 							syncForum(sender, rank);
 						}
 						
+						File userDataFolder = new File(plugin.getDataFolder()+"/userdata"+File.separator);
+			    		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString()+".yml");
+			    		FileConfiguration userDataConfig = null;
+			    		userDataConfig = new YamlConfiguration();
+			    		
+			    		if(!userDataFolder.exists())
+			    		{
+			    			userDataFolder.mkdir();
+			    		}
+			    		if(newFileConfig.getBoolean("one-time-purchase"))
+			    		{
+			    			if(!userData.exists())
+			    			{
+			    				userData.createNewFile();
+			    				userDataConfig.load(userData);
+			    				
+			    				userDataConfig.createSection("current-package");
+			    				userDataConfig.createSection("one-time-purchases");
+			    				
+			    				List<String>oneTimePurchase = userDataConfig.getStringList("one-time-purchase");
+			    				oneTimePurchase.add(rank);
+			    				
+			    				userDataConfig.set("current-package", rank);
+			    				userDataConfig.set("one-time-purchases", oneTimePurchase);
+			    				
+			    				userDataConfig.save(userData);
+			    			}
+			    			else
+			    			{
+			    				userDataConfig.load(userData);
+			    				List<String>oneTimePurchase = userDataConfig.getStringList("one-time-purchase");
+			    				oneTimePurchase.add(rank);
+			    				
+			    				userDataConfig.set("one-time-purchases", oneTimePurchase);
+			    				userDataConfig.save(userData);
+			    			}
+			    		}
+						
 						tokensIntMap.clear();
 						rankIntMap.clear();
 						rankString.clear();
@@ -930,7 +1031,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				     }
 				     else
 				     {
-				    	 sender.sendMessage(prefix()+ChatColor.DARK_RED+"Error. Existing rank could not be found");
+				    	 sender.sendMessage(prefix()+ChatColor.DARK_RED+"Error. Existing package could not be found");
 				     }	
 				}catch (ArrayIndexOutOfBoundsException e)
 				{
@@ -946,41 +1047,71 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				if(sender.hasPermission("donexpress.user"))
 				{
+					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Cancelling...");
 					if(sender instanceof Player)
 					{
-					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Cancelling...");
-					if(confirm.get("sender"))
-					{
-						confirm.clear();
-					    rankIntMap.clear();
-					    tokensIntMap.clear();
-					    rankString.clear();
+						if(confirm.get("sender"))
+						{
+							confirm.clear();
+						    rankIntMap.clear();
+						    tokensIntMap.clear();
+						    rankString.clear();
+						}
+						else
+						{
+							boolean no=true;
+							if(confirmDelBoolean.get("confirm"))
+							{
+								confirmDel.clear();
+							    confirmDel2.clear();
+							    confirmDelBoolean.clear();
+							    
+							    sender.sendMessage(ChatColor.RED+"[DonatorExpress] Cancled the deletion of the package");
+							    no=false;
+							}
+							else
+							{
+								sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not requested for a package to be deleted");
+							}
+							if(no)
+							{
+								sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not started a purchase a package");
+							}
+						}
 					}
 					else
 					{
 						boolean no=true;
-						if(confirmDelBoolean.get("confirm"))
+						try
 						{
-							confirmDel.clear();
-						    confirmDel2.clear();
-						    
-						    sender.sendMessage(ChatColor.RED+"[DonatorExpress] Cancled the deletion of the package");
-						    no=false;
+							
+						if(!confirmDelBoolean.get("confirm"))
+						{
+							sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not requested for a package to be deleted");
+							no=false;
 						}
 						else
 						{
+							confirmDel.clear();
+						    confirmDel2.clear();
+						    confirmDelBoolean.clear();
+						    
+						    sender.sendMessage(ChatColor.RED+"[DonatorExpress] Canceled the deletion of the package");
+						    no=false;
+						}
+						
+						}catch(NullPointerException e)
+						{
+							e.printStackTrace();
+							no=false;
 							sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not requested for a package to be deleted");
 						}
+
 						if(no)
 						{
 							sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not started a purchase a package");
 						}
 						
-					}
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Error. This can only be ran by a player");
 					}
 				}
 				else
@@ -1286,7 +1417,7 @@ public class CommandListener implements Listener, CommandExecutor {
 	public void error(CommandSender sender) {
 		sender.sendMessage(prefix()+ChatColor.YELLOW
 				+ "I did not recognize the command you entered or you did not enter in the correct arguments for the command");
-		sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
+		sender.sendMessage(prefix()+ChatColor.RED+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
 	}
 
 	public void commandUsage(CommandSender sender) {
@@ -1312,6 +1443,7 @@ public class CommandListener implements Listener, CommandExecutor {
 		}
 		if (sender.hasPermission("donexpress.admin.delete")) {
 			sender.sendMessage(ChatColor.GOLD + "/donate delete [package]");
+			sender.sendMessage(ChatColor.GOLD + "/donate confirmdel");
 		}
 		if (sender.hasPermission("donexpress.admin.addvc")) {
 			sender.sendMessage(ChatColor.GOLD

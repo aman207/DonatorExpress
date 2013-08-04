@@ -4,7 +4,7 @@
 #                                             #
 ###############################################
 
-# Want metrics enabled? Great leave it as it. This helps us determines how much you love us <3
+# Want metrics enabled? Great leave it as it. 
 metrics: true
 
 # Database username, password, host, and name of the database go here. 
@@ -22,7 +22,7 @@ db-name: 'donate'
 # %player represents the player
 # %amount represents the amount of tokens 
 # and %currency represents the currency name
-# Don't want a message? Delete everything here then. 
+# Don't want a message? Delete everything in the ' ' then
 
 donate-message: '&2%player has just spent %amount %currency'
 

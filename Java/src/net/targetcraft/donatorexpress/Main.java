@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -109,32 +110,67 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	public void setForumConfig(String s)
 	{
-		File packages = new File(Bukkit.getServer().getPluginManager().getPlugin("DonatorExpress").getDataFolder(), s+".yml");		
+		File packages = new File(this.getDataFolder()+File.separator, s+".yml");		
 		YamlConfiguration forum = null;
 		forum=new YamlConfiguration();
 		
-		if(!packages.exists())
+		/**if(!packages.exists())
 		{
 			try {
 				packages.createNewFile();
 			} catch (IOException e1) {
 				e1.printStackTrace();
-			}
+			}*/
 			List<String>commands=this.getConfig().getStringList(s+"-commands");
 			List<String>expireCommands = forum.getStringList("packages");
+			List<String>description=forum.getStringList("description");
+			
 			expireCommands.add("putCommandsHere");
+			
+			description.add("You can put");
+		    description.add("Multiple lines here");
+		    description.add("To put your description");
+		    description.add("On more than one line");
+		    description.add("&cEven in colour!");			
+			
 			String price = this.getConfig().getString(s);
 			int priceInt=Integer.parseInt(price);
 			
-			forum.createSection("price");
-			forum.createSection("commands");
-			forum.createSection("forum-group");
-			forum.createSection("forum-expire");
-			forum.createSection("forum-expire-group");
-			forum.createSection("expire");
-			forum.createSection("expire-time");
-			forum.createSection("expire-commands");
-			forum.createSection("expire-message");
+			OutputStream out = null;
+			InputStream defaultStream = this.getResource("[defaultPackageConfiguration].yml");
+			File defaultPackage = new File(this.getDataFolder()+File.separator, "[defaultPackageConfiguration].yml");
+
+	         try {
+	            	out = new FileOutputStream(defaultPackage);
+	                int read = 0;
+	                byte[] bytes = new byte[1024];
+
+					while((read = defaultStream.read(bytes)) != -1) {
+					    out.write(bytes, 0, read);
+					}
+				    out.close();
+					if(defaultPackage.renameTo(packages))
+					{
+						
+					}
+					else
+					{
+						Logger.getLogger("").severe("[DonatorExpress] MAJOR ERROR. COULD NOT UPGRADE TO NEW CONFIG SYSTEM");
+						Logger.getLogger("").severe("[DonatorExpress] MAJOR ERROR. COULD NOT UPGRADE TO NEW CONFIG SYSTEM");
+						Logger.getLogger("").severe("[DonatorExpress] MAJOR ERROR. COULD NOT UPGRADE TO NEW CONFIG SYSTEM");
+						Logger.getLogger("").severe("[DonatorExpress] MAJOR ERROR. COULD NOT UPGRADE TO NEW CONFIG SYSTEM");
+						Logger.getLogger("").severe("[DonatorExpress] NOTIFY DEVELOPER ABOUT THIS RIGHT AWAY");
+						Logger.getLogger("").severe("[DonatorExpress] ERROR OCCURED WHEN TRYING TO ADD "+s);
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (NullPointerException e1)
+				{
+					e1.printStackTrace();
+				} catch (SecurityException e1)
+				{
+					e1.printStackTrace();
+				}
 			forum.set("price", priceInt);
 			forum.set("forum-group", 0);
 			forum.set("forum-expire", false);
@@ -154,7 +190,7 @@ public class Main extends JavaPlugin implements Listener {
 				e.printStackTrace();
 			}
 		}
-	}
+	
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerLoginEvent e)
