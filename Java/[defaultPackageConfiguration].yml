@@ -1,0 +1,68 @@
+###############################################
+#                                             #
+#       DonatorExpress Package Config         #
+#                                             #
+###############################################
+
+# Simple, the price
+
+price: 0
+
+# Put any commands that you want to be executed once a player buys a rank
+# Any command that can be executed in the console, you can put here
+# One command per line
+# %player represents the player
+
+commands:
+- manuadd %player gold
+
+# When a player types /donate info [package] this is displayed
+description:
+- 'You can put'
+- 'Multiple lines here'
+- 'To put your description'
+- 'On more than one line'
+- '&cEven in colour!'
+
+# This is only used when enabled is set to true is Forum Config
+# See more info on this in the wiki
+
+forum-group: 0
+forum-expire: false
+forum-expire-group: 0
+
+# If set to true, then this package can only be bought once, and can be upgraded
+# NOTE: Make sure that you keep EVERYTHING in lowercase when entering in the info for next-package
+
+one-time-purchase: false
+
+# When a user types /donate upgrade, they will be upgraded to this package
+# If this is the last upgrade, leave this at null
+
+next-package: 'null'
+
+# How much should the next package cost? Regardless of what is set in the next-package config file
+
+next-package-price: 0
+
+# Do you want this rank to expire? If so, set this to true
+
+expire: false
+
+# How long until they are deranked? In days
+
+expire-time: 0
+
+# What commands do you want to be executed once the package expires?
+# %player represents the player
+
+expire-commands:
+- manuadd %player default
+
+# What message do you want to be displayed to the player when the package expires?
+
+expire-message: '&cYour package has expired. You have been deranked'
+
+# Don't change this please
+
+version: 1.5
