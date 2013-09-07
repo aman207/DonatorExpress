@@ -1,6 +1,6 @@
 name: DonatorExpress
 main: net.targetcraft.donatorexpress.Main
-version: 0.6.1
+version: 1.5
 description: DonatorExpress
 website: http://dev.bukkit.org/bukkit-plugins/donator-express/
 author: aman207
@@ -9,14 +9,13 @@ authors: [AzroWear]
 commands:
     donate:
      description: General command for all of DonatorExpress's needs
-     aliases: [donator, rank]
+     aliases: [donator, rank, buy]
 permissions:
     donexpress.*:
         description: Gives access to all commands
         children:
             donexpress.admin.*: true
             donexpress.user: true
-            donexpress.user.upgrade: true
         default: op
     donexpress.admin.*:
         description: Access to all admin commands
@@ -33,7 +32,6 @@ permissions:
             donexpress.admin.recent: true
             donexpress.admin.update: true
             donexpress.user: true
-            donexpress.user.upgrade: true
     donexpress.admin.basic:
         description: Basic access to admin commands
         default: op
@@ -73,7 +71,4 @@ permissions:
         default: op
     donexpress.user:
         description: Any commands that a user would use
-        default: op
-    donexpress.user.upgrade:
-        description: Allows the user to upgrade their rank
         default: op

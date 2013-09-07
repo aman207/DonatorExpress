@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -49,7 +50,7 @@ public class CommandListener implements Listener, CommandExecutor {
 	HashMap<String, List<String>> confirmDel2 = new HashMap<String, List<String>>();
 	HashMap<String, Boolean> confirmDelBoolean = new HashMap<String, Boolean>();
 	
-	public void connectToDatabase() {
+	public void connectToDatabase() {		
 		String dbUsername = plugin.getConfig().getString("db-username");
 		String dbPassword = plugin.getConfig().getString("db-password");
 		String dbHost = plugin.getConfig().getString("db-host");
@@ -58,8 +59,16 @@ public class CommandListener implements Listener, CommandExecutor {
 		try {
 			con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
 		} catch (SQLException e) {
-			Logger.getLogger(ChatColor.RED
-					+ "[DonatorExpress] Error. All has failed. The database is most likely dead. Or it is having problems. Give it a moment, and try again");
+			Logger.getLogger(plugin.getDataFolder()+"log.log").log(Level.SEVERE, "Error while trying to connect to the database");			
+			e.printStackTrace();
+			Logger.getLogger(plugin.getDataFolder()+"log.log").log(Level.SEVERE, "Error while trying to connect to the database.");
+		    
+			if(plugin.getConfig().getBoolean("disable-on-database-error"))
+			{
+				plugin.getPluginLoader().disablePlugin(plugin);
+				Logger.getLogger(plugin.getDataFolder()+"log.log").log(Level.SEVERE, "DonatorExpress disabled. Reload server to re enable");
+			}
+
 		}
 	}
 
@@ -111,16 +120,19 @@ public class CommandListener implements Listener, CommandExecutor {
 				    	 ranks.add(args[1].toLowerCase());
 				    	 packagesConfig.set("packages", ranks);
 				    	 
-				    	 File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");
-				    	 FileConfiguration newFileConfig=null;
-			    		 newFileConfig=new YamlConfiguration();
+				    	 File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,args[1].toLowerCase()+".yml");
+				    	 File newFileLocation = new File(plugin.getDataFolder()+"/packages"+File.separator);
 				    	 
+				    	 if(!newFileLocation.exists())
+				    	 {
+				    		 newFileLocation.mkdirs();
+				    	 }
 				    	 if(!newFile.exists())
 				    	 {
 				    		 
 						     OutputStream out = null;
 							 InputStream defaultStream = plugin.getResource("[defaultPackageConfiguration].yml");
-							 File defaultPackage = new File(plugin.getDataFolder()+File.separator, "[defaultPackageConfiguration].yml");
+							 File defaultPackage = new File(plugin.getDataFolder()+"/packages"+File.separator, "[defaultPackageConfiguration].yml");
 							 
 
 					         try {
@@ -132,6 +144,7 @@ public class CommandListener implements Listener, CommandExecutor {
 									    out.write(bytes, 0, read);
 									}
 								    out.close();
+								    
 									if(defaultPackage.renameTo(newFile))
 									{
 										rename=true;
@@ -175,7 +188,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					configAdd=false;
 					sender.sendMessage(prefix()+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help for commands");
 				} catch (IOException e) {
-					sender.sendMessage(prefix()+"Error. forumConfig doesn't exist o.O Try to reload the server and try again");
+					sender.sendMessage(prefix()+ChatColor.DARK_RED+"Error. forumConfig doesn't exist o.O Try to reload the server and try again");
 					e.printStackTrace();
 				}
 				}
@@ -185,6 +198,11 @@ public class CommandListener implements Listener, CommandExecutor {
 					noPermission(sender);
 				}
 				}
+			}
+			
+			else if(args[0].equalsIgnoreCase("update"))
+			{
+				UpdateCommand.updateCommand(sender);
 			}
 		   
 			else if (args[0].equalsIgnoreCase("delete"))
@@ -199,7 +217,8 @@ public class CommandListener implements Listener, CommandExecutor {
 						packagesConfig=new YamlConfiguration();
 						packagesConfig.load(packages);
 						
-						File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");				    	FileConfiguration newFileConfig=null;
+						File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,args[1].toLowerCase()+".yml");				    	
+						FileConfiguration newFileConfig=null;
 			    		newFileConfig=new YamlConfiguration();
 			    		newFileConfig.load(newFile);
 						
@@ -257,7 +276,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					packagesConfig=new YamlConfiguration();
 					packagesConfig.load(packages);
 					
-					File newFile = new File(plugin.getDataFolder()+File.separator ,packageName.toLowerCase()+".yml");
+					File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,packageName.toLowerCase()+".yml");
 			    	FileConfiguration newFileConfig=null;
 		    		newFileConfig=new YamlConfiguration();
 		    		newFileConfig.load(newFile);
@@ -312,7 +331,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					packagesConfig=new YamlConfiguration();
 					packagesConfig.load(packages);
 					
-					File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");
+					File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,args[1].toLowerCase()+".yml");
 					FileConfiguration newFileConfig=null;
 		    		newFileConfig=new YamlConfiguration();
 		    		newFileConfig.load(newFile);
@@ -362,7 +381,7 @@ public class CommandListener implements Listener, CommandExecutor {
 							}
 							else
 							{
-								sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have a Donator Express account. Please visit "+website+" to register.");
+								sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have a DonatorExpress account. Please visit "+website+" to register.");
 							}
 							statement.close();
 						} catch (SQLException e) {
@@ -598,7 +617,7 @@ public class CommandListener implements Listener, CommandExecutor {
 						packagesConfig=new YamlConfiguration();
 						packagesConfig.load(packages);
 						
-						File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");				    	
+						File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,args[1].toLowerCase()+".yml");				    	
 						FileConfiguration newFileConfig=null;
 			    		newFileConfig=new YamlConfiguration();
 			    		newFileConfig.load(newFile);
@@ -742,7 +761,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				    		
 				    		String currentRank = userDataConfig.getString("current-package");
 							
-							File oldFile = new File(plugin.getDataFolder()+File.separator ,currentRank+".yml");				    	
+							File oldFile = new File(plugin.getDataFolder()+"/pacakges"+File.separator ,currentRank+".yml");				    	
 							FileConfiguration oldFileConfig=null;
 				    		oldFileConfig=new YamlConfiguration();
 				    		oldFileConfig.load(oldFile);
@@ -794,7 +813,7 @@ public class CommandListener implements Listener, CommandExecutor {
 											}
 											else
 											{
-												sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have enough "+VCName+" to buy that package!");
+												sender.sendMessage(prefix()+ChatColor.YELLOW+"You do not have enough "+VCName);
 											}
 											
 										}
@@ -810,7 +829,7 @@ public class CommandListener implements Listener, CommandExecutor {
 									} catch (NullPointerException e)
 									{
 										connectToDatabase();
-										sender.sendMessage(prefix()+"Hm. I can't connect to the database. Your server owner may have incorrectly setup the config. Please let him/her know right now!");
+										sender.sendMessage(prefix()+"Hm. I can't connect to the database. Your server owner may have incorrectly setup the config, or the database is having problems. Please let him/her know right now!");
 										e.printStackTrace();
 									} catch (ArrayIndexOutOfBoundsException e)
 									{
@@ -857,7 +876,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				if(confirm.get("sender"))
 				{
 					String rank=rankString.get("rankName");
-					File newFile = new File(plugin.getDataFolder()+File.separator ,rank.toLowerCase()+".yml");
+					File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,rank.toLowerCase()+".yml");
 			    	FileConfiguration newFileConfig=null;
 		    		newFileConfig=new YamlConfiguration();
 		    		newFileConfig.load(newFile);
@@ -981,6 +1000,8 @@ public class CommandListener implements Listener, CommandExecutor {
 				}
 			}
 			}
+			
+			/**
 			else if(args[0].equalsIgnoreCase("edit"))
 			{
 				String VCName=plugin.getConfig().getString("currency-name");
@@ -992,7 +1013,7 @@ public class CommandListener implements Listener, CommandExecutor {
 						packagesConfig=new YamlConfiguration();
 						packagesConfig.load(packages);
 						
-						File newFile = new File(plugin.getDataFolder()+File.separator ,args[1].toLowerCase()+".yml");				    	FileConfiguration newFileConfig=null;
+						File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,args[1].toLowerCase()+".yml");			    	FileConfiguration newFileConfig=null;
 			    		newFileConfig=new YamlConfiguration();
 			    		newFileConfig.load(newFile);
 			    		
@@ -1009,9 +1030,11 @@ public class CommandListener implements Listener, CommandExecutor {
 				     }
 				     if(count==1)
 				     {
-				    	 newFileConfig.set("price", args[2]);
+				    	 int price=Integer.parseInt(args[2]);
+				    	 newFileConfig.set("price", price);
 				    	 boolean allClear=true;
 				    	 try{
+				    		 
 				    	 @SuppressWarnings("unused")
 						 int checkForWords=Integer.parseInt(newFileConfig.getString("price"));
 				    	 }catch(NumberFormatException e)
@@ -1021,11 +1044,12 @@ public class CommandListener implements Listener, CommandExecutor {
 				    	 if(allClear==true)
 				    	 {
 				    		 newFileConfig.save(newFile);
+				    		 
 							 sender.sendMessage(prefix()+ChatColor.GREEN+"Successful");
 				    	 }
 				    	 else
 				    	 {
-				    		 sender.sendMessage(prefix()+ChatColor.YELLOW+"You can't have decimals or letters as virtual currency. You fool. You almost broke the plugin.");
+				    		 sender.sendMessage(prefix()+ChatColor.YELLOW+"You can't have decimals or letters as a price. You fool. You almost broke the plugin.");
 				    	 }
 						 
 				     }
@@ -1043,11 +1067,12 @@ public class CommandListener implements Listener, CommandExecutor {
 					noPermission(sender);
 				}
 			}
+			*/
 			else if(args[0].equalsIgnoreCase("cancel"))
 			{
 				if(sender.hasPermission("donexpress.user"))
 				{
-					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"Cancelling...");
+					sender.sendMessage(ChatColor.RED+prefix()+ChatColor.YELLOW+"Cancelling...");
 					if(sender instanceof Player)
 					{
 						if(confirm.get("sender"))
@@ -1066,16 +1091,16 @@ public class CommandListener implements Listener, CommandExecutor {
 							    confirmDel2.clear();
 							    confirmDelBoolean.clear();
 							    
-							    sender.sendMessage(ChatColor.RED+"[DonatorExpress] Cancled the deletion of the package");
+							    sender.sendMessage(ChatColor.RED+prefix()+" Cancled the deletion of the package");
 							    no=false;
 							}
 							else
 							{
-								sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not requested for a package to be deleted");
+								sender.sendMessage(ChatColor.RED+prefix()+"Error. You have not requested for a package to be deleted");
 							}
 							if(no)
 							{
-								sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not started a purchase a package");
+								sender.sendMessage(ChatColor.RED+prefix()+"Error. You have not started a purchase a package");
 							}
 						}
 					}
@@ -1087,7 +1112,7 @@ public class CommandListener implements Listener, CommandExecutor {
 							
 						if(!confirmDelBoolean.get("confirm"))
 						{
-							sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not requested for a package to be deleted");
+							sender.sendMessage(ChatColor.RED+prefix()+"Error. You have not requested for a package to be deleted");
 							no=false;
 						}
 						else
@@ -1096,7 +1121,7 @@ public class CommandListener implements Listener, CommandExecutor {
 						    confirmDel2.clear();
 						    confirmDelBoolean.clear();
 						    
-						    sender.sendMessage(ChatColor.RED+"[DonatorExpress] Canceled the deletion of the package");
+						    sender.sendMessage(ChatColor.RED+prefix()+"Canceled the deletion of the package");
 						    no=false;
 						}
 						
@@ -1104,12 +1129,12 @@ public class CommandListener implements Listener, CommandExecutor {
 						{
 							e.printStackTrace();
 							no=false;
-							sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not requested for a package to be deleted");
+							sender.sendMessage(ChatColor.RED+prefix()+"Error. You have not requested for a package to be deleted");
 						}
 
 						if(no)
 						{
-							sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. You have not started a purchase a package");
+							sender.sendMessage(ChatColor.RED+prefix()+"Error. You have not started a purchase a package");
 						}
 						
 					}
@@ -1169,9 +1194,10 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				sender.sendMessage(ChatColor.YELLOW+"***************************************");
 				sender.sendMessage(ChatColor.RED+"");
-				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.5 Beta");
+				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.5");
 				sender.sendMessage(ChatColor.AQUA+"Plugin developed by: aman207");
 				sender.sendMessage(ChatColor.AQUA+"Webportal developed by: AzroWear");
+				sender.sendMessage(ChatColor.AQUA+"http://bit.ly/DonExp");
 				sender.sendMessage(ChatColor.RED+"");
 				sender.sendMessage(ChatColor.YELLOW+"***************************************");
 			}
@@ -1218,7 +1244,7 @@ public class CommandListener implements Listener, CommandExecutor {
 	}
 	public void syncForum(CommandSender sender, String group)
 	{
-		File forumGroup = new File(plugin.getDataFolder()+File.separator, group.toLowerCase()+".yml");
+		File forumGroup = new File(plugin.getDataFolder()+"/packages"+File.separator, group.toLowerCase()+".yml");
 		File forumConfig = new File(plugin.getDataFolder()+File.separator, "forumConfig.yml");
 		
 		YamlConfiguration forumGroupYaml = null;
@@ -1414,12 +1440,6 @@ public class CommandListener implements Listener, CommandExecutor {
 		return colourize(prefix);
 	}
 
-	public void error(CommandSender sender) {
-		sender.sendMessage(prefix()+ChatColor.YELLOW
-				+ "I did not recognize the command you entered or you did not enter in the correct arguments for the command");
-		sender.sendMessage(prefix()+ChatColor.RED+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
-	}
-
 	public void commandUsage(CommandSender sender) {
 		sender.sendMessage(ChatColor.GOLD + "Correct command usage");
 		sender.sendMessage(ChatColor.GOLD + "/donate buy [package]");
@@ -1427,10 +1447,8 @@ public class CommandListener implements Listener, CommandExecutor {
 		sender.sendMessage(ChatColor.GOLD + "/donate cancel");
 		sender.sendMessage(ChatColor.GOLD + "/donate check");
 		sender.sendMessage(ChatColor.GOLD + "/donate list");
-		sender.sendMessage(ChatColor.GOLD + "/donate info [package]e");
-		if (sender.hasPermission("donexpress.user.upgrade")) {
-			sender.sendMessage(ChatColor.GOLD + "/donate upgrade [package]");
-		}
+		sender.sendMessage(ChatColor.GOLD + "/donate info [package]");
+		sender.sendMessage(ChatColor.GOLD + "/donate upgrade");
 		if (sender.hasPermission("donexpress.admin.checkvc")) {
 			sender.sendMessage(ChatColor.GOLD + "/donate checkvc [username]");
 		}

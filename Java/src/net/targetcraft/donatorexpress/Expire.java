@@ -94,7 +94,7 @@ public class Expire extends BukkitRunnable {
 				packagesConfig=new YamlConfiguration();
 				packagesConfig.load(packages);
 				
-				File newFile = new File(plugin.getDataFolder()+File.separator ,rankGet+".yml");
+				File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,rankGet+".yml");
 		    	FileConfiguration newFileConfig=null;
 	    		newFileConfig=new YamlConfiguration();
 	    		newFileConfig.load(newFile);
@@ -113,7 +113,6 @@ public class Expire extends BukkitRunnable {
 						if(newFileConfig.getBoolean("forum-expire")||newFileConfig.getString("forum-expire").equals("true"))
 						{	
 							forumDerank(rankGet);
-							Logger.getLogger("").log(Level.INFO, "It gets to here");	
 						}
 						List<String> expireCommands = newFileConfig.getStringList("expire-commands");
 						for(String s:expireCommands)
@@ -147,7 +146,7 @@ public class Expire extends BukkitRunnable {
 	
 	public void forumDerank(String group) throws FileNotFoundException, IOException, InvalidConfigurationException
 	{
-		File forumGroup = new File(plugin.getDataFolder()+File.separator, group+".yml");
+		File forumGroup = new File(plugin.getDataFolder()+"/packages"+File.separator, group+".yml");
 		File forumConfig = new File(plugin.getDataFolder()+File.separator, "forumConfig.yml");
 		
 		FileConfiguration forumGroupYaml = null;

@@ -7,6 +7,21 @@
 # Want metrics enabled? Great leave it as it. 
 metrics: true
 
+# Do you want to be notified about new updates? Great leave it as is. Otherwise, make update-check false
+# Note: this will not download any updates, it will just notify you on login
+# Note2: Dev builds have not been approved by the dev bukkit staff and should be used with caution
+
+update-check: true
+dev-update-check: false
+
+# This will disable the plugin if a connection to the database can not be made at any time while the server is online
+# You need to restart your server in order to re enable the plugin
+
+disable-on-database-error: false
+
+# Available languages: en, 
+language: en
+
 # Database username, password, host, and name of the database go here. 
 # If you are using cpanel, make sure that you have allowed outside connections to the database
 # Otherwise, you will get a NullPointerException
@@ -15,7 +30,7 @@ metrics: true
 
 db-username: ''
 db-password: ''
-db-host: 'localhost'
+db-host: 'localhost:3306'
 db-name: 'donate'
 
 # When a player runs the /donate confirm command, this is displayed to the entire server.
@@ -28,7 +43,7 @@ donate-message: '&2%player has just spent %amount %currency'
 
 # Where is your webportal located? This is used for user prompts
 
-portal-location: 'www.'
+portal-location: 'www.example.com/donate'
 
 # The name of the currency that you are using
 

@@ -1,3 +1,16 @@
+# Hello
+# First of all, if you read the wiki on upgrading from 0.8 > 1.5 there is no need to read this
+# If you have not read the wiki, then read on
+#
+# Many things have been updated and changed
+# If you want to see a full list, please go see the wiki
+# In this update, you need to delete your config.yml, but not to worry, all your packages, with commands are still there
+# just, the comments are not
+# SO, in this file you will see an example of the new packagename.yml
+# Note this file does nothing, just an example
+# BEGIN:
+
+
 ###############################################
 #                                             #
 #       DonatorExpress Package Config         #
@@ -6,7 +19,7 @@
 
 # Simple, the price
 
-price: 0
+price: 10
 
 # Put any commands that you want to be executed once a player buys a rank
 # Any command that can be executed in the console, you can put here
@@ -15,38 +28,36 @@ price: 0
 
 commands:
 - manuadd %player gold
+- msg %player Thanks for donating!!
 
 # When a player types /donate info [package] this is displayed
 description:
-- 'You can put'
-- 'Multiple lines here'
-- 'To put your description'
-- 'On more than one line'
-- '&cEven in colour!'
+- '****Gold Package****'
+- 'This gives you:'
+- '/kit gold'
+- '$10000'
+- 'And a special message from the owner <3'
 
 # This is only used when enabled is set to true is Forum Config
-# forum-group has to be a number
-# forum-expire and forum-expire-group are only used when the package expires.
 # See more info on this in the wiki
 
-forum-group: 0
+forum-group: 8
 forum-expire: false
 forum-expire-group: 0
 
 # If set to true, then this package can only be bought once, and can be upgraded
 # NOTE: Make sure that you keep EVERYTHING in lowercase when entering in the info for next-package
-# Note2: This feature is experimental and there is most likely a few bugs with it
 
-one-time-purchase: false
+one-time-purchase: true
 
 # When a user types /donate upgrade, they will be upgraded to this package
 # If this is the last upgrade, leave this at null
 
-next-package: 'null'
+next-package: 'diamond'
 
 # How much should the next package cost? Regardless of what is set in the next-package config file
 
-next-package-price: 0
+next-package-price: 5
 
 # Do you want this rank to expire? If so, set this to true
 
