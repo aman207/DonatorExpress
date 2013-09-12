@@ -9,7 +9,7 @@ authors: [AzroWear]
 commands:
     donate:
      description: General command for all of DonatorExpress's needs
-     aliases: [donator, rank, buy]
+     aliases: [donator, rank, buy, package]
 permissions:
     donexpress.*:
         description: Gives access to all commands
@@ -33,20 +33,17 @@ permissions:
             donexpress.admin.update: true
             donexpress.user: true
     donexpress.admin.basic:
-        description: Basic access to admin commands
+        description: Basic access to admin commands. Gives checkvc and update notifications
         default: op
         children:
-            donexpress.admin.checkvc: true 
-            donexpress.admin.ranklist: true
+            donexpress.admin.checkvc: true
             donexpress.admin.dbconnect: true
+            donexpress.admin.update: true
     donexpress.admin.add:
         description: Adds a rank to the config
         default: op
     donexpress.admin.delete:
         description: Deletes a rank from the config
-        default: op
-    donexpress.admin.edit:
-        description: Edits the amount of virtual currency for each rank
         default: op
     donexpress.admin.checkvc:
         description: Checks the amount of virtual currency that a player has

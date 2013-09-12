@@ -19,7 +19,8 @@ dev-update-check: false
 
 disable-on-database-error: false
 
-# Available languages: en, 
+# FEATURE NOT ENABLED
+# Will be in next version however
 language: en
 
 # Database username, password, host, and name of the database go here. 

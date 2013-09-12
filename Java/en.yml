@@ -1,0 +1,73 @@
+ADDATTEMPTING : 'Attempting to add '
+
+ALREADYEXISTS : 'Error. Package already exists'
+
+CANCEL1 : 'Cancelling...'
+
+CANCEL2 : 'Canceled the deletion of the package'
+
+CANCEL3 : 'Error. You have not requested for a package to be deleted'
+
+CANCEL4 : 'Error. You have not started a purchase a package'
+
+CANCEL5 : 'Error. You have not requested for a package to be deleted'
+
+CANCEL6 : 'Canceled the deletion of the package'
+
+CANCEL7 : 'Error. You have not requested for a package to be deleted'
+
+CANCEL8 : 'Error. You have not started a purchase a package'
+
+COMMANDUSAGE : 'Correct command usage'
+
+CURRENTLISTPACKAGES1 : 'Current list of packages:'
+
+CURRENTLISTPACKAGES2 : 'To view a description of each package, type /donate info [packageName]'
+
+DBERROR : 'Error while trying to connect to the database'
+
+DONATOREXPRESS : 'DonatorExpress'
+
+HOWMUCH1 : 'This item costs: '
+
+HOWMUCH2 : 'Type /donate confirm if you wish to buy this item. To cancel this purchase, type /donate cancel'
+
+INVALIDSYNTAX : 'Error. Invalid syntax. Type /donate help for commands'
+
+NOACCOUNT1 : 'You do not have a DonatorExpress account. Please visit '
+
+NOACCOUNT2 : 'to register'
+
+NOTENOUGH : 'You do not have enough'
+
+NOWHAVE : 'You now have:'
+
+PACAKGENOTPURCHASED : 'Error. You have not previously purchased an upgradable package or there is no more packages to upgrade to'
+
+PACKAGEALREADYPURCHASED : 'Error. You have already purchased this package'
+
+PACKAGENOTFOUND : 'I could not find that package. Please try again.'
+
+PACKAGENOTTHERE : 'Error. Package is not currently in the packages.yml file.'
+
+PLUGINDISABLED : 'DonatorExpress disabled. Reload server to re enable'
+
+REMOVE1 : 'To confirm the deletion of this package, type /donate confirmdel'
+
+REMOVE2 : 'This can not be undone'
+
+REMOVE3 : 'Or type /donate cancel to cancel'
+
+REMOVEATTEMPTING : 'Attempting to remove'
+
+REQUESTREMOVENOTDONE : 'Error. You have not requested for a package to be deleted'
+
+SUCCESS : 'Success!'
+
+TOKENSRETURN : 'You currently have: '
+
+UPGRADETO1 : 'You are upgrading to '
+
+UPGRADETO2 : 'which costs'
+
+USERNOTFOUND : 'User was not found in the database'

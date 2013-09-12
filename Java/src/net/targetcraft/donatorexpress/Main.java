@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -132,43 +131,41 @@ public class Main extends JavaPlugin implements Listener {
 	{
 		if(this.getConfig().getString("language").equals("en"))
 		{
-			captions.put("dberror", "Error while trying to connect to the database");
-			captions.put("plugindisabled", "DonatorExpress disabled. Reload server to re enable");
-			captions.put("addattempting", "Attempting to add ");
-			captions.put("alreadyexists", "Error. Package already exists");
-			captions.put("success", ChatColor.GREEN+"Success!");
-			captions.put("invalidsyntax", "Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
-			captions.put("removeattempting", "Attempting to remove ");
-			captions.put("packagenotthere", "Error. Package is not currently in the packages.yml file.");
-			captions.put("remove1", "To confirm the deletion of this package, type "+ChatColor.GREEN+"/donate confirmdel");
-			captions.put("remove2", ChatColor.RED+"This can not be undone");
-			captions.put("remove3", ChatColor.RED+"Or type "+ChatColor.GREEN+"/donate cancel"+ChatColor.RED+" to cancel");
-			captions.put("requestremovenotdone", "Error. You have not requested for a package to be deleted");
-			captions.put("currentlistpackages1", ChatColor.AQUA+"Current list of packages:");
-			captions.put("currentlistpackages2", ChatColor.AQUA+"To view a description of each package, type /donate info [packageName]");
-			captions.put("tokensreturn", ChatColor.AQUA+"You currently have: ");
-			captions.put("noaccount1", ChatColor.YELLOW+"You do not have a DonatorExpress account. Please visit ");
-			captions.put("noaccount2", ChatColor.YELLOW+" to register.");
-			captions.put("usernotfound", ChatColor.YELLOW+"User was not found in the database");
-			captions.put("howmuch1", ChatColor.YELLOW+"This item costs ");
-			captions.put("howmuch2", ". Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"if you wish to buy this item. To cancel this purchase, type "+ChatColor.GREEN+"/donate cancel");
-			captions.put("notenough", ChatColor.YELLOW+"You do not have enough ");
-			captions.put("packagealreadypurchased", ChatColor.RED+"Error. You have already purchased this package!");
-			captions.put("packagenotfound", ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"I could not find that package. Please try again.");
-			captions.put("pacakgenotpurchased", ChatColor.RED+"Error. You have not previously purchased an upgradable package or there is no more packages to upgrade to");
-			captions.put("upgradeto1", ChatColor.YELLOW+"You are upgrading to:");
-			captions.put("upgradeto2", ChatColor.YELLOW+" which costs: ");
-			captions.put("upgradeto3", ". Type "+ChatColor.GREEN+"/donate confirm "+ChatColor.YELLOW+"if you wish to buy this item. To cancel this purchase, type "+ChatColor.GREEN+"/donate cancel");
-			captions.put("nowhave", ChatColor.AQUA+"You now have: ");
-			captions.put("cancel1", ChatColor.YELLOW+"Cancelling...");
-			captions.put("cancel2", ChatColor.RED+"Cancled the deletion of the package");
-			captions.put("cancel3", ChatColor.RED+"Error. You have not requested for a package to be deleted");
-			captions.put("cancel4", ChatColor.RED+"Error. You have not started a purchase a package");
-			captions.put("cancel5", ChatColor.RED+"Error. You have not requested for a package to be deleted");
-			captions.put("cancel6", ChatColor.RED+"Canceled the deletion of the package");
-			captions.put("cancel7", ChatColor.RED+"Error. You have not requested for a package to be deleted");
-			captions.put("cancel8", ChatColor.RED+"Error. You have not started a purchase a package");
-			captions.put("commandusage", ChatColor.GOLD + "Correct command usage");
+			OutputStream out = null;
+			File en=new File(this.getDataFolder()+"/languages"+File.separator, "en.yml");
+			en.mkdirs();
+			InputStream defaultStream = this.getResource("en.yml");
+            try {
+            	out = new FileOutputStream(en);
+                int read = 0;
+                byte[] bytes = new byte[1024];
+
+				while((read = defaultStream.read(bytes)) != -1) {
+				    out.write(bytes, 0, read);
+				}
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if(this.getConfig().getString("language").equals("fr"))
+		{
+			OutputStream out = null;
+			File fr=new File(this.getDataFolder()+"/languages"+File.separator, "fr.yml");
+			fr.mkdirs();
+			InputStream defaultStream = this.getResource("fr.yml");
+            try {
+            	out = new FileOutputStream(fr);
+                int read = 0;
+                byte[] bytes = new byte[1024];
+
+				while((read = defaultStream.read(bytes)) != -1) {
+				    out.write(bytes, 0, read);
+				}
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
@@ -191,7 +188,7 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	public void setForumConfig(String s)
 	{
-		// This is only used for upgrading from 0.8 > 1.5
+		// This is only used for upgrading from 0.6 > 1.5
 		File packages = new File(this.getDataFolder()+"/packages"+File.separator, s+".yml");		
 		YamlConfiguration forum = null;
 		forum=new YamlConfiguration();
@@ -204,7 +201,7 @@ public class Main extends JavaPlugin implements Listener {
 			OutputStream out = null;
 			InputStream defaultStream = this.getResource("[defaultPackageConfiguration].yml");
 			File defaultPackage = new File(this.getDataFolder()+"/packages"+File.separator, "[defaultPackageConfiguration].yml");
-			File defaultPackageFolder = new File(this.getDataFolder()+"/package"+File.separator);
+			File defaultPackageFolder = new File(this.getDataFolder()+"/packages"+File.separator);
 			if(!defaultPackageFolder.exists())
 			{
 				defaultPackageFolder.mkdir();
@@ -243,28 +240,18 @@ public class Main extends JavaPlugin implements Listener {
 				}
 	         
 	         OutputStream out2 = null;
-	         OutputStream out3 = null;
 	         InputStream in2 = this.getResource("#####READ_ME_FIRST#####.yml");
 	         File readmefirst = new File(this.getDataFolder()+File.separator, "#####READ_ME_FIRST#####.yml");
-	         File packageReadmeFirst = new File(this.getDataFolder()+"/packages"+File.separator, "#####READ_ME_FIRST#####.yml");
 	         
 	         try {
-				out2 = new FileOutputStream(readmefirst);
-				out3 = new FileOutputStream(packageReadmeFirst);
-				
+				out2 = new FileOutputStream(readmefirst);				
 	             int read = 0;
 	             byte[] bytes = new byte[1024];
 
 					while((read = in2.read(bytes)) != -1) {
 					    out2.write(bytes, 0, read);
-					}
-					
-					while((read = in2.read(bytes)) != -1) {
-					    out3.write(bytes, 0, read);
-					}
-					
+					}					
 				    out2.close();
-				    out3.close();
 			} catch (FileNotFoundException e2) {
 				e2.printStackTrace();
 			} catch (IOException e) {

@@ -1,5 +1,5 @@
 # Hello
-# First of all, if you read the wiki on upgrading from 0.8 > 1.5 there is no need to read this
+# First of all, if you read the wiki on upgrading from 0.6 > 1.5 there is no need to read this
 # If you have not read the wiki, then read on
 #
 # Many things have been updated and changed
@@ -7,7 +7,7 @@
 # In this update, you need to delete your config.yml, but not to worry, all your packages, with commands are still there
 # just, the comments are not
 # SO, in this file you will see an example of the new packagename.yml
-# Note this file does nothing, just an example
+# Note this file does nothing, just to be used for reference
 # BEGIN:
 
 

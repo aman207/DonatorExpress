@@ -31,7 +31,6 @@ public class Update extends BukkitRunnable implements Listener {
 	
 	public void run()
 	{
-		//This one is ran after someone logs in
 		if(e.getPlayer().hasPermission("donexpress.admin.update"))
 		{
 			if(plugin.getConfig().getBoolean("update-check")||plugin.getConfig().getBoolean("dev-update-check"))
@@ -98,10 +97,11 @@ public class Update extends BukkitRunnable implements Listener {
 						e.getPlayer().sendMessage(ChatColor.YELLOW+"Your version: "+version);
 						e.getPlayer().sendMessage(ChatColor.YELLOW+"New version: "+updateCheck.getString("version"));
 						e.getPlayer().sendMessage(ChatColor.YELLOW+"Download it here: http://bit.ly/DonExp");
+						e.getPlayer().sendMessage(ChatColor.YELLOW+updateCheck.getString("notes"));
 					}
 					else
 					{
-						e.getPlayer().sendMessage(ChatColor.YELLOW+"No new update is available for DonatorExpress");
+						//Do Nothing
 					}
 				}
 				else if(plugin.getConfig().getBoolean("dev-update-check"))
@@ -188,10 +188,11 @@ public class Update extends BukkitRunnable implements Listener {
 						e.getPlayer().sendMessage(ChatColor.YELLOW+"Your version: "+version);
 						e.getPlayer().sendMessage(ChatColor.YELLOW+"New version: "+updateCheck.getString("version"));
 						e.getPlayer().sendMessage(ChatColor.YELLOW+"Download it here: http://bit.ly/DonExp");
+						e.getPlayer().sendMessage(ChatColor.YELLOW+updateCheck.getString("notes"));
 					}
 					else
 					{
-						e.getPlayer().sendMessage(ChatColor.YELLOW+"No new update is available for DonatorExpress");
+						//Do nothing
 					}
 				}
 				else if(plugin.getConfig().getBoolean("dev-update-check"))

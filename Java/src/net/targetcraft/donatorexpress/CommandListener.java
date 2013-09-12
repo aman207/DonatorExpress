@@ -50,7 +50,46 @@ public class CommandListener implements Listener, CommandExecutor {
 	HashMap<String, List<String>> confirmDel2 = new HashMap<String, List<String>>();
 	HashMap<String, Boolean> confirmDelBoolean = new HashMap<String, Boolean>();
 	
+	//File language = new File(plugin.getDataFolder()+"/languages", plugin.getConfig().getString("language"));
+	//File english = new File(plugin.getDataFolder()+"/languages", "en.yml");
+	//FileConfiguration languageConfig=null;
+	
+	String ADDATTEMPTING=null;
+	String ALREADYEXISTS=null;
+	String CANCEL1= null;
+	String CANCEL2 = null;
+	String CANCEL3=null;
+    String CANCEL4=null;
+    String CANCEL5=null;
+    String CANCEL6=null;
+    String CANCEL7=null;
+    String CANCEL8=null;
+    String COMMANDUSAGE=null;
+    String CURRENTLISTPACKAGES1=null;
+    String CURRENTLISTPACKAGES2=null;
+    String DBERROR=null;
+    
+
 	public void connectToDatabase() {		
+		/**
+		languageConfig=new YamlConfiguration();
+		try {
+			languageConfig.load(language);
+		} catch (FileNotFoundException e1) {
+			try {
+				Logger.getLogger("").warning("[DonatorExpress] Could not find the language specified in the config. Using English");
+				languageConfig.load(english);
+			} catch (IOException
+					| InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (InvalidConfigurationException e1) {
+			e1.printStackTrace();
+		}
+		*/
 		String dbUsername = plugin.getConfig().getString("db-username");
 		String dbPassword = plugin.getConfig().getString("db-password");
 		String dbHost = plugin.getConfig().getString("db-host");
@@ -200,11 +239,6 @@ public class CommandListener implements Listener, CommandExecutor {
 				}
 			}
 			
-			else if(args[0].equalsIgnoreCase("update"))
-			{
-				UpdateCommand.updateCommand(sender);
-			}
-		   
 			else if (args[0].equalsIgnoreCase("delete"))
 			{
 				if(sender.hasPermission("donexpress.admin.delete"))
@@ -620,11 +654,17 @@ public class CommandListener implements Listener, CommandExecutor {
 						File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,args[1].toLowerCase()+".yml");				    	
 						FileConfiguration newFileConfig=null;
 			    		newFileConfig=new YamlConfiguration();
-			    		newFileConfig.load(newFile);
-			    		
+			    		try
+			    		{
+			    			newFileConfig.load(newFile);
+			    			
+			    		}catch(FileNotFoundException e)
+			    		{
+			    			//Do nothing as it is handled down below. 
+			    		}
 			    		
 			    		File userDataFolder = new File(plugin.getDataFolder()+"/userdata"+File.separator);
-			    		File userData = new File(plugin.getDataFolder()+"userdata"+File.separator, sender.getName().toString().toLowerCase()+".yml");
+			    		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString().toLowerCase()+".yml");
 			    		FileConfiguration userDataConfig = null;
 			    		userDataConfig = new YamlConfiguration();
 			    		
@@ -714,12 +754,12 @@ public class CommandListener implements Listener, CommandExecutor {
 									e.printStackTrace();
 								} catch (ArrayIndexOutOfBoundsException e)
 								{
-									sender.sendMessage(ChatColor.RED+"[DonatorExpress] Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
+									sender.sendMessage(prefix()+ChatColor.RED+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help "+ChatColor.RED+"for commands");
 								}
 							}
 						    else
 						    {
-						    	 sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.YELLOW+"I could not find that package. Please try again.");
+						    	 sender.sendMessage(prefix()+ChatColor.YELLOW+"I could not find that package. Please try again.");
 						    }
 			    		}
 			    		else
@@ -731,7 +771,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				}
 				else
 				{
-					sender.sendMessage(ChatColor.RED+"[DonatorExpress] "+ChatColor.DARK_RED+"Error. This command can only be preformed by a player");
+					sender.sendMessage(prefix()+ChatColor.DARK_RED+"Error. This command can only be preformed by a player");
 				}
 				}
 				else
@@ -758,10 +798,9 @@ public class CommandListener implements Listener, CommandExecutor {
 			    		if(userData.exists())
 			    		{
 				    		userDataConfig.load(userData);
-				    		
 				    		String currentRank = userDataConfig.getString("current-package");
 							
-							File oldFile = new File(plugin.getDataFolder()+"/pacakges"+File.separator ,currentRank+".yml");				    	
+							File oldFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,currentRank+".yml");				    	
 							FileConfiguration oldFileConfig=null;
 				    		oldFileConfig=new YamlConfiguration();
 				    		oldFileConfig.load(oldFile);
@@ -773,7 +812,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				    		}
 				    		else
 				    		{
-				    			File newFile = new File(plugin.getDataFolder()+File.separator ,nextRank+".yml");				    	
+				    			File newFile = new File(plugin.getDataFolder()+"/packages"+File.separator ,nextRank+".yml");				    	
 								FileConfiguration newFileConfig=null;
 					    		newFileConfig=new YamlConfiguration();
 					    		newFileConfig.load(newFile);
@@ -970,7 +1009,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			    			else
 			    			{
 			    				userDataConfig.load(userData);
-			    				List<String>oneTimePurchase = userDataConfig.getStringList("one-time-purchase");
+			    				List<String>oneTimePurchase = userDataConfig.getStringList("one-time-purchases");
 			    				oneTimePurchase.add(rank);
 			    				
 			    				userDataConfig.set("one-time-purchases", oneTimePurchase);
@@ -1480,5 +1519,4 @@ public class CommandListener implements Listener, CommandExecutor {
 		sender.sendMessage(prefix()+ChatColor.YELLOW
 				+ "Error. You do not have permission to do that!");
 	}
-
 }
