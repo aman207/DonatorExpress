@@ -1,0 +1,110 @@
+
+ADDATTEMPTING : 'Tentative d'ajout'
+
+
+ALREADYEXISTS : 'Erreur. Package existe déjà'
+
+
+CANCEL1 : 'Annulation en cours ...'
+
+
+CANCEL2 : 'Annulé la suppression du paquet'
+
+
+CANCEL3 : 'Erreur. Vous n'avez pas demandé pour un paquet doit être supprimé'
+
+
+CANCEL4 : 'Erreur. Vous n'avez pas commencé à l'achat d'un forfait'
+
+
+CANCEL5 : 'Erreur. Vous n'avez pas demandé pour un paquet doit être supprimé'
+
+
+CANCEL6 : 'Annulé la suppression du paquet'
+
+
+CANCEL7 : 'Erreur. Vous n'avez pas demandé pour un paquet doit être supprimé'
+
+
+CANCEL8 : 'Erreur. Vous n'avez pas commencé à l'achat d'un forfait'
+
+
+COMMANDUSAGE : 'Utilisation de la commande correcte'
+
+
+CURRENTLISTPACKAGES1 : 'Liste actuelle des colis:'
+
+
+CURRENTLISTPACKAGES2 : 'Pour afficher une description de chaque paquet, tapez /donate info [packageName]'
+
+
+DBERROR : 'Erreur lors de la tentative de connexion à la base de données'
+
+
+DONATOREXPRESS : 'DonatorExpress'
+
+
+HOWMUCH1 : 'Cela coûte article:'
+
+
+HOWMUCH2 : 'Tapez /donate confirm si vous souhaitez acheter cet objet. Pour annuler cet achat, le type /donate cancel'
+
+
+INVALIDSYNTAX : 'Erreur. Une syntaxe non valide. Tapez /donate help pour les commandes'
+
+
+NOACCOUNT1 : 'Vous n'avez pas de compte DonatorExpress. S'il vous plaît visitez:'
+
+
+NOACCOUNT2 : 's'inscrire'
+
+
+NOTENOUGH : 'Vous n'avez pas assez'
+
+
+NOWHAVE : 'Vous avez maintenant:'
+
+
+PACAKGENOTPURCHASED : 'Erreur. Vous n'avez pas encore acheté un forfait évolutif ou il n'ya pas plus de paquets à mettre à jour'
+
+
+PACKAGEALREADYPURCHASED : 'Erreur. Vous avez déjà acheté ce package'
+
+
+PACKAGENOTFOUND : 'Je ne pouvais pas trouver ce package. S'il vous plaît essayer de nouveau.'
+
+
+PACKAGENOTTHERE : 'Erreur. Package n'est pas actuellement dans le fichier packages.yml.'
+
+
+PLUGINDISABLED : 'DonatorExpress désactivée. Recharger serveur pour permettre à nouveau'
+
+
+REMOVE1 : 'Pour confirmer la suppression de ce package, tapez /donate confirmdel'
+
+
+REMOVE2 : 'Cela ne peut pas être annulée'
+
+
+REMOVE3 : 'Ou type /donate cancel pour annuler'
+
+
+REMOVEATTEMPTING : 'Tenter de retirer'
+
+
+REQUESTREMOVENOTDONE : 'Erreur. Vous n'avez pas demandé pour un paquet doit être supprimé'
+
+
+SUCCESS : 'Sucess!'
+
+
+TOKENSRETURN : 'Vous avez actuellement:'
+
+
+UPGRADETO1 : 'Vous mettez à niveau'
+
+
+UPGRADETO2 : 'dont les coûts'
+
+
+USERNOTFOUND : 'L'utilisateur n'a pas été trouvé dans la base de données'
