@@ -37,7 +37,6 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public void onEnable()
 	{
-		setupEconomy();
 		initializeLanguageFile();
 		Language lang = new Language(this);
 		lang.languageInitialize();
@@ -138,7 +137,14 @@ public class Main extends JavaPlugin implements Listener {
 		Database testConnect = new Database(this);
 		
 		Bukkit.getPluginManager().registerEvents(this, this);
-		Bukkit.getPluginManager().registerEvents(new SignEvent(this), this);
+		if(setupEconomy())
+		{
+			Bukkit.getPluginManager().registerEvents(new SignEvent(this), this);
+		}
+		else
+		{
+			Logger.getLogger("").warning("[DonatorExpress] Vault not found, disabling Sign feature");
+		}
 		Bukkit.getPluginManager().registerEvents(new CommandListener(this), this);
 		
 		if(this.getConfig().getString("metrics").equals("true"))
@@ -268,19 +274,6 @@ public class Main extends JavaPlugin implements Listener {
 				}
 			}
 		}
-	}
-	
-	public static String getPhrase(String message)
-	{
-		if(captions.containsKey(message)) 
-		{
-			return colourize(captions.get(message));
-		}
-		else
-		{
-			return "Error. Missing translation for: "+message;
-		}
-		
 	}
 	
 	public static String colourize(String message) 

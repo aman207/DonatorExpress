@@ -212,7 +212,7 @@ public class SignEvent implements Listener {
 		List<String>ranks = packagesConfig.getStringList("packages");
 		List<String>ranks2=new ArrayList<String>(ranks);
 		
-		if(block.getType() == Material.SIGN_POST || block.getType() == Material.WALL_SIGN)
+		if(e.getClickedBlock().getType() == Material.SIGN_POST || e.getClickedBlock().getType()  == Material.WALL_SIGN)
 		{
 			Sign sign = (Sign) block.getState();
 			String[] lines = sign.getLines();
@@ -250,7 +250,9 @@ public class SignEvent implements Listener {
 						boolean allGood=true;
 						boolean transactionSucessful=false;
 						
-						double getTokensAmount = plugin.getConfig().getDouble("costToBuyToken");						
+						double getTokensAmount = plugin.getConfig().getDouble("costToBuyToken");
+						e.getPlayer().sendMessage(Double.toString(getTokensAmount));
+						e.getPlayer().sendMessage(Double.toString(econ.getBalance(e.getPlayer().getName())));
 						
 						try
 						{
