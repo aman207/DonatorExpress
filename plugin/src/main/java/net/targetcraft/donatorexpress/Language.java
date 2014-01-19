@@ -269,7 +269,7 @@ public class Language {
 			lang.put("SIGN_TRANSACTIONERROR", spanishConfig.getString("SIGN_TRANSACTIONERROR"));
 			lang.put("SIGN_FOR", spanishConfig.getString("SIGN_FOR"));
 		}
-		else if(plugin.getConfig().getString("lanauge").equals("du"))
+		else if(plugin.getConfig().getString("language").equals("du"))
 		{
 			File dutch = new File(plugin.getDataFolder()+"/languages", "du.yml");
 			FileConfiguration dutchConfig = null;
@@ -325,6 +325,7 @@ public class Language {
 			lang.put("SUCCESS", dutchConfig.getString("SUCCESS"));
 			lang.put("SUCCESSREMOVE", dutchConfig.getString("SUCCESSREMOVE"));
 			lang.put("TOKENSRETURN", dutchConfig.getString("TOKENSRETURN"));
+			lang.put("TOKENSRETURN2", dutchConfig.getString("TOKENSRETURN2"));
 			lang.put("UPGRADETO1", dutchConfig.getString("UPGRADETO1"));
 			lang.put("UPGRADETO2", dutchConfig.getString("UPGRADETO2"));
 			lang.put("USERNOTFOUND", dutchConfig.getString("USERNOTFOUND"));
