@@ -1,0 +1,4 @@
+<Files ipn_errors.log>
+order deny,allow
+deny from all
+</Files>
