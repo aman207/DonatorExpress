@@ -9,17 +9,18 @@ metrics: true
 
 # Do you want to be notified about new updates? Great leave it as is. Otherwise, make update-check false
 # Note: this will not download any updates, it will just notify you on login
+# Note2: Dev builds have not been approved by the dev bukkit staff and should be used with caution
 
 update-check: true
+dev-update-check: true
 
 # This will disable the plugin if a connection to the database can not be made at any time while the server is online
 # You need to restart your server in order to re enable the plugin
 
-disable-on-database-error: false
+disable-on-database-error: true
 
-# Available languages:
-# English (en), French (fr), Spanish (es), Dutch (du)
-# Reload the server for the language change to take effect
+# FEATURE NOT ENABLED
+# Will be in next version however
 language: en
 
 # Database username, password, host, and name of the database go here. 
@@ -29,7 +30,7 @@ language: en
 # databases
 
 db-username: 'root'
-db-password: 'root'
+db-password: ''
 db-host: 'localhost:3306'
 db-name: 'donate'
 
@@ -43,24 +44,16 @@ donate-message: '&2%player has just spent %amount %currency'
 
 # Where is your webportal located? This is used for user prompts
 
-portal-location: 'www.example.com/donate'
+portal-location: 'www.civi-craft.com/donate'
 
 # The name of the currency that you are using
 
 currency-name: Tokens
 
-# How much does it cost to buy 1 token? 
-# How much does it cost to sell 1 token?
-# If this doesn't apply to you, no need to change it
-# Note these two options require vault
-
-costToBuyToken: 500.0
-costToSellToken: 150.0
-
 # The prefix that you wish to use. Be sure to put a space at the end
 
-prefix: '&c[DonatorExpress] '
+prefix: '&c[CiviCraft] '
 
 # Don't change this please
 
-version: 1.6
+version: 1.5

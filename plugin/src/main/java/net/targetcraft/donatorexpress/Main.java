@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +28,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class Main extends JavaPlugin implements Listener {
 	Connection con;
-	private static HashMap<String, String> captions;
 	
 	public static boolean update = false;
 	public static String name = "";
@@ -145,6 +143,9 @@ public class Main extends JavaPlugin implements Listener {
 		{
 			Logger.getLogger("").warning("[DonatorExpress] Vault not found, disabling Sign feature");
 		}
+		
+		
+		
 		Bukkit.getPluginManager().registerEvents(new CommandListener(this), this);
 		
 		if(this.getConfig().getString("metrics").equals("true"))
@@ -391,7 +392,8 @@ public class Main extends JavaPlugin implements Listener {
 					e.getPlayer().sendMessage(ChatColor.YELLOW+"An update for DonatorExpress is available");
 					e.getPlayer().sendMessage(ChatColor.YELLOW+"New version: "+name);
 					e.getPlayer().sendMessage(ChatColor.YELLOW+"Your version: "+thisVersion);
-					e.getPlayer().sendMessage(ChatColor.YELLOW+"Download it here: http://dev.bukkit.org/bukkit-plugins/donator-express");
+					e.getPlayer().sendMessage(ChatColor.YELLOW+"Download it here: ");
+					e.getPlayer().sendMessage(ChatColor.YELLOW+updater.getLatestFileLink());
 				}
 			}
 		}

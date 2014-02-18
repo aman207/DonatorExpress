@@ -196,6 +196,8 @@ public class SignEvent implements Listener {
 		Block block = e.getClickedBlock();
 		String tokensName = plugin.getConfig().getString("currency-name");
 		
+		if(e.getClickedBlock() == null) return;
+		
 		File packages = new File(plugin.getDataFolder()+File.separator, "packages.yml");
 		FileConfiguration packagesConfig=null;
 		packagesConfig=new YamlConfiguration();

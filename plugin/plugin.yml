@@ -1,8 +1,8 @@
 name: DonatorExpress
 main: net.targetcraft.donatorexpress.Main
-version: 1.6
+version: 1.6.1
 description: DonatorExpress
-website: http://dev.bukkit.org/bukkit-plugins/donator-express/
+website: http://aman207.net/wiki
 author: aman207
 authors: [AzroWear] 
 softdepend: [Vault]

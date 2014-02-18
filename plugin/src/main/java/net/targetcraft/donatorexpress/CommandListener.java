@@ -631,14 +631,6 @@ public class CommandListener implements Listener, CommandExecutor {
 			    		}
 			    		if(continuePurchase)
 			    		{
-			    			if(args[0].equals(plugin.getConfig().getString("currency-name")))
-			    			{
-			    				
-			    			}
-			    			else
-			    			{
-			    				
-			    			}
 			    			List<String>rank = packagesConfig.getStringList("packages");
 					        List<String>rankCopy=new ArrayList<String>(rank);
 					        
@@ -703,7 +695,7 @@ public class CommandListener implements Listener, CommandExecutor {
 								} catch (ArrayIndexOutOfBoundsException e)
 								{
 									sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
-								}
+								} 
 							}
 						    else
 						    {
@@ -801,6 +793,8 @@ public class CommandListener implements Listener, CommandExecutor {
 												userDataConfig.set("confirm.packagePrice", rankInt);
 												userDataConfig.set("confirm.package", rankSend);
 												userDataConfig.set("confirm.tokensInt", tokensInt);
+												
+												userDataConfig.save(userData);
 											}
 											else
 											{
@@ -892,11 +886,13 @@ public class CommandListener implements Listener, CommandExecutor {
 					List<String> rankCommand=newFileConfig.getStringList(("commands").replace("%player", sender.getName()));
 					boolean sendMessage=false;
 					
+					int rankInt=0;
+					int rankInt2=0;
+					rankInt=userDataConfig.getInt("confirm.tokensInt");
+					rankInt2=userDataConfig.getInt("confirm.packagePrice");
+					
 					Database.execute("CREATE TABLE IF NOT EXISTS `packages_purchased` (`id` int NOT NULL AUTO_INCREMENT, `username` varchar(24) NOT NULL, `tokens` varchar(16) NOT NULL, `rank` varchar(16) NOT NULL, `date` varchar(64) NOT NULL, PRIMARY KEY (id))");
 					Database.execute("CREATE TABLE IF NOT EXISTS `expire_packages` (`id` int NOT NULL AUTO_INCREMENT, `username` varchar(24) NOT NULL, `package` varchar(50) NOT NULL, `date` varchar(64) NOT NULL, PRIMARY KEY (id))");
-					
-					int rankInt=0;
-					rankInt=userDataConfig.getInt("confirm.tokensInt");
 					
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 					Calendar cal = Calendar.getInstance();
@@ -908,7 +904,7 @@ public class CommandListener implements Listener, CommandExecutor {
 												
 						sendMessage=true;
 					}
-					Database.execute("INSERT INTO packages_purchased (username, tokens, rank, date) VALUES ('"+sender.getName()+"', '"+rankInt+"', '"+rank+"', '"+date+"')");
+					Database.execute("INSERT INTO packages_purchased (username, tokens, rank, date) VALUES ('"+sender.getName()+"', '"+rankInt2+"', '"+rank+"', '"+date+"')");
 					
 					if(newFileConfig.getBoolean("expire")||newFileConfig.getString("expire").equals("true"))
 					{
@@ -919,9 +915,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					{
 						String username="'"+sender.getName()+"'";						
 						int tokensInt=0;
-						int rankInt2=0;
 						tokensInt=userDataConfig.getInt("confirm.tokensInt");
-						rankInt2=userDataConfig.getInt("confirm.packagePrice");
 						String rankIntString=userDataConfig.getString("confirm.packagePrice");
 						int finalTokens=tokensInt-rankInt2;
 						Database.executeUpdate("UPDATE dep SET tokens='"+finalTokens+"' where username='"+sender.getName()+"'");
@@ -946,12 +940,13 @@ public class CommandListener implements Listener, CommandExecutor {
 						
 						File userDataFolder = new File(plugin.getDataFolder()+"/userdata"+File.separator);
 			    		userDataConfig = new YamlConfiguration();
+			    		userDataConfig.load(userData);
 			    		
 	    				userDataConfig.set("confirm.confirm", false);
 						userDataConfig.set("confirm.packagePrice", null);
 						userDataConfig.set("confirm.package", null);
 						userDataConfig.set("confirm.tokensInt", null);
-						userDataConfig.save(userData);
+						
 			    		
 			    		if(!userDataFolder.exists())
 			    		{
@@ -978,6 +973,8 @@ public class CommandListener implements Listener, CommandExecutor {
 			    			else if(userData.exists())
 			    			{
 			    				userDataConfig.load(userData);
+			    				userDataConfig.createSection("current-package");
+			    				userDataConfig.createSection("one-time-purchases");
 			    				List<String>oneTimePurchase = userDataConfig.getStringList("one-time-purchases");
 			    				oneTimePurchase.add(rank);
 			    				
@@ -986,6 +983,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			    				userDataConfig.save(userData);
 			    			}
 			    		}
+			    		userDataConfig.save(userData);
 					}
 				}
 				else
@@ -1210,7 +1208,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				sender.sendMessage(ChatColor.YELLOW+"***************************************");
 				sender.sendMessage(ChatColor.RED+"");
-				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.6");
+				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.6.1");
 				sender.sendMessage(ChatColor.AQUA+"Plugin developed by: aman207");
 				sender.sendMessage(ChatColor.AQUA+"Webportal developed by: AzroWear");
 				sender.sendMessage(ChatColor.AQUA+"http://bit.ly/DonExp");
@@ -1461,6 +1459,10 @@ public class CommandListener implements Listener, CommandExecutor {
 			sender.sendMessage(ChatColor.GOLD
 					+ "/donate setvc [username] [amount]");
 		}
+		if (sender.hasPermission("donexpress.admin.removevc")) {
+			sender.sendMessage(ChatColor.GOLD
+					+ "/donate removevc [username] [amount]");
+		}
 		if (sender.hasPermission("donexpress.admin.reload")) {
 			sender.sendMessage(ChatColor.GOLD + "/donate reload");
 		}
@@ -1474,31 +1476,30 @@ public class CommandListener implements Listener, CommandExecutor {
 	public void onPlayerLogoutEvent(PlayerQuitEvent e)
 	{		
 		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, e.getPlayer().getName().toString()+".yml");
-		FileConfiguration userDataConfig=null;
-		userDataConfig=new YamlConfiguration();
-		try {
-			userDataConfig.load(userData);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} catch (InvalidConfigurationException e1) {
-			e1.printStackTrace();
+		if(userData.exists())
+		{
+			FileConfiguration userDataConfig=null;
+			userDataConfig=new YamlConfiguration();
+			try {
+				userDataConfig.load(userData);
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (InvalidConfigurationException e1) {
+				e1.printStackTrace();
+			}
+			
+			userDataConfig.set("confirm.confirm", false);
+			userDataConfig.set("confirm.packagePrice", null);
+			userDataConfig.set("confirm.package", null);
+			userDataConfig.set("confirm.tokensInt", null);
+			
+			try {
+				userDataConfig.save(userData);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
-		
-		userDataConfig.set("confirm.confirm", false);
-		userDataConfig.set("confirm.packagePrice", null);
-		userDataConfig.set("confirm.package", null);
-		userDataConfig.set("confirm.tokensInt", null);
-		
-		try {
-			userDataConfig.save(userData);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-        confirmDel.clear();
-        confirmDel2.clear();
-        confirmDelBoolean.clear();
 	}
 }
