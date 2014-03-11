@@ -734,7 +734,7 @@ public class CommandListener implements Listener, CommandExecutor {
 						packagesConfig=new YamlConfiguration();
 						packagesConfig.load(packages);
 			    		
-			    		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString()+".yml");
+			    		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString().toLowerCase()+".yml");
 			    		FileConfiguration userDataConfig=null;
 			    		userDataConfig=new YamlConfiguration();
 			    		if(userData.exists())
@@ -849,7 +849,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				//TODO
 				Database.connect();
 				
-				File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString()+".yml");
+				File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString().toLowerCase()+".yml");
 	    		FileConfiguration userDataConfig=null;
 	    		userDataConfig=new YamlConfiguration();
 				
@@ -1082,7 +1082,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				
 				if(sender.hasPermission("donexpress.user"))
 				{
-					File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString()+".yml");
+					File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, sender.getName().toString().toLowerCase()+".yml");
 		    		FileConfiguration userDataConfig=null;
 		    		userDataConfig=new YamlConfiguration();
 		    		userDataConfig.load(userData);
@@ -1208,7 +1208,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				sender.sendMessage(ChatColor.YELLOW+"***************************************");
 				sender.sendMessage(ChatColor.RED+"");
-				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.6.1");
+				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.6.3");
 				sender.sendMessage(ChatColor.AQUA+"Plugin developed by: aman207");
 				sender.sendMessage(ChatColor.AQUA+"Webportal developed by: AzroWear");
 				sender.sendMessage(ChatColor.AQUA+"http://bit.ly/DonExp");
@@ -1475,7 +1475,7 @@ public class CommandListener implements Listener, CommandExecutor {
 	@EventHandler
 	public void onPlayerLogoutEvent(PlayerQuitEvent e)
 	{		
-		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, e.getPlayer().getName().toString()+".yml");
+		File userData = new File(plugin.getDataFolder()+"/userdata"+File.separator, e.getPlayer().getName().toString().toLowerCase()+".yml");
 		if(userData.exists())
 		{
 			FileConfiguration userDataConfig=null;
