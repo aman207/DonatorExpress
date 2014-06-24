@@ -18,7 +18,7 @@ update-check: true
 disable-on-database-error: false
 
 # Available languages:
-# English (en), French (fr), Spanish (es), Dutch (du)
+# English (en), French (fr), Spanish (es), Dutch (nl)
 # Reload the server for the language change to take effect
 language: en
 
@@ -56,6 +56,21 @@ currency-name: Tokens
 
 costToBuyToken: 0.0
 costToSellToken: 0.0
+
+# Logging options
+
+# Prints out all actions that the plugin makes to startup.log 
+log-startup: false
+
+# Logs all exceptions and errors to error.log
+log-errors: true
+
+# Logs all user actions to info.log , Including all commands sent, packages did and didn't get bought
+# permission denied errors, and sign interaction
+log-user-actions: true
+
+# Logs all admin actions/commands related to DonatorExpress to admin.log
+log-admin-commands: true
 
 # The prefix that you wish to use. Be sure to put a space at the end
 

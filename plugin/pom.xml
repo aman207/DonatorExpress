@@ -2,17 +2,119 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>net.targetcraft</groupId>
-  <artifactId>donatorexpress</artifactId>
-  <version>1.6</version>
+  <groupId>net.aman207</groupId>
+  <artifactId>donatorexpresstest</artifactId>
+  <version>1.9</version>
   <packaging>jar</packaging>
 
-  <name>donatorexpress</name>
-  <url>http://targetcraft.net</url>
+  <name>DonatorExpress</name>
+  <url>http://aman207.net</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <build>
+  
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>           
+              <minimizeJar>true</minimizeJar>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <artifactSet>
+                <excludes>
+                  <exclude>junit:junit</exclude>
+                  <exclude>org.apache.maven:lib:tests</exclude>
+                  <exclude>org.bukkit:bukkit</exclude>
+                  <exclude>net.milkbowl.vault:Vault</exclude>
+                  <exclude>org.piwik:piwik-java-tracking</exclude>
+                </excludes>
+              </artifactSet>
+              <relocations>
+              <relocation>
+                    <pattern>org.piwik</pattern>
+                    <shadedPattern>net.aman207.libs.org.piwik</shadedPattern>
+              </relocation>
+              <relocation>
+                    <pattern>javax.servlet</pattern>
+                    <shadedPattern>net.aman207.libs.javax.servlet</shadedPattern>
+              </relocation>
+              <relocation>
+                    <pattern>org.apache</pattern>
+                    <shadedPattern>net.aman207.libs.org.apache.httpcomponents</shadedPattern>
+              </relocation>
+              <relocation>
+                    <pattern>org.json</pattern>
+                    <shadedPattern>net.aman207.libs.org.json</shadedPattern>
+              </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+    <artifactId>maven-resources-plugin</artifactId>
+    <version>2.6</version>
+    <executions>
+      <execution>
+        <id>copy-resources-1</id>
+        <phase>validate</phase>
+        <goals>
+          <goal>copy-resources</goal>
+        </goals>
+        <configuration>
+          <outputDirectory>${basedir}</outputDirectory>
+          <resources>
+            <resource>
+        		<directory>""</directory>
+                <include>config.yml</include>
+                <include>plugin.yml</include>
+            </resource>
+          </resources>
+        </configuration>
+      </execution>
+      <execution>
+        <id>copy-resources-2</id>
+        <phase>validate</phase>
+        <goals>
+          <goal>copy-resources</goal>
+        </goals>
+        <configuration>
+          <outputDirectory>${basedir}/configs</outputDirectory>
+          <resources>
+            <resource>
+                <directory>configs</directory>
+            </resource>
+          </resources>
+        </configuration>
+      </execution>
+      <execution>
+        <id>copy-resources-3</id>
+        <phase>validate</phase>
+        <goals>
+          <goal>copy-resources</goal>
+        </goals>
+        <configuration>
+          <outputDirectory>${basedir}/languages</outputDirectory>
+          <resources>
+            <resource>
+                <directory>languages</directory>
+            </resource>
+          </resources>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+    </plugins>
+  </build>
   
   <repositories>
         <!-- Bukkit can be found at the following repository -->
@@ -21,11 +123,11 @@
           <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
-		<id>vault-repo</id>
-		<url>http://ci.herocraftonline.com/plugin/repository/everything</url>
-		</repository>
+            <id>vault-repo</id>
+            <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+        </repository>
     </repositories>
-
+    
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -37,13 +139,34 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <!-- Bukkit API Version, change if necessary -->
-            <version>1.7.2-R0.3</version>
+            <version>1.7.9-R0.2</version>
+            <scope>provided</scope>
     </dependency>
     <dependency>
     	<groupId>net.milkbowl.vault</groupId>
-		<artifactId>Vault</artifactId>
-		<version>1.2.27</version>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
     </dependency>
-  </dependencies>
+      <dependency>
+    <groupId>org.piwik</groupId>
+    <artifactId>piwik-java-tracking</artifactId>
+    <version>1.1.0</version>
+	<scope>compile</scope>    
+</dependency>
+<dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.0.1</version>
+        <scope>compile</scope>
+</dependency>
 
+<dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpclient</artifactId>
+	<version>4.3.3</version>
+	<scope>compile</scope>
+</dependency>
+
+  </dependencies>
 </project>

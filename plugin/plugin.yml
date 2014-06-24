@@ -1,6 +1,6 @@
 name: DonatorExpress
-main: net.targetcraft.donatorexpress.Main
-version: 1.6.3
+main: net.aman207.donatorexpress.DonatorExpress
+version: 1.9.1
 description: DonatorExpress
 website: http://aman207.net/wiki
 author: aman207
