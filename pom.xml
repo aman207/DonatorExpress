@@ -3,19 +3,25 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>net.aman207</groupId>
-  <artifactId>donatorexpresstest</artifactId>
-  <version>1.9</version>
+  <artifactId>donatorexpress</artifactId>
+  <version>1.9-dev</version>
   <packaging>jar</packaging>
 
   <name>DonatorExpress</name>
-  <url>http://aman207.net</url>
+  <url>https://aman207.net</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
-  
     <plugins>
+    <plugin>
+    	<artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+    </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -28,7 +34,7 @@
             </goals>
             <configuration>           
               <minimizeJar>true</minimizeJar>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
               <artifactSet>
                 <excludes>
                   <exclude>junit:junit</exclude>
@@ -74,7 +80,7 @@
           <outputDirectory>${basedir}</outputDirectory>
           <resources>
             <resource>
-        		<directory>""</directory>
+        		<directory>${basedir}/src/main/resources</directory>
                 <include>config.yml</include>
                 <include>plugin.yml</include>
             </resource>
@@ -91,7 +97,7 @@
           <outputDirectory>${basedir}/configs</outputDirectory>
           <resources>
             <resource>
-                <directory>configs</directory>
+                <directory>${basedir}/src/main/resources/configs</directory>
             </resource>
           </resources>
         </configuration>
@@ -106,7 +112,7 @@
           <outputDirectory>${basedir}/languages</outputDirectory>
           <resources>
             <resource>
-                <directory>languages</directory>
+                <directory>${basedir}/src/main/resources/languages</directory>
             </resource>
           </resources>
         </configuration>
@@ -169,4 +175,12 @@
 </dependency>
 
   </dependencies>
+  <issueManagement>
+  	<system>OSTicket</system>
+  	<url>https://aman207.net/support</url>
+  </issueManagement>
+  <ciManagement>
+  	<system>Jenkins</system>
+  	<url>http://aman207.net:8080</url>
+  </ciManagement>
 </project>

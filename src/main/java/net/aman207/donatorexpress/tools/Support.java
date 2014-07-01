@@ -3,14 +3,25 @@ package net.aman207.donatorexpress.tools;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.json.JSONObject;
 
 import net.aman207.donatorexpress.DonatorExpress;
 
@@ -19,6 +30,7 @@ public class Support {
 	HashMap<String, String> stringValues = new HashMap<String, String>();
 	HashMap<String, String> configValues = new HashMap<String, String>();
 	HashMap<String, String> forumValues = new HashMap<String, String>();
+	HashMap<String, String> ticketDetails = new HashMap<String, String>();
 	
 	static DonatorExpress plugin;
 	
@@ -29,7 +41,7 @@ public class Support {
 	
 	public void getSysInfo()
 	{
-		//Bukkit, plugin and java versions
+		//Bukkit, DE, and java versions
 		stringValues.put("bukkitVer", Bukkit.getBukkitVersion());
 		stringValues.put("deVer", Bukkit.getVersion());
 		stringValues.put("javaVer", System.getProperty("java.version"));
@@ -95,18 +107,107 @@ public class Support {
 		forumValues.put("version", forumYaml.getString("version"));
 	}
 	
-	public void getMessage()
+	public void getDetails(String details)
+	{
+		ticketDetails.put("", details);
+	}
+	
+	public String sendLog()
 	{
 		
+		
+		return null;
 	}
 	
 	public void sendTicket()
 	{
-		
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+        HttpPost post = new HttpPost("https://aman207.net/scripts/sendTicket.php");
+        JSONObject ticketSend = new JSONObject();
+        
+        try {
+			ticketSend.put("source", "API");
+			ticketSend.put("name", ticketDetails.get("name"));
+			ticketSend.put("email", ticketDetails.get("emails"));
+			ticketSend.put("subject", ticketDetails.get("subject"));
+			ticketSend.put("ip", "192.99.43.42"); //aman207's VPS IP address, used so that 
+			
+			String content = "<b>Begin support ticket</b><br><br>"
+					//Begin System Information
+					+ "<b>System Information:</br><br>"
+					+ "Bukkit Version: "+stringValues.get("bukkitVer")+"<br>"
+					+ "Java Version: "+stringValues.get("javaVer")+"<br>"
+					+ "DonatorExpress Version: "+stringValues.get("deVer")+"<br><br>"
+					//Begin config values
+					+ "<b>config.yml Values</b><br><br>"
+					+ "Metrics: "+configValues.get("metrics")+"<br>"
+					+ "Update check: "+configValues.get("update-check")+"<br>"
+					+ "Disable on Database Error"+configValues.get("disable-on-database-error")+"<br>"
+					+ "Language: "+configValues.get("language")+"<br>"
+					+ "Portal Location: "+configValues.get("portal-location")+"<br>"
+					+ "Log Startup: "+configValues.get("log-startup")+"<br>"
+					+ "Log Errors: "+configValues.get("log-errors")+"<br>"
+					+ "Log User Actions: "+configValues.get("log-user-actions")+"<br>"
+					+ "Log Admin Commands: "+configValues.get("log-admin-commands")+"<br>"
+					+ "Version: "+configValues.get("version")+"<br><br>";
+			
+			ticketSend.put("message", "data:text/html,MESSAGE "
+					+ "<b>Begin support ticket</b><br><br>"
+					//Begin System Information
+					+ "<b>System Information:</br><br>"
+					+ "Bukkit Version: "+stringValues.get("bukkitVer")+"<br>"
+					+ "Java Version: "+stringValues.get("javaVer")+"<br>"
+					+ "DonatorExpress Version: "+stringValues.get("deVer")+"<br><br>"
+					//Begin config values
+					+ "<b>config.yml Values</b><br><br>"
+					+ "Metrics: "+configValues.get("metrics")+"<br>"
+					+ "Update check: "+configValues.get("update-check")+"<br>"
+					+ "Disable on Database Error"+configValues.get("disable-on-database-error")+"<br>"
+					+ "Language: "+configValues.get("language")+"<br>"
+					+ "Portal Location: "+configValues.get("portal-location")+"<br>"
+					+ "Log Startup: "+configValues.get("log-startup")+"<br>"
+					+ "Log Errors: "+configValues.get("log-errors")+"<br>"
+					+ "Log User Actions: "+configValues.get("log-user-actions")+"<br>"
+					+ "Log Admin Commands: "+configValues.get("log-admin-commands")+"<br>"
+					+ "Version: "+configValues.get("version")+"<br><br>");
+			
+			List<NameValuePair> params = new ArrayList<>();
+	        params.add(new BasicNameValuePair("ticketDetails", ticketSend.toString()));
+	        
+	        Scanner in = null;
+	        try
+	        {
+	            post.setEntity(new UrlEncodedFormEntity(params));
+	            response = client.execute(post);
+	            HttpEntity entity = response.getEntity();
+	            in = new Scanner(entity.getContent());
+	            while (in.hasNext())
+	            {
+	                System.out.println(in.next());
+	            }
+	            EntityUtils.consume(entity);
+	        } finally
+	        {
+	            in.close();
+	            response.close();
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        finally{
+        	try {
+				client.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
 	}
 	
 	public String returnTicketNumber()
 	{
+		//Broken 
+		//TODO
 		return null;
 	}
 
