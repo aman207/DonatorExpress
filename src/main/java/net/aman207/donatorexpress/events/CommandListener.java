@@ -1253,7 +1253,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			else
 			{
 				commandUsage(sender);
-				return true;
+				return false;
 			}
 		}}catch(ArrayIndexOutOfBoundsException e)
 		{
@@ -1266,7 +1266,62 @@ public class CommandListener implements Listener, CommandExecutor {
 			e1.printStackTrace();
 		}
 		}
-		return true;
+		
+		//Start of support commands
+		if(cmd.getName().equalsIgnoreCase("dehelp"))
+		{
+			if(sender.hasPermission("donexpress.support"))
+			{
+				//Load file
+				File tmpConfigFile = new File(plugin.getDataFolder()+File.separator+"supportTemp.yml");
+				boolean alreadyLoaded = false;
+				if(!tmpConfigFile.exists())
+				{
+					try {
+						tmpConfigFile.createNewFile();
+						FileConfiguration tmpConfig=null;
+						tmpConfig=new YamlConfiguration();
+						try {
+							tmpConfig.load(tmpConfigFile);
+						} catch (IOException
+								| InvalidConfigurationException e) {
+							e.printStackTrace();
+						}
+						
+						tmpConfig.addDefault("supportStarted", false);
+						tmpConfig.addDefault("stage", 0);
+						tmpConfig.addDefault("userInitiated", null);
+						tmpConfig.options().copyDefaults(true);
+						tmpConfig.save(tmpConfigFile);
+						
+						alreadyLoaded = true;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				//Don't want to load the config file twice
+				if(!alreadyLoaded)
+				{
+					FileConfiguration tmpConfig=null;
+					tmpConfig=new YamlConfiguration();
+					try {
+						tmpConfig.load(tmpConfigFile);
+					} catch (IOException
+							| InvalidConfigurationException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				//Search for current stage
+				
+			}
+			else
+			{
+				noPermission(sender);
+			}
+		}
+		return false;
 	}
 	public void syncForum(CommandSender sender, String group)
 	{

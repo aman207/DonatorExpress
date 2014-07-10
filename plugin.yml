@@ -11,6 +11,11 @@ commands:
     donate:
      description: General command for all of DonatorExpress's needs
      aliases: [donator, rank, buy, package]
+     
+    dehelp:
+     description: Command used specifically for the in-game support and ticket options
+     aliases: [deh]
+
 permissions:
     donexpress.*:
         description: Gives access to all commands
@@ -79,3 +84,6 @@ permissions:
     donexpress.user:
         description: Any commands that a user would use
         default: op
+    donexpress.support:
+        description: Commands related to /dehelp
+        default: false
