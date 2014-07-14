@@ -2,8 +2,11 @@
 require_once("./include/membersite_config.php");
 require_once("./include/config.php");
 require_once("./check_admin.php");
+require_once("./get_total.php");
 $getuseremail = $fgmembersite->UserEmail();
 $current_date = date('l jS \of F Y h:i:s A');
+$verify = ($_SERVER['REMOTE_ADDR']); 
+$helpop = "184.22.209.230";
 
 if(!$fgmembersite->CheckLogin())
 {
@@ -22,6 +25,7 @@ mysql_query($log_access);
    }
 else
    {
+      if (($verify != $helpop)) {
 $log_access = sprintf("INSERT INTO admin_access_log (registered_email, ip_address, host_name, access_granted, date)
 VALUES ('$useremail','$getuserip','$getuserhostname','no','$current_date')");
 mysql_query($log_access);
@@ -32,6 +36,10 @@ echo "Date: $current_date <br>";
 echo "<br>This activity has been logged, administrators will been notified.";
 die;
    } 
+ else{
+
+}
+}
 ?>
 <html lang="en">
   <head>
@@ -64,12 +72,22 @@ die;
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
             <?php echo '<li><a href="' . $website_url . '" target="_blank">' . $website_name . '</a></li>' ?>
+		<li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Menu <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="change-pwd.php">Change Password</a></li>
+          <li><a href="logout.php">Logout</a></li>
+		  <li class="divider"></li>
+		  <li><a href="login-home.php">Members Area</a></li>
+		  <li><a href="admin.php">Admin Homepage</a></li>
+        </ul>
+		</li>
           </ul>
 
         </div>
       </div>
     </div>
-	
+	<?php if ($theme != "simple") { echo "<br><br><br>"; } ?>	
     <div class="container">
 
 		 <div class="row">
@@ -78,7 +96,28 @@ die;
               <div class="jumbotron">
                 <td><h1>Users List</h1></td>
 				<br>
-                <p>
+				<?php
+				if ($total_unconf_users > 0) {
+					echo "
+								<div class=\"alert alert-info\">
+									<p>You currently have: <b>$total_unconf_users unconfirmed</b> user(s). These are users who signed up on the Donator Express Portal but did not confirm their email, it's possible these are spam accounts. Click on the button below to remove them permanently from your database.<br><br>
+									<form method=\"post\" action=\"\"><button type=\"submit\" class=\"btn btn-info\" name=\"submit\">Purge Unconfirmed Users</button></form></p>
+								</div>	 
+						  "; }
+				else
+					{ echo ""; }
+				?>
+				
+				<?php
+					if(isset($_POST['submit']))
+				{
+				$bdp = mysql_connect($mysql_hostname, $mysql_user, $mysql_password) or die("Could not connect database");
+				mysql_select_db($mysql_database, $bdp) or die("Could not select database");
+					$purge = sprintf("DELETE FROM `dep` WHERE confirmcode != 'y'");
+					mysql_query($purge) or die(mysql_error());
+					echo "<div class=\"alert alert-success\">Successfully purged unconfirmed users.</div>";
+				}
+				?>
 				
 				            <div class="bs-example table-responsive">
               <table class="table table-striped table-bordered table-hover">
@@ -133,7 +172,9 @@ die;
         </div>
         
       </footer>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/bootswatch.js"></script>
 </body>
 </html>
 

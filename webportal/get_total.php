@@ -45,6 +45,9 @@ $purchased_packages = mysql_num_rows($get_packages_purchased);
 $failed_access = mysql_query("SELECT `id`, `access_granted` FROM `admin_access_log` WHERE access_granted = 'no'");
 $total_failed_access = mysql_num_rows($failed_access);
 
+$unconf_users = mysql_query("SELECT `confirmcode` FROM `dep` WHERE confirmcode != 'y'");
+$total_unconf_users = mysql_num_rows($unconf_users);
+
 $total_tokens_spent = sprintf("SELECT sum(tokens) AS tokens_sum FROM packages_purchased");
 $spent_tokens = mysql_query($total_tokens_spent);
 

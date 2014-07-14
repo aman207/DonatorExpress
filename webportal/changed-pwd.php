@@ -1,4 +1,5 @@
 <?PHP
+require_once("./check_admin.php");
 require_once("./include/membersite_config.php");
 
 if(!$fgmembersite->CheckLogin())
@@ -39,12 +40,20 @@ if(!$fgmembersite->CheckLogin())
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav navbar-right">
             <?php echo '<li><a href="' . $website_url . '" target="_blank">' . $website_name . '</a></li>' ?>
+		<li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main Menu <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="login-home.php">Members Area</a></li>
+          <li><a href="logout.php">Logout</a></li>
+		  <?php if ($is_admin == "true") { echo "<li class=\"divider\"></li><li><a href=\"admin.php\">Admin Control Panel</a></li>"; } ?>
+        </ul>
+		</li>
           </ul>
 
         </div>
       </div>
     </div>
-	
+		<?php if ($theme != "simple") { echo "<br><br><br>"; } ?>
     <div class="container">
 	
 	<div class="row">
@@ -64,12 +73,15 @@ if(!$fgmembersite->CheckLogin())
 <footer>
         <div class="row">
           <div class="col-lg-12">
+		  		  <?php if ($enable_contact == "false") { } else { echo '<ul class="list-unstyled"><li class="pull-right"><a href="contact.php">Administrative Contact</a></li></ul>'; }?>
 		  <!--Please keep the Copyright footer intact as per the license agreement this software is released on-->
             <p>&nbsp; &nbsp; &copy; <?php echo date("Y") ?> Donator Express</p>
           </div>
         </div>
         
       </footer>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/bootswatch.js"></script>
 </body>
 </html>

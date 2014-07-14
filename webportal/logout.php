@@ -40,7 +40,7 @@ $fgmembersite->LogOut();
         </div>
       </div>
     </div>
-	
+		<?php if ($theme != "simple") { echo "<br><br><br>"; } ?>
     <div class="container">
 	
 	<div class="row">
@@ -59,12 +59,16 @@ $fgmembersite->LogOut();
 <footer>
         <div class="row">
           <div class="col-lg-12">
+		  		  		  <?php if ($enable_contact == "false") { } else { echo '<ul class="list-unstyled"><li class="pull-right"><a href="contact.php">Administrative Contact</a></li></ul>'; }?>
+
 		  <!--Please keep the Copyright footer intact as per the license agreement this software is released on-->
             <p>&nbsp; &nbsp; &copy; <?php echo date("Y") ?> Donator Express</p>
           </div>
         </div>
         
       </footer>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/bootswatch.js"></script>
 </body>
 </html>
