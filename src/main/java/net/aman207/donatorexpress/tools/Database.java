@@ -45,9 +45,9 @@ public class Database {
 		    
 			if(plugin.getConfig().getBoolean("disable-on-database-error"))
 			{
-				plugin.getPluginLoader().disablePlugin(plugin);
 				Logger.getLogger("").log(Level.SEVERE, "DonatorExpress disabled. Reload server to re enable");
 				LogIt.error("Plugin disabled due to Database error and because the option disable-on-database-error was set to true");
+				plugin.getPluginLoader().disablePlugin(plugin);
 			}
 			return false;
 
