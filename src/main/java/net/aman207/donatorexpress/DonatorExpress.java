@@ -145,6 +145,10 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				setForumConfig(s);
 			}*/
 		}
+		
+		//TODO
+		//Not ready quite yet....
+		/**
 		if(!economyConfigFile.exists())
 		{
 			getLogger().info("Economy Configuration not found. Generating...");
@@ -173,7 +177,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				LogIt.error(" ");
 				LogIt.error(LogIt.exceptionLog(e1));
 			}
-		}
+		}*/
 		getCommand("donate").setExecutor(new CommandListener(this));
 		
 		//Used to initialize the constructor
