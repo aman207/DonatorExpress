@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.aman207.donatorexpress.DonatorExpress;
 
@@ -37,12 +39,16 @@ public class Language {
 				languageConfig.load(english);
 			} catch (FileNotFoundException e) {
 				LogIt.error("IOerr11");
-				LogIt.error("http://aman207.net/wiki/Errors");
-				LogIt.error("A database occred when trying to add a user to a forum group");
+				LogIt.error("https://aman207.net/wiki/Errors");
+				LogIt.error("Couldn't find correct language code in config.yml Plugin cannot start");
 				LogIt.error("Stacktrace:");
 				LogIt.error(" ");
 				LogIt.error(LogIt.exceptionLog(e));
 				e.printStackTrace();
+				Logger.getLogger("").log(Level.SEVERE, "DonatorExpress disabled. Unable to find language code in config.yml "
+						+ "Reload server to re enable after changes to config have been made");
+
+				plugin.getPluginLoader().disablePlugin(plugin);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (InvalidConfigurationException e) {
