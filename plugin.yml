@@ -1,8 +1,8 @@
 name: DonatorExpress
 main: net.aman207.donatorexpress.DonatorExpress
-version: 1.9.4
+version: 1.9.2
 description: DonatorExpress
-website: https://aman207.net/wiki
+website: http://aman207.net/wiki
 author: aman207
 authors: [AzroWear] 
 softdepend: [Vault]
@@ -11,11 +11,6 @@ commands:
     donate:
      description: General command for all of DonatorExpress's needs
      aliases: [donator, rank, buy, package]
-     
-    dehelp:
-     description: Command used specifically for the in-game support and ticket options
-     aliases: [deh]
-
 permissions:
     donexpress.*:
         description: Gives access to all commands
@@ -84,6 +79,3 @@ permissions:
     donexpress.user:
         description: Any commands that a user would use
         default: op
-    donexpress.support:
-        description: Commands related to /dehelp
-        default: false

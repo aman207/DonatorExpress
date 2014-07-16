@@ -8,8 +8,7 @@
 metrics: true
 
 # Do you want to be notified about new updates? Great leave it as is. Otherwise, make update-check false
-# Note: this will not download any updates, it will just users with the donexpress.admin.update permission 
-# on login
+# Note: this will not download any updates, it will just notify you on login
 
 update-check: true
 
