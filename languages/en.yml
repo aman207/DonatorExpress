@@ -64,3 +64,5 @@ SIGN_SELLATTEMPTING1: 'Attempting to sell '
 SIGN_SELLDBERROR: 'Something went wrong. I could not connect to the database. Tell the owner or admin about this'
 SIGN_TRANSACTIONERROR: 'Error. Something went wrong with the transaction. Error message:'
 SIGN_FOR: ' for '
+
+SUPPORT_WELCOME: ''

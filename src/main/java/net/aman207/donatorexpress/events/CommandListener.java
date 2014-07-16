@@ -124,7 +124,7 @@ public class CommandListener implements Listener, CommandExecutor {
 								} catch (IOException e1) {
 									e1.printStackTrace();
 									LogIt.error("IOerr9");
-									LogIt.error("http://aman207.net/wiki/Errors");
+									LogIt.error("https://aman207.net/wiki/Errors");
 									LogIt.error("Stacktrace:");
 									LogIt.error(" ");
 									LogIt.error(LogIt.exceptionLog(e1));
@@ -132,7 +132,7 @@ public class CommandListener implements Listener, CommandExecutor {
 								{
 									e1.printStackTrace();
 									LogIt.error("NullPointer1");
-									LogIt.error("http://aman207.net/wiki/Errors");
+									LogIt.error("https://aman207.net/wiki/Errors");
 									LogIt.error("Stacktrace:");
 									LogIt.error(" ");
 									LogIt.error(LogIt.exceptionLog(e1));
@@ -166,7 +166,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					configAdd=false;
 					sender.sendMessage(prefix()+"Error. Invalid syntax. Type "+ChatColor.GREEN+"/donate help for commands");
 					LogIt.error("ArrayIndexerr1");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e));
@@ -174,7 +174,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					sender.sendMessage(prefix()+ChatColor.DARK_RED+"Error. forumConfig doesn't exist o.O Try to reload the server and try again");
 					e.printStackTrace();
 					LogIt.error("IOerr10");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e));
@@ -234,7 +234,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				{
 					sender.sendMessage(prefix()+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 					LogIt.error("ArrayIndexOutOfBounds");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e));
@@ -384,7 +384,7 @@ public class CommandListener implements Listener, CommandExecutor {
 						{
 							sender.sendMessage(prefix()+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 							LogIt.error("ArrayIndexOutOfBounds");
-							LogIt.error("http://aman207.net/wiki/Errors");
+							LogIt.error("https://aman207.net/wiki/Errors");
 							LogIt.error("Stacktrace:");
 							LogIt.error(" ");
 							LogIt.error(LogIt.exceptionLog(e));
@@ -425,7 +425,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					{
 						sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 						LogIt.error("ArrayIndexOutOfBounds");
-						LogIt.error("http://aman207.net/wiki/Errors");
+						LogIt.error("https://aman207.net/wiki/Errors");
 						LogIt.error("Stacktrace:");
 						LogIt.error(" ");
 						LogIt.error(LogIt.exceptionLog(e));
@@ -500,7 +500,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				{
 					sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 					LogIt.error("ArrayIndexOutOfBounds");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e));
@@ -508,7 +508,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				{
 					sender.sendMessage(prefix()+"Error. config.yml is invalid. Check the database configuration and try again.");
 					LogIt.error("NullPointer2");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e));
@@ -555,7 +555,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					{
 						sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help"+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 						LogIt.error("ArrayIndexOutOfBounds");
-						LogIt.error("http://aman207.net/wiki/Errors");
+						LogIt.error("https://aman207.net/wiki/Errors");
 						LogIt.error("Stacktrace:");
 						LogIt.error(" ");
 						LogIt.error(LogIt.exceptionLog(e));
@@ -615,7 +615,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					{
 						sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help"+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 						LogIt.error("ArrayIndexOutOfBounds");
-						LogIt.error("http://aman207.net/wiki/Errors");
+						LogIt.error("https://aman207.net/wiki/Errors");
 						LogIt.error("Stacktrace:");
 						LogIt.error(" ");
 						LogIt.error(LogIt.exceptionLog(e));
@@ -751,7 +751,7 @@ public class CommandListener implements Listener, CommandExecutor {
 									sender.sendMessage(prefix()+ChatColor.YELLOW+"DBERROR");								
 									e.printStackTrace();
 									LogIt.error("SQLerr1");
-									LogIt.error("http://aman207.net/wiki/Errors");
+									LogIt.error("https://aman207.net/wiki/Errors");
 									LogIt.error("A user tried to use /donate buy but it failed due to a database error");
 									LogIt.error("Stacktrace:");
 									LogIt.error(" ");
@@ -764,7 +764,7 @@ public class CommandListener implements Listener, CommandExecutor {
 								{
 									sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 									LogIt.error("ArrayIndexOutOfBounds");
-									LogIt.error("http://aman207.net/wiki/Errors");
+									LogIt.error("https://aman207.net/wiki/Errors");
 									LogIt.error("Stacktrace:");
 									LogIt.error(" ");
 									LogIt.error(LogIt.exceptionLog(e));
@@ -883,7 +883,7 @@ public class CommandListener implements Listener, CommandExecutor {
 										sender.sendMessage(prefix()+ChatColor.YELLOW+Language.getPhrase("DBERROR"));								
 										e.printStackTrace();
 										LogIt.error("SQLerr1");
-										LogIt.error("http://aman207.net/wiki/Errors");
+										LogIt.error("https://aman207.net/wiki/Errors");
 										LogIt.error("A database error occured when a user tried to type /donate upgrade");
 										LogIt.error("Stacktrace:");
 										LogIt.error(" ");
@@ -896,7 +896,7 @@ public class CommandListener implements Listener, CommandExecutor {
 									{
 										sender.sendMessage(ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
 										LogIt.error("ArrayIndexOutOfBounds");
-										LogIt.error("http://aman207.net/wiki/Errors");
+										LogIt.error("https://aman207.net/wiki/Errors");
 										LogIt.error("Stacktrace:");
 										LogIt.error(" ");
 										LogIt.error(LogIt.exceptionLog(e));
@@ -1073,7 +1073,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					sender.sendMessage(prefix()+ChatColor.YELLOW+Language.getPhrase("DBERROR"));
 					e.printStackTrace();
 					LogIt.error("SQLerr1");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("A database error occured when a user tried to do /donate confirm");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
@@ -1272,15 +1272,16 @@ public class CommandListener implements Listener, CommandExecutor {
 		{
 			if(sender.hasPermission("donexpress.support"))
 			{
-				//Load file
+				//Load file and init variables for use later on
 				File tmpConfigFile = new File(plugin.getDataFolder()+File.separator+"supportTemp.yml");
+				FileConfiguration tmpConfig=null;
+				tmpConfig=new YamlConfiguration();
 				boolean alreadyLoaded = false;
+				
 				if(!tmpConfigFile.exists())
 				{
 					try {
 						tmpConfigFile.createNewFile();
-						FileConfiguration tmpConfig=null;
-						tmpConfig=new YamlConfiguration();
 						try {
 							tmpConfig.load(tmpConfigFile);
 						} catch (IOException
@@ -1303,8 +1304,6 @@ public class CommandListener implements Listener, CommandExecutor {
 				//Don't want to load the config file twice
 				if(!alreadyLoaded)
 				{
-					FileConfiguration tmpConfig=null;
-					tmpConfig=new YamlConfiguration();
 					try {
 						tmpConfig.load(tmpConfigFile);
 					} catch (IOException
@@ -1314,7 +1313,16 @@ public class CommandListener implements Listener, CommandExecutor {
 				}
 				
 				//Search for current stage
+				int currentStage = tmpConfig.getInt("currentStage");
 				
+				if(currentStage==0)
+				{
+					
+				}
+				else if(currentStage==1)
+				{
+					
+				}
 			}
 			else
 			{
@@ -1493,7 +1501,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			sender.sendMessage(ChatColor.RED+"Please contact the server owner!");
 			e.printStackTrace();
 			LogIt.error("SQLerr7");
-			LogIt.error("http://aman207.net/wiki/Errors");
+			LogIt.error("https://aman207.net/wiki/Errors");
 			LogIt.error("A database occred when trying to add a user to a forum group");
 			LogIt.error("Stacktrace:");
 			LogIt.error(" ");

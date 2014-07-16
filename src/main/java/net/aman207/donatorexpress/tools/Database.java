@@ -78,7 +78,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			LogIt.error("SQLerr3");
-			LogIt.error("http://aman207.net/wiki/Errors");
+			LogIt.error("https://aman207.net/wiki/Errors");
 			LogIt.error("Message:");
 			LogIt.error(e.getMessage());
 			LogIt.error(LogIt.exceptionLog(e));
@@ -96,7 +96,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			LogIt.error("SQLerr4");
-			LogIt.error("http://aman207.net/wiki/Errors");
+			LogIt.error("https://aman207.net/wiki/Errors");
 			LogIt.error("Message:");
 			LogIt.error(e.getMessage());
 			LogIt.error(LogIt.exceptionLog(e));
@@ -114,7 +114,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			LogIt.error("SQLerr5");
-			LogIt.error("http://aman207.net/wiki/Errors");
+			LogIt.error("https://aman207.net/wiki/Errors");
 			LogIt.error("Message:");
 			LogIt.error(e.getMessage());
 			LogIt.error(LogIt.exceptionLog(e));
@@ -130,7 +130,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			LogIt.error("SQLerr6");
-			LogIt.error("http://aman207.net/wiki/Errors");
+			LogIt.error("https://aman207.net/wiki/Errors");
 			LogIt.error("Message:");
 			LogIt.error(e.getMessage());
 			LogIt.error(LogIt.exceptionLog(e));

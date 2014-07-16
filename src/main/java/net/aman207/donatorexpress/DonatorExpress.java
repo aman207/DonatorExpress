@@ -70,11 +70,11 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 			} catch (IOException e) {
 				e.printStackTrace();
 				LogIt.startup("IOerr1");
-				LogIt.startup("http://aman207.net/wiki/Errors");
+				LogIt.startup("https://aman207.net/wiki/Errors");
 				LogIt.startup(e.getMessage());
 				
 				LogIt.error("IOerr1");
-				LogIt.error("http://aman207.net/wiki/Errors");
+				LogIt.error("https://aman207.net/wiki/Errors");
 				LogIt.error("Stacktrace:");
 				LogIt.error(" ");
 				LogIt.error(LogIt.exceptionLog(e));
@@ -129,11 +129,11 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 				LogIt.startup("IOerr2");
-				LogIt.startup("http://aman207.net/wiki/Errors");
+				LogIt.startup("https://aman207.net/wiki/Errors");
 				LogIt.startup(e1.getMessage());
 				
 				LogIt.error("IOerr2");
-				LogIt.error("http://aman207.net/wiki/Errors");
+				LogIt.error("https://aman207.net/wiki/Errors");
 				LogIt.error("Stacktrace:");
 				LogIt.error(" ");
 				LogIt.error(LogIt.exceptionLog(e1));
@@ -164,11 +164,11 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 				LogIt.startup("IOerr3");
-				LogIt.startup("http://aman207.net/wiki/Errors");
+				LogIt.startup("https://aman207.net/wiki/Errors");
 				LogIt.startup(e1.getMessage());
 				
 				LogIt.error("IOerr3");
-				LogIt.error("http://aman207.net/wiki/Errors");
+				LogIt.error("https://aman207.net/wiki/Errors");
 				LogIt.error("Stacktrace:");
 				LogIt.error(" ");
 				LogIt.error(LogIt.exceptionLog(e1));
@@ -252,7 +252,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					LogIt.error("IOerr4");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e1));
@@ -278,7 +278,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					LogIt.error("IOerr5");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e1));
@@ -304,7 +304,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					LogIt.error("IOerr6");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e1));
@@ -331,7 +331,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					LogIt.error("IOerr7");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e1));
@@ -357,7 +357,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					LogIt.error("IOerr8");
-					LogIt.error("http://aman207.net/wiki/Errors");
+					LogIt.error("https://aman207.net/wiki/Errors");
 					LogIt.error("Stacktrace:");
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e1));
