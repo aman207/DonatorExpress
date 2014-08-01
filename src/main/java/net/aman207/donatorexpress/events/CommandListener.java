@@ -1223,7 +1223,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				sender.sendMessage(ChatColor.YELLOW+"***************************************");
 				sender.sendMessage(ChatColor.RED+"");
-				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.9");
+				sender.sendMessage(ChatColor.AQUA+"DonatorExpress Version 1.9-DEV");
 				sender.sendMessage(ChatColor.AQUA+"Plugin developed by: aman207");
 				sender.sendMessage(ChatColor.AQUA+"Webportal developed by: AzroWear");
 				sender.sendMessage(ChatColor.AQUA+"http://bit.ly/DonExp");
