@@ -39,7 +39,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 		//Used to initialize constructor
 		@SuppressWarnings("unused")
 		LogIt inilog = new LogIt(this);
-		//TODO
+		//TODO Piwik
 		//@SuppressWarnings("unused")
 		//PiwikIt inipiwik = new PiwikIt(this);
 		
@@ -85,6 +85,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 			getLogger().info("Forum Configuration not found. Generating...");
 			LogIt.startup("Forum Configuration not found. Generating...");
 			
+			//Deprecated as of 1.9
 			/**try {
 				getDataFolder().mkdirs();
 				ranks=this.getConfig().getStringList("ranks");
@@ -139,7 +140,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				LogIt.error(LogIt.exceptionLog(e1));
 			}
 			
-			
+			//Deprecated as of 1.9
 			/**for(String s:ranks)
 			{
 				setForumConfig(s);
@@ -473,9 +474,9 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e)
 	{
-		Database.connect();
-		Database.execute("CREATE TABLE IF NOT EXISTS `users` (`id` int NOT NULL AUTO_INCREMENT, `username` varchar(24) NOT NULL, `tokens` varchar(16) DEFAULT '0', `date_reg` varchar(64) NOT NULL, `is_admin` varchar(5) NOT NULL, `online` varchar(5) NOT NULL, PRIMARY KEY (id))");
-		
+		//Database.connect();
+		//Database.execute("CREATE TABLE IF NOT EXISTS `users` (`id` int NOT NULL AUTO_INCREMENT, `username` varchar(36) NOT NULL, `tokens` varchar(16) DEFAULT '0', `date_reg` varchar(64) NOT NULL, `is_admin` varchar(5) NOT NULL, `online` varchar(5) NOT NULL, PRIMARY KEY (id))");
+		//Database.executeUpdate("UPDATE `users` SET online='true' where username="e.getPlayer().getUniqueId());
 		
 		BukkitTask task = new Expire(e, this).runTaskLater(this, 20);
 		
