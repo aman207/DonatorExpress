@@ -180,12 +180,12 @@ public class CommandListener implements Listener, CommandExecutor {
 					LogIt.error(LogIt.exceptionLog(e));
 				}
 				}
-				
+				}
 				else
 				{
 					noPermission(sender);
 				}
-				}
+				
 			}
 			
 			else if (args[0].equalsIgnoreCase("delete"))
@@ -437,7 +437,6 @@ public class CommandListener implements Listener, CommandExecutor {
 					noPermission(sender);
 				}
 				Database.close();
-				}
 			}
 			else if(args[0].equalsIgnoreCase("checkp"))
 			{
@@ -1256,7 +1255,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				commandUsage(sender);
 				return false;
 			}
-		}}catch(ArrayIndexOutOfBoundsException e)
+			}}catch(ArrayIndexOutOfBoundsException e)
 		{
 			commandUsage(sender);
 		} catch (FileNotFoundException e1) {
