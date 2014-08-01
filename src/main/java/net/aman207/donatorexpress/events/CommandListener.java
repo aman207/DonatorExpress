@@ -437,6 +437,7 @@ public class CommandListener implements Listener, CommandExecutor {
 					noPermission(sender);
 				}
 				Database.close();
+				}
 			}
 			else if(args[0].equalsIgnoreCase("checkp"))
 			{
