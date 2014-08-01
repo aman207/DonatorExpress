@@ -296,6 +296,10 @@ public class CommandListener implements Listener, CommandExecutor {
 		    		}
 		    		
 				}
+				else
+				{
+					noPermission(sender);
+				}
 			}
 			else if(args[0].equalsIgnoreCase("list"))
 			{
@@ -403,41 +407,42 @@ public class CommandListener implements Listener, CommandExecutor {
 				
 				if(sender.hasPermission("donexpress.admin.checkvc"))
 				{
-				String VCName=plugin.getConfig().getString("currency-name");
-			    String website=plugin.getConfig().getString("portal-location");			
-				if(!(args[1]==null))
-				{
-					String username="'"+args[1]+"'";
-					try {
-						ResultSet result=Database.executeStatement("SELECT `tokens`, `username` FROM dep  WHERE username = "+username);
-						if(result.next())
+					String VCName=plugin.getConfig().getString("currency-name");
+				    String website=plugin.getConfig().getString("portal-location");	
+				    if(!(args[1]==null))
+				    {
+				    	String username="'"+args[1]+"'";
+				    	ResultSet result=Database.executeStatement("SELECT `tokens`, `username` FROM dep  WHERE username = "+username);
+						try {
+							if(result.next())
+							{
+								sender.sendMessage(prefix()+ChatColor.AQUA+args[1]+Language.getPhrase("TOKENSRETURN2")+result.getString(1)+" "+VCName);
+							}
+							else
+							{
+								sender.sendMessage(prefix()+ChatColor.YELLOW+"I could not find that username in the database. Please tell the player to register at "+website);
+							}
+						} catch (SQLException e) {
+							sender.sendMessage(prefix()+ChatColor.YELLOW+"The database returned an error. Please tell an Admin or Owner about this problem so they can investigate further");
+							e.printStackTrace();
+						} catch (ArrayIndexOutOfBoundsException e)
 						{
-							sender.sendMessage(prefix()+ChatColor.AQUA+args[1]+Language.getPhrase("TOKENSRETURN2")+result.getString(1)+" "+VCName);
+							sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
+							LogIt.error("ArrayIndexOutOfBounds");
+							LogIt.error("https://aman207.net/wiki/Errors");
+							LogIt.error("Stacktrace:");
+							LogIt.error(" ");
+							LogIt.error(LogIt.exceptionLog(e));
 						}
-						else
-						{
-							sender.sendMessage(prefix()+ChatColor.YELLOW+"I could not find that username in the database. Please tell the player to register at "+website);
-						}
-					} catch (SQLException e) {
-						sender.sendMessage(prefix()+ChatColor.YELLOW+"The database returned an error. Please tell an Admin or Owner about this problem so they can investigate further");
-						e.printStackTrace();
-					} catch (ArrayIndexOutOfBoundsException e)
-					{
-						sender.sendMessage(prefix()+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX1")+ChatColor.GREEN+"/donate help "+ChatColor.RED+Language.getPhrase("INVALIDSYNTAX2"));
-						LogIt.error("ArrayIndexOutOfBounds");
-						LogIt.error("https://aman207.net/wiki/Errors");
-						LogIt.error("Stacktrace:");
-						LogIt.error(" ");
-						LogIt.error(LogIt.exceptionLog(e));
-					}
+				    }
 				}
-
 				else
 				{
 					noPermission(sender);
 				}
 				Database.close();
 			}
+			
 			else if(args[0].equalsIgnoreCase("checkp"))
 			{
 				Database.connect();
@@ -1255,7 +1260,7 @@ public class CommandListener implements Listener, CommandExecutor {
 				commandUsage(sender);
 				return false;
 			}
-			}}catch(ArrayIndexOutOfBoundsException e)
+			}catch(ArrayIndexOutOfBoundsException e)
 		{
 			commandUsage(sender);
 		} catch (FileNotFoundException e1) {
