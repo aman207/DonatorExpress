@@ -126,6 +126,7 @@ public class Support implements Runnable {
 		
 		//economyYamlValues[0]=economyYaml.getString("");
 		
+		//if forum problem, do this
 		forumValues.put("enabled", forumYaml.getString("enabled"));
 		forumValues.put("mybb", forumYaml.getString("mybb"));
 		forumValues.put("xenforo", forumYaml.getString("xenforo"));
