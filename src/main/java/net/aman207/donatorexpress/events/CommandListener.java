@@ -35,6 +35,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.avaje.ebean.validation.factory.EmailValidatorFactory.EmailValidator;
+
 public class CommandListener implements Listener, CommandExecutor {
 
 	static DonatorExpress plugin;
@@ -1301,7 +1303,9 @@ public class CommandListener implements Listener, CommandExecutor {
 						tmpConfig.addDefault("supportStarted", false);
 						tmpConfig.addDefault("stage", 0);
 						tmpConfig.addDefault("type", 0);
-						tmpConfig.addDefault("userInitiated", null);
+						tmpConfig.addDefault("userInitiated", "null");
+						tmpConfig.addDefault("email", "null");
+						tmpConfig.addDefault("name", "null");
 						tmpConfig.options().copyDefaults(true);
 						tmpConfig.save(tmpConfigFile);
 						
@@ -1324,6 +1328,8 @@ public class CommandListener implements Listener, CommandExecutor {
 				
 				//Search for current stage
 				int currentStage = tmpConfig.getInt("stage");
+				//Get current support type
+				int supportType = tmpConfig.getInt("type");
 				
 				if(args.length<0)
 				{
@@ -1343,74 +1349,171 @@ public class CommandListener implements Listener, CommandExecutor {
 						//get current stage to let then know what stage they should be on
 					}
 				}
+				
+				//Finish this later
+				//Involves hashmaps and whatnot
+				//Stuff I don't care to do right now
+				//Its in beta you can deal with no cancel options, jeez
+				//TODO
+				/**
 				if(args[0].equalsIgnoreCase("cancel"))
 				{
 					
-				}
-				if(args[0].equals("1")||args[0].equals("2")||args[0].equals("3"))
+				}*/
+				switch(currentStage)
 				{
-					if(currentStage==0)
+				//Stage 0
+				//Selection stage
+				case 0: 
+					if(args[0].equals("1"))
 					{
-						if(args[0].equals("1"))
+						tmpConfig.set("userInitiated", sender.getName());
+						tmpConfig.set("type", 1);
+						tmpConfig.set("stage", 1);
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					else if(args[0].equals("2"))
+					{
+						tmpConfig.set("userInitiated", sender.getName());
+						tmpConfig.set("type", 2);
+						tmpConfig.set("stage", 1);
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					else if(args[0].equals("3"))
+					{
+						tmpConfig.set("userInitiated", sender.getName());
+						tmpConfig.set("type", 3);
+						tmpConfig.set("stage", 1);
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					break;
+				
+				//Information stage
+				//Lets users know what commands to type in order to put in email/name
+				case 1:
+					switch(supportType)
+					{
+					//General question
+					//Doesn't collect data
+					case 1:
+						sender.sendMessage(dePrefix()+ChatColor.GOLD+"Got a general question or feedback? Well we got an answer!");
+						sender.sendMessage(ChatColor.GOLD+"First things first, please type in your email");
+						sender.sendMessage(ChatColor.GOLD+"/dehelp [email]");
+						tmpConfig.set("stage", "2");
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						break;
+					
+					//Plugin related question
+					//Collects data
+					case 2:
+						sender.sendMessage(dePrefix()+ChatColor.GOLD+"Got a plugin question or bug report? Well I have a can of Raid!");
+						sender.sendMessage(ChatColor.GOLD+"First things first, please type in your email");
+						sender.sendMessage(ChatColor.GOLD+"/dehelp [email]");
+						tmpConfig.set("stage", "2");
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						break;
+						
+					//Webporal related question
+					//Collects data for possible debugging
+					case 3:
+						sender.sendMessage(dePrefix()+ChatColor.GOLD+"Got a webportal question or bug report? Well I have a can of Raid!");
+						sender.sendMessage(ChatColor.GOLD+"First things first, please type in your email");
+						sender.sendMessage(ChatColor.GOLD+"/dehelp [email]");
+						tmpConfig.set("stage", "2");
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						break;
+					}
+					break;
+				
+				//Handles email entering
+				case 2: 
+					String email = args[0];
+					if(!(args.length>0))
+					{
+						//http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+						String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+						java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+						java.util.regex.Matcher m = p.matcher(email);
+						
+						if(m.matches())
 						{
-							tmpConfig.set("userInitiated", sender.getName());
-							tmpConfig.set("type", 1);
-							tmpConfig.set("stage", 1);
+							sender.sendMessage(ChatColor.GOLD+"Great! Now all I need is a first name (can only be one word) and you can begin typing your message!");
+							sender.sendMessage(ChatColor.GOLD+"/dehelp [firstName]");
+							tmpConfig.set("stage", "3");
+							tmpConfig.set("email", email);
 							try {
 								tmpConfig.save(tmpConfigFile);
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
 						}
-						else if(args[0].equals("2"))
+						else
 						{
-							tmpConfig.set("userInitiated", sender.getName());
-							tmpConfig.set("type", 2);
-							tmpConfig.set("stage", 1);
-							try {
-								tmpConfig.save(tmpConfigFile);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-						else if(args[0].equals("3"))
-						{
-							tmpConfig.set("userInitiated", sender.getName());
-							tmpConfig.set("type", 3);
-							tmpConfig.set("stage", 1);
-							try {
-								tmpConfig.save(tmpConfigFile);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
+							sender.sendMessage(ChatColor.RED+"Error. That is not a valid email address.");
+							sender.sendMessage(ChatColor.RED+"Example: /dehelp aman207@aman207.net");
+						}					
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.RED+"You can only have one email following /dehelp");
+					}	
+					
+				//Handles name entering
+				case 3:
+					String name = args[0];
+					if(!(args.length>0))
+					{
+						sender.sendMessage(ChatColor.GOLD+"Great! Now you can being typing your message");
+						sender.sendMessage(ChatColor.GOLD+"Simply start typing your message after typing /dehelp");
+						sender.sendMessage(ChatColor.GOLD+"So for example '/dehelp Hi I was wondering when the next version is going to be released'");
+						sender.sendMessage(ChatColor.GOLD+"You can keep using /dehelp over and over again until you are done typing your message");
+						sender.sendMessage(ChatColor.GOLD+"Because this support feature is in beta, you cannot delete a line, only add");
+						sender.sendMessage(ChatColor.GOLD+"It is reccomended that you type your message elsewhere before pasting it into Minecraft, line by line");
+						sender.sendMessage(ChatColor.GOLD+"Once you are done, simple type /dehelp finalize to send your ticket");
+						
+						tmpConfig.set("name", name);
+						tmpConfig.set("stage", 4);
+						try {
+							tmpConfig.save(tmpConfigFile);
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
 					}
 					else
 					{
-						sender.sendMessage(ChatColor.RED+"Error. You are already past this stage!");
-						//get current stage to let user know what stage they should be on
+						sender.sendMessage(ChatColor.RED+"Error you can only have one name");
+						sender.sendMessage(ChatColor.RED+"Example: /dehelp Aaron");
 					}
-				}
-
-				if(currentStage==1)
-				{
-					int supportType = tmpConfig.getInt("type");
-					if(supportType==1)
-					{
-						
-					}
-					else if(supportType==2)
-					{
-						
-					}
-					else if(supportType==3)
-					{
-						
-					}
-					else
-					{
-						sender.sendMessage("This can't happen");
-					}
+					
+				//Handles message entering
+				case 4:
+					
+				default:
+					break;
 				}
 			}
 			else
