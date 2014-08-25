@@ -32,6 +32,8 @@ import net.aman207.donatorexpress.DonatorExpress;
 
 public class Support implements Runnable {
 	
+	//At some point in the near future...............................................................
+	
 	HashMap<String, String> stringValues = new HashMap<String, String>();
 	HashMap<String, String> configValues = new HashMap<String, String>();
 	HashMap<String, String> forumValues = new HashMap<String, String>();
