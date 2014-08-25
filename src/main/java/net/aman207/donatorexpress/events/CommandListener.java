@@ -1274,6 +1274,12 @@ public class CommandListener implements Listener, CommandExecutor {
 		}
 		
 		//Start of support commands
+		
+		
+		
+		//Eventually.....
+		//TODO
+		/**
 		if(cmd.getName().equalsIgnoreCase("dehelp"))
 		{
 			if(sender.hasPermission("donexpress.support"))
@@ -1301,6 +1307,8 @@ public class CommandListener implements Listener, CommandExecutor {
 						tmpConfig.addDefault("userInitiated", "null");
 						tmpConfig.addDefault("email", "null");
 						tmpConfig.addDefault("name", "null");
+						tmpConfig.addDefault("currentLineNumber", 1);
+						tmpConfig.addDefault("message", "");
 						tmpConfig.options().copyDefaults(true);
 						tmpConfig.save(tmpConfigFile);
 						
@@ -1337,6 +1345,10 @@ public class CommandListener implements Listener, CommandExecutor {
 						sender.sendMessage(ChatColor.GOLD+"1: General questions/feedback (does not send any error log or config information");
 						sender.sendMessage(ChatColor.GOLD+"2: Plugin error/bug report/questions (sends error log and SOME of the config.yml (not the database values))");
 						sender.sendMessage(ChatColor.GOLD+"3: Webportal error/bug report/questions (sends error log and SOME of the config.yml (not the database values))");
+						sender.sendMessage(ChatColor.DARK_RED+"PLEASE NOTE. CONFIG VALUES "+ChatColor.BOLD+"EXCLUDING DATABASE OPTIONS "+ChatColor.RESET+ChatColor.DARK_RED+""
+								+ "MAY BE SENT DURING THIS PROCESS. "
+								+ "PERSONAL INFORMATION, SUCH AS IP ADDRESSES OR PASSWORDS IS NEVER COLLECTED. IN ADDITION, THE error.log IS ALSO SENT "
+								+ "TO HELP WITH DEBUGGING. IF YOU DO NOT AGREE TO WHAT IS HAPPENING HERE, DO NOT USE THIS TOOL.");
 					}
 					else
 					{
@@ -1350,11 +1362,11 @@ public class CommandListener implements Listener, CommandExecutor {
 				//Stuff I don't care to do right now
 				//Its in beta you can deal with no cancel options, jeez
 				//TODO
-				/**
+				
 				if(args[0].equalsIgnoreCase("cancel"))
 				{
 					
-				}*/
+				}
 				switch(currentStage)
 				{
 				//Stage 0
@@ -1506,6 +1518,32 @@ public class CommandListener implements Listener, CommandExecutor {
 					
 				//Handles message entering
 				case 4:
+					if(args.length<0)
+					{
+						sender.sendMessage(ChatColor.RED+"Error you must enter in a message");
+					}
+					if(args[0].equals("finalize"))
+					{
+						sender.sendMessage(ChatColor.GOLD+"All done? Great! I will begin sending your ticket now. Note that your config data may "
+								+ "be sent with this ticket but your database config values WILL NEVER BE SENT. All information is kept private on "
+								+ "a secure server and only you and I have access to it. At your request, the data can and will be deleted. Email "
+								+ "aman207@aman207.net for this.");
+					}
+					else
+					{
+						int lineNumber=tmpConfig.getInt("currentLineNumber");
+						sender.sendMessage("Now entering line number "+lineNumber);
+						
+						StringBuilder sb = new StringBuilder();
+						for (int i = 0; i < args.length; i++)
+						{
+							sb.append(args[i]).append(" ");
+						}
+						 
+						String allArgs = sb.toString().trim();
+						
+						tmpConfig.set("message."+lineNumber, allArgs);
+					}
 					
 				default:
 					break;
@@ -1515,7 +1553,7 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				noPermission(sender);
 			}
-		}
+		}*/
 		return false;
 	}
 
