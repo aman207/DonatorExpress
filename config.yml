@@ -72,6 +72,10 @@ log-user-actions: true
 # Logs all admin actions/commands related to DonatorExpress to admin.log
 log-admin-commands: true
 
+# This options allows you to choose the command that users type when they want to open up the inventory
+# For example, if you type in inventory below, the command to open up the inventory will be /donate inventory
+inventory-command-name: 'show'
+
 # The prefix that you wish to use. Be sure to put a space at the end
 
 prefix: '&c[DonatorExpress] '

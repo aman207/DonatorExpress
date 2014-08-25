@@ -44,7 +44,8 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 		//PiwikIt inipiwik = new PiwikIt(this);
 		
 		File forumConfig = new File(getDataFolder(), "forumConfig.yml");
-		File economyConfigFile = new File (getDataFolder(), "economy.yml");
+		File inventoryConfig = new File(getDataFolder(), "inventoryConfig.yml");
+		//File economyConfigFile = new File (getDataFolder(), "economy.yml"); mmmm not quite yet
 		File configFile=new File(getDataFolder()+File.separator+"config.yml");
 		File packagesFolder = new File(getDataFolder()+"/packages"+File.separator);
 		File existingRanks=new File(this.getDataFolder()+File.separator,"packages.yml");
@@ -56,6 +57,37 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 			getLogger().info("Deafult configuration not found. Generating...");
 			LogIt.startup("Deafult configuration not found. Generating...");
 			this.saveDefaultConfig();
+		}
+		if(!inventoryConfig.exists())
+		{
+			getDataFolder().mkdirs();
+			
+			getLogger().info("Inventory configuration not found. Generating....");
+			LogIt.startup("Inventory configuration not found. Generating....");
+			
+			OutputStream out = null;
+			InputStream defaultStream = this.getResource("configs/inventoryConfig.yml");
+            try {
+            	out = new FileOutputStream(forumConfig);
+                int read = 0;
+                byte[] bytes = new byte[1024];
+
+				while((read = defaultStream.read(bytes)) != -1) {
+				    out.write(bytes, 0, read);
+				}
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				LogIt.startup("IOerr2.1");
+				LogIt.startup("https://aman207.net/wiki/Errors");
+				LogIt.startup(e1.getMessage());
+				
+				LogIt.error("IOerr2.1");
+				LogIt.error("https://aman207.net/wiki/Errors");
+				LogIt.error("Stacktrace:");
+				LogIt.error(" ");
+				LogIt.error(LogIt.exceptionLog(e1));
+			}
 		}
 		if(!packagesFolder.exists())
 		{
