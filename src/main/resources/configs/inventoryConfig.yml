@@ -1,0 +1,9 @@
+###############################################
+#                                             #
+#       DonatorExpress Inventory Config       #
+#                                             #
+###############################################
+
+# Hello and welcome to the Inventory Config!
+# This is a specialized config file which allows you to customize the inventory display to your users
+# when they type /donate inventory (or whatever command you manually set in the config)
