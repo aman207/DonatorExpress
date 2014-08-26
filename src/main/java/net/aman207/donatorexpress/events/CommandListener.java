@@ -35,9 +35,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class CommandListener implements Listener, CommandExecutor {
 
 	static DonatorExpress plugin;
+	private String inventoryCommandName;
 
 	public CommandListener(DonatorExpress config) {
 		plugin = config;
+		inventoryCommandName = plugin.getConfig().getString("inventory-command-name");
 	}
 	
 	public static Economy econ = null;
@@ -96,8 +98,8 @@ public class CommandListener implements Listener, CommandExecutor {
 				    	 {
 				    		 
 						     OutputStream out = null;
-							 InputStream defaultStream = plugin.getResource("configs/[defaultPackageConfiguration].yml");
-							 File defaultPackage = new File(plugin.getDataFolder()+"/packages"+File.separator, "[defaultPackageConfiguration].yml");
+							 InputStream defaultStream = plugin.getResource("configs"+File.separator+"[defaultPackageConfiguration].yml");
+							 File defaultPackage = new File(plugin.getDataFolder()+File.separator+"packages"+File.separator, "[defaultPackageConfiguration].yml");
 							 
 
 					         try {
@@ -168,7 +170,6 @@ public class CommandListener implements Listener, CommandExecutor {
 					LogIt.error(" ");
 					LogIt.error(LogIt.exceptionLog(e));
 				} catch (IOException e) {
-					sender.sendMessage(prefix()+ChatColor.DARK_RED+"Error. forumConfig doesn't exist o.O Try to reload the server and try again");
 					e.printStackTrace();
 					LogIt.error("IOerr10");
 					LogIt.error("https://aman207.net/wiki/Errors");
@@ -1180,6 +1181,10 @@ public class CommandListener implements Listener, CommandExecutor {
 					noPermission(sender);
 				}
 				Database.close();
+			}
+			else if(args[0].equalsIgnoreCase(inventoryCommandName))
+			{
+				
 			}
 			else if(args[0].equalsIgnoreCase("recent"))
 			{

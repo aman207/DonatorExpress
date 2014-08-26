@@ -66,6 +66,9 @@ expire-commands:
 
 expire-message: '&cYour package has expired. You have been deranked'
 
+##### Inventory Options #####
+# Here you can configure 
+
 # Don't change this please
 
-version: 1.5
+version: 1.9

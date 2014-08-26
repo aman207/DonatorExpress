@@ -4,6 +4,10 @@
 #                                             #
 ###############################################
 
+# More detailed information is avaialble on our wiki at https://aman207.net/wiki/DonatorExpress
+# If you still don't know whats going on here, you can send a support ticket via https://aman207.net/support
+# no registration required
+
 # Want metrics enabled? Great leave it as it. 
 metrics: true
 
@@ -72,14 +76,29 @@ log-user-actions: true
 # Logs all admin actions/commands related to DonatorExpress to admin.log
 log-admin-commands: true
 
-# This options allows you to choose the command that users type when they want to open up the inventory
+# Inventory options
+# Here you can configure the global options for your inventory
+# Package placement in the inventory, item's and descriptions as well as commands to be executed
+# when someone clicks on an item in the inventory, are all configured in the package specific .yml files
+
+# Shall the inventory be enabled?
+inventory-enable: true
+
+# What shall the name of this inventory be?
+inventory-name: 'DonatorExpress'
+
+# How many slots shall this inventory have?
+# Acceptable values, 9, 18, 27, 36, 45, 54
+inventory-slots: 9
+
+# What command shall be used to pull up the inventory menu? 
 # For example, if you type in inventory below, the command to open up the inventory will be /donate inventory
-inventory-command-name: 'show'
+# Note: This is also used on signs for pulling up the inventory menu
+inventory-command-name: show
 
 # The prefix that you wish to use. Be sure to put a space at the end
-
 prefix: '&c[DonatorExpress] '
 
 # Don't change this please
 
-version: 1.6
+version: 1.9

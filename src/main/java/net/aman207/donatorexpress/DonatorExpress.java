@@ -40,12 +40,12 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 		@SuppressWarnings("unused")
 		LogIt inilog = new LogIt(this);
 		//TODO Piwik
+		//Eventualyl.....
 		//@SuppressWarnings("unused")
 		//PiwikIt inipiwik = new PiwikIt(this);
 		
 		File forumConfig = new File(getDataFolder(), "forumConfig.yml");
-		File inventoryConfig = new File(getDataFolder(), "inventoryConfig.yml");
-		//File economyConfigFile = new File (getDataFolder(), "economy.yml"); mmmm not quite yet
+	   //File economyConfigFile = new File (getDataFolder(), "economy.yml"); mmmm not quite yet
 		File configFile=new File(getDataFolder()+File.separator+"config.yml");
 		File packagesFolder = new File(getDataFolder()+"/packages"+File.separator);
 		File existingRanks=new File(this.getDataFolder()+File.separator,"packages.yml");
@@ -58,37 +58,7 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 			LogIt.startup("Deafult configuration not found. Generating...");
 			this.saveDefaultConfig();
 		}
-		if(!inventoryConfig.exists())
-		{
-			getDataFolder().mkdirs();
-			
-			getLogger().info("Inventory configuration not found. Generating....");
-			LogIt.startup("Inventory configuration not found. Generating....");
-			
-			OutputStream out = null;
-			InputStream defaultStream = this.getResource("configs/inventoryConfig.yml");
-            try {
-            	out = new FileOutputStream(forumConfig);
-                int read = 0;
-                byte[] bytes = new byte[1024];
 
-				while((read = defaultStream.read(bytes)) != -1) {
-				    out.write(bytes, 0, read);
-				}
-				out.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-				LogIt.startup("IOerr2.1");
-				LogIt.startup("https://aman207.net/wiki/Errors");
-				LogIt.startup(e1.getMessage());
-				
-				LogIt.error("IOerr2.1");
-				LogIt.error("https://aman207.net/wiki/Errors");
-				LogIt.error("Stacktrace:");
-				LogIt.error(" ");
-				LogIt.error(LogIt.exceptionLog(e1));
-			}
-		}
 		if(!packagesFolder.exists())
 		{
 			LogIt.startup("Packages folder not found. Making directory...");
@@ -209,8 +179,23 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				LogIt.error("Stacktrace:");
 				LogIt.error(" ");
 				LogIt.error(LogIt.exceptionLog(e1));
-			}
+			
 		}*/
+		
+		//Inventory
+		int inventorySlots = this.getConfig().getInt("inventory-slots");
+		if(inventorySlots!=9||inventorySlots!=18||inventorySlots!=27||inventorySlots!=36||inventorySlots!=45||inventorySlots!=54)
+		{
+			Bukkit.getPluginManager().registerEvents(new Inventory(this), this);
+			Inventory inventory = new Inventory(this, inventorySlots, this.getConfig().getString("inventory-name"));
+		}
+		else
+		{
+			getLogger().warning("Error. Could not initialize the inventory. Value in inventory-slots must be either 9, 18, 27, 36, 45, or 54");
+			LogIt.startup("Error. Could not initialize the inventory. Value in inventory-slots must be either 9, 18, 27, 36, 45, or 54");
+			LogIt.error("Error. Could not initialize the inventory Value in inventory-slots must be either 9, 18, 27, 36, 45, or 54");
+		}
+		
 		getCommand("donate").setExecutor(new CommandListener(this));
 		
 		//Used to initialize the constructor
@@ -530,11 +515,5 @@ public class DonatorExpress extends JavaPlugin implements Listener {
 				}
 			}
 		}
-	}
-	
-	@EventHandler
-	public void onPlayerLogout(PlayerQuitEvent e)
-	{
-		
 	}
 }
