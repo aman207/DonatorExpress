@@ -67,7 +67,17 @@ expire-commands:
 expire-message: '&cYour package has expired. You have been deranked'
 
 ##### Inventory Options #####
-# Here you can configure 
+# Here you can configure the inventory options for this package
+# Ensure you have adjusted the global inventory options in the config.yml before 
+# applying settings to this config
+
+# This is the position in the inventory. Starts at 1
+inventory-position: 1
+
+# This is what item will be shown in the inventory
+# You can use either item id's or materials in the form "Material.[itemName]"
+inventory-item: 1
+#inventory-item: Material.GOLD_BLOCK
 
 # Don't change this please
 

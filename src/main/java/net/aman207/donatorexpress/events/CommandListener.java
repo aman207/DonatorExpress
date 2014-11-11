@@ -1222,8 +1222,9 @@ public class CommandListener implements Listener, CommandExecutor {
 			{
 				if(sender.hasPermission("donexpress.admin.reload"))
 				{
-				plugin.reloadConfig();
-				sender.sendMessage(prefix()+ChatColor.GREEN+"Reload successful!");
+					plugin.reloadConfig();
+					inventoryCommandName = plugin.getConfig().getString("inventory-command-name");
+					sender.sendMessage(prefix()+ChatColor.GREEN+"Reload successful!");
 				}
 				else
 				{

@@ -75,7 +75,8 @@ public class Inventory implements Listener {
 				e.printStackTrace();
 			}
 			
-			int position = packagesSpecific.getInt("");
+			int position = packagesSpecific.getInt(""+-1);
+			
 		}
 	}
 	
