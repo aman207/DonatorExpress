@@ -22,7 +22,7 @@ update-check: true
 disable-on-database-error: false
 
 # Available languages:
-# English (en), French (fr), Spanish (es), Dutch (nl)
+# English (en), French (fr), Spanish (es), Dutch (nl), Italian (it)
 # Reload the server for the language change to take effect
 language: en
 
